@@ -7,18 +7,16 @@ import SolutionSection from "@/components/sections/SolutionSection";
 import ServiceMarquee from "@/components/visual-breaks/ServiceMarquee";
 import MarketingSection from "@/components/sections/MarketingSection";
 import ProofSection from "@/components/sections/ProofSection";
-import BigQuoteBreak from "@/components/visual-breaks/BigQuoteBreak";
 import GuaranteeSection from "@/components/sections/GuaranteeSection";
-import ScarcitySection from "@/components/sections/ScarcitySection";
-import TestimonialsSection from "@/components/sections/TestimonialsSection";
-import PricingSection from "@/components/sections/PricingSection";
 import FaqSection from "@/components/sections/FaqSection";
 import FinalCtaSection from "@/components/sections/FinalCtaSection";
 import Footer from "@/components/Footer";
+import { ConsultationProvider } from "@/components/consultation/ConsultationContext";
+import ConsultationForm from "@/components/consultation/ConsultationForm";
 
 export default function Home() {
   return (
-    <>
+    <ConsultationProvider>
       <Header />
       <main>
         <HeroSection />
@@ -27,15 +25,12 @@ export default function Home() {
         <ServiceMarquee />
         <MarketingSection />
         <ProofSection />
-        <BigQuoteBreak />
         <GuaranteeSection />
-        <ScarcitySection />
-        <TestimonialsSection />
-        <PricingSection />
         <FaqSection />
         <FinalCtaSection />
       </main>
       <Footer />
-    </>
+      <ConsultationForm />
+    </ConsultationProvider>
   );
 }

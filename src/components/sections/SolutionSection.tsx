@@ -45,15 +45,16 @@ export default function SolutionSection() {
 
         {/* Title Area */}
         <div className="text-center max-w-4xl mx-auto mb-20 md:mb-28">
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6, ease: EASE_SMOOTH }}
-            className="text-base md:text-lg font-bold tracking-widest uppercase text-indigo-500 mb-4 md:mb-6"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-bold tracking-widest uppercase mb-6 shadow-sm"
           >
+            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
             {SECTION_SOLUTION.eyebrow}
-          </motion.p>
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -109,7 +110,7 @@ export default function SolutionSection() {
                 </h3>
               </div>
 
-              <div className="flex flex-col gap-5 flex-1 justify-center relative">
+              <div className="flex flex-col gap-5 flex-1 justify-start relative">
                 {/* Connecting line behind blocks */}
                 <div className="absolute left-6 top-8 bottom-8 w-px bg-slate-700" />
 
@@ -128,8 +129,10 @@ export default function SolutionSection() {
                 ))}
               </div>
 
-              <p className="mt-12 text-center text-slate-500 font-bold text-sm md:text-base bg-slate-900/50 py-3 rounded-xl">
-                ({comparison.bad.sub})
+              <p className="mt-auto pt-8 text-center text-slate-500 font-bold text-sm md:text-base bg-transparent">
+                <span className="bg-slate-900/50 py-3 px-6 rounded-xl block">
+                  ({comparison.bad.sub})
+                </span>
               </p>
             </motion.div>
 
@@ -165,7 +168,7 @@ export default function SolutionSection() {
                 </h3>
               </div>
 
-              <div className="relative z-10 flex flex-col gap-8 flex-1 justify-center">
+              <div className="relative z-10 flex flex-col gap-8 flex-1 justify-start pt-2">
 
                 {/* Highlight Quote Box */}
                 <motion.div

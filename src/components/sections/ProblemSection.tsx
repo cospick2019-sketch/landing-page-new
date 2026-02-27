@@ -60,15 +60,19 @@ export default function ProblemSection() {
       <div className="relative max-w-6xl mx-auto px-4 md:px-6">
         {/* Eyebrow */}
         <div className="text-center max-w-3xl mx-auto">
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6, ease: EASE_SMOOTH }}
-            className="text-base md:text-lg font-medium tracking-widest uppercase text-indigo-600"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-sm font-bold tracking-widest uppercase mb-6 shadow-sm"
           >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
+            </span>
             {SECTION_PROBLEM.eyebrow}
-          </motion.p>
+          </motion.div>
 
           {/* Heading: staggered word reveal */}
           <div className="mt-5 md:mt-8">

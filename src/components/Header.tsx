@@ -1,18 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useConsultation } from "@/components/consultation/ConsultationContext";
 
 const NAV_ITEMS = [
-  { label: "서비스 소개", href: "#process" },
-  { label: "포트폴리오", href: "#results" },
-  { label: "가격 안내", href: "#pricing" },
-  { label: "자주 묻는 질문", href: "#faq" },
+  { label: "서비스 소개", href: "/#solution" },
+  { label: "포트폴리오", href: "/portfolio" },
+  { label: "가격 안내", href: "/pricing" },
+  { label: "자주 묻는 질문", href: "/#faq" },
 ];
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { open } = useConsultation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 0);
@@ -21,24 +25,50 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const showDark = scrolled || !isHome;
+
+  const isHashLink = (href: string) => href.includes("#");
+
+  const handleHashClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    setMobileOpen(false);
+
+    // /#faq 같은 형태에서 hash 추출
+    const hash = href.split("#")[1];
+    if (!hash) return;
+
+    // 현재 메인 페이지가 아니면 일반 네비게이션 (Next.js가 처리)
+    if (pathname !== "/") return;
+
+    e.preventDefault();
+    const targetElement = document.getElementById(hash);
+    if (targetElement) {
+      const headerOffset = 64;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+    }
+  };
+
   return (
     <header
       className={cn(
         "fixed top-0 w-full h-14 md:h-16 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-white/80 backdrop-blur-md border-b border-white/20"
+        showDark
+          ? "bg-white/90 backdrop-blur-md border-b border-white/20 shadow-sm"
           : "bg-transparent"
       )}
     >
       <div className="relative h-full max-w-7xl mx-auto px-4 md:px-6 flex items-center">
         {/* 좌측: 로고 */}
-        <a href="/" className="flex-shrink-0 relative h-8 w-24">
+        <Link href="/" className="flex-shrink-0 relative h-8 w-24" onClick={() => { if (pathname === "/") window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
           <img
             src="/logo_white.png"
             alt="장사꾼"
             className={cn(
               "absolute inset-0 h-full w-auto object-contain transition-opacity duration-300",
-              scrolled ? "opacity-0" : "opacity-100"
+              showDark ? "opacity-0" : "opacity-100"
             )}
           />
           <img
@@ -46,41 +76,57 @@ export default function Header() {
             alt="장사꾼"
             className={cn(
               "absolute inset-0 h-full w-auto object-contain transition-opacity duration-300",
-              scrolled ? "opacity-100" : "opacity-0"
+              showDark ? "opacity-100" : "opacity-0"
             )}
           />
-        </a>
+        </Link>
 
         {/* 중앙: 네비게이션 (뷰포트 정중앙) */}
         <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "text-base font-medium transition-colors duration-150",
-                scrolled
-                  ? "text-gray-600 hover:text-gray-900"
-                  : "text-gray-300 hover:text-white"
-              )}
-            >
-              {item.label}
-            </a>
-          ))}
+          {NAV_ITEMS.map((item) =>
+            isHashLink(item.href) ? (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={(e) => handleHashClick(e, item.href)}
+                className={cn(
+                  "text-base font-medium transition-colors duration-150 cursor-pointer",
+                  showDark
+                    ? "text-gray-600 hover:text-gray-900"
+                    : "text-gray-300 hover:text-white"
+                )}
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "text-base font-medium transition-colors duration-150 cursor-pointer",
+                  showDark
+                    ? "text-gray-600 hover:text-gray-900"
+                    : "text-gray-300 hover:text-white"
+                )}
+              >
+                {item.label}
+              </Link>
+            )
+          )}
         </nav>
 
         {/* 우측: CTA 버튼 */}
-        <a
-          href="#cta"
+        <button
+          onClick={open}
           className={cn(
-            "hidden md:inline-flex ml-auto items-center text-sm font-medium h-10 px-4 rounded-full transition-colors duration-150",
-            scrolled
+            "hidden md:inline-flex ml-auto items-center text-sm font-bold h-10 px-5 rounded-full transition-colors duration-150 shadow-sm",
+            showDark
               ? "bg-indigo-600 text-white hover:bg-indigo-700"
               : "bg-white text-gray-900 hover:bg-gray-100"
           )}
         >
           상담 신청
-        </a>
+        </button>
 
         {/* 모바일: 햄버거 */}
         <button
@@ -91,7 +137,7 @@ export default function Header() {
           <svg
             className={cn(
               "w-6 h-6 transition-colors",
-              scrolled ? "text-gray-900" : "text-white"
+              showDark ? "text-gray-900" : "text-white"
             )}
             fill="none"
             viewBox="0 0 24 24"
@@ -111,23 +157,36 @@ export default function Header() {
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
           <nav className="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-3">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className="text-sm font-medium text-gray-600 hover:text-gray-900 py-2 transition-colors"
-              >
-                {item.label}
-              </a>
-            ))}
-            <a
-              href="#cta"
-              onClick={() => setMobileOpen(false)}
-              className="mt-2 inline-flex items-center justify-center text-sm font-medium h-10 px-4 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+            {NAV_ITEMS.map((item) =>
+              isHashLink(item.href) ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => handleHashClick(e, item.href)}
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900 py-2 transition-colors cursor-pointer"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900 py-2 transition-colors cursor-pointer"
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                open();
+              }}
+              className="mt-2 inline-flex items-center justify-center text-sm font-bold h-10 px-4 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition-colors shadow-sm"
             >
               상담 신청
-            </a>
+            </button>
           </nav>
         </div>
       )}

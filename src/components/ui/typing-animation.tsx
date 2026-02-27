@@ -50,7 +50,7 @@ export function TypingAnimation({
   const elementRef = useRef<HTMLElement | null>(null)
   const isInView = useInView(elementRef as React.RefObject<Element>, {
     amount: 0.3,
-    once: false,
+    once: true,
   })
 
   const wordsToAnimate = useMemo(
@@ -96,7 +96,9 @@ export function TypingAnimation({
           break
 
         case "pause":
-          setPhase("deleting")
+          setDisplayedText("")
+          setCurrentCharIndex(0)
+          setPhase("typing")
           break
 
         case "deleting":

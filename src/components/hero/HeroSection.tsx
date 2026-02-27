@@ -9,8 +9,10 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { BlurFade } from "@/components/ui/blur-fade";
+import { useConsultation } from "@/components/consultation/ConsultationContext";
 
 export default function HeroSection() {
+  const { open } = useConsultation();
   return (
     <section
       id="hero"
@@ -61,7 +63,7 @@ export default function HeroSection() {
         </BlurFade>
 
         {/* H1 - Character-level animation, line-break aware */}
-        <h1 className="mt-4 md:mt-6 text-5xl md:text-8xl lg:text-9xl font-extrabold leading-[1.15] tracking-tight text-white">
+        <h1 className="mt-4 md:mt-6 text-5xl md:text-8xl lg:text-9xl font-extrabold leading-[1.2] md:leading-[1.15] text-white">
           {HERO.h1.split("\n").map((line, i) => (
             <TextAnimate
               key={i}
@@ -97,6 +99,8 @@ export default function HeroSection() {
             <TypingAnimation
               className="text-xl md:text-2xl font-medium leading-[1.7] text-indigo-400"
               duration={ANIM.typing.duration}
+              loop
+              pauseDelay={4000}
             >
               {HERO.trustSignal}
             </TypingAnimation>
@@ -116,6 +120,7 @@ export default function HeroSection() {
                 background={H.cta.hex}
                 borderRadius={ANIM.shimmer.borderRadius}
                 className="h-14 md:h-16 px-10 text-lg font-semibold rounded-full mx-auto text-white"
+                onClick={open}
               >
                 {HERO.cta}
               </ShimmerButton>

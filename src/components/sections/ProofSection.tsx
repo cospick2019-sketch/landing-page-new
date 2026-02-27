@@ -1,140 +1,177 @@
 "use client";
 
+import { motion } from "motion/react";
+import { Package } from "lucide-react";
+
 import { SECTION_PROOF } from "@/constants/content";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { NumberTicker } from "@/components/ui/number-ticker";
-import { AuroraText } from "@/components/ui/aurora-text";
-import { Marquee } from "@/components/ui/marquee";
 import { Particles } from "@/components/ui/particles";
-
-function PortfolioPlaceholder({ index }: { index: number }) {
-  const gradients = [
-    "from-indigo-400/80 to-indigo-600/80",
-    "from-gray-700 to-gray-900",
-    "from-slate-500 to-slate-700",
-    "from-indigo-500/70 to-purple-600/70",
-    "from-gray-800 to-gray-600",
-    "from-slate-600 to-indigo-500/60",
-  ];
-  return (
-    <div
-      className={`w-[340px] md:w-[420px] aspect-[16/10] rounded-xl bg-gradient-to-br ${gradients[index % gradients.length]} border border-white/10 flex items-center justify-center shrink-0 shadow-lg group hover:scale-[1.02] transition-transform duration-300`}
-    >
-      <span className="text-sm text-white/40 font-medium group-hover:text-white/60 transition-colors">
-        Portfolio {index + 1}
-      </span>
-    </div>
-  );
-}
+import { BorderBeam } from "@/components/ui/border-beam";
+import { useConsultation } from "@/components/consultation/ConsultationContext";
 
 export default function ProofSection() {
+  const { open } = useConsultation();
   return (
-    <section id="proof" className="relative py-20 md:py-32 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
-      {/* Radial gradient mesh */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(99,102,241,0.12),transparent)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_30%_at_80%_80%,rgba(139,92,246,0.08),transparent)]" />
+    <section id="proof" className="relative py-24 md:py-32 lg:py-48 bg-[#030513] overflow-hidden">
+      {/* Absolute Dark Ambient Glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[50vh] bg-indigo-600/10 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
+
+      {/* Top Transition Line from Light Section */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
 
       {/* Giant watermark */}
       <span className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-black text-white/[0.02] select-none pointer-events-none whitespace-nowrap tracking-tighter hidden md:block" aria-hidden="true">
         RESULTS
       </span>
 
-      {/* Decorative circles */}
-      <div className="absolute top-20 right-[15%] w-32 h-32 rounded-full border border-indigo-500/10" />
-      <div className="absolute bottom-32 left-[10%] w-24 h-24 rounded-full border border-purple-500/10" />
-
-      {/* Stats header */}
-      <div className="relative max-w-5xl mx-auto px-4 md:px-6">
-        <div className="text-center">
+      <div className="relative max-w-7xl mx-auto px-4 md:px-6 z-10">
+        <div className="text-center max-w-3xl mx-auto">
           <BlurFade delay={0.05}>
-            <p className="text-lg md:text-xl font-medium text-indigo-400">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-bold tracking-widest uppercase mb-6 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
               {SECTION_PROOF.intro}
-            </p>
+            </div>
           </BlurFade>
           <TextAnimate
             as="h2"
-            by="character"
+            by="word"
             animation="blurInUp"
             startOnView
-            className="mt-3 text-4xl md:text-6xl font-bold leading-tight tracking-tight text-white"
+            className="mt-3 text-4xl md:text-6xl lg:text-[4rem] font-black leading-tight tracking-tight text-white mb-16 md:mb-24"
           >
             {SECTION_PROOF.title}
           </TextAnimate>
         </div>
 
-        {/* Number counters - massive */}
-        <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* 3 Massive Number Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {SECTION_PROOF.stats.map((stat, i) => (
-            <BlurFade key={stat.label} delay={0.25 + i * 0.1}>
-              <div className="relative text-center p-6 md:p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 group">
-                <div className="text-6xl md:text-8xl font-black text-white leading-none">
-                  <NumberTicker value={stat.value} delay={0.5 + i * 0.2} className="text-white" />
-                  <AuroraText
-                    colors={["#6366f1", "#8b5cf6", "#a78bfa", "#6366f1"]}
-                    speed={2}
-                    className="text-6xl md:text-8xl font-black"
-                  >
-                    {stat.suffix}
-                  </AuroraText>
+            <BlurFade key={stat.label} delay={0.25 + i * 0.15}>
+              <div className="group relative text-center p-8 md:p-12 lg:p-16 rounded-[2.5rem] bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:border-indigo-500/40 hover:bg-white/[0.04] transition-all duration-500 shadow-2xl overflow-hidden">
+
+                {/* Glow on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/0 via-transparent to-purple-500/0 group-hover:from-indigo-500/10 transition-colors duration-500 pointer-events-none" />
+
+                {/* Border Beam - Hidden by default, bright on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[2.5rem] overflow-hidden">
+                  <BorderBeam size={200} duration={8} delay={i * 2} colorFrom="#6366f1" colorTo="#a855f7" borderWidth={2} />
                 </div>
-                <p className="mt-4 text-lg font-semibold text-white">
-                  {stat.label}
-                </p>
-                <p className="mt-1 text-base text-gray-500">{stat.sub}</p>
+
+                <div className="relative z-10 flex flex-col items-center justify-center">
+                  <div className="flex items-baseline justify-center text-7xl md:text-8xl lg:text-[7rem] font-black text-white leading-none tracking-tighter mb-6 group-hover:scale-110 transition-transform duration-500 ease-out whitespace-nowrap min-w-[200px]">
+                    <div className="inline-block text-right">
+                      <NumberTicker value={stat.value} delay={0.1 + i * 0.1} className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover:drop-shadow-[0_0_40px_rgba(99,102,241,0.5)] transition-all duration-500" />
+                    </div>
+                    <span className="text-4xl md:text-5xl lg:text-7xl ml-1 text-indigo-400 group-hover:text-indigo-300 transition-colors duration-500 shrink-0">
+                      {stat.suffix}
+                    </span>
+                  </div>
+
+                  <div className="h-px w-12 bg-indigo-500/50 rounded-full mb-6 group-hover:w-24 group-hover:bg-indigo-400 transition-all duration-500" />
+
+                  <p className="text-xl md:text-2xl font-bold text-white mb-2">
+                    {stat.label}
+                  </p>
+                  <p className="text-base text-gray-500 group-hover:text-gray-400 transition-colors duration-300">
+                    {stat.sub}
+                  </p>
+                </div>
               </div>
             </BlurFade>
           ))}
         </div>
-      </div>
 
-      {/* Portfolio carousel - 3 rows */}
-      <div className="relative mt-12 md:mt-16 space-y-4 overflow-hidden">
-        <Marquee pauseOnHover className="[--duration:30s]">
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <PortfolioPlaceholder key={i} index={i} />
-          ))}
-        </Marquee>
-        <Marquee pauseOnHover reverse className="[--duration:35s]">
-          {[3, 4, 5, 0, 1, 2].map((i) => (
-            <PortfolioPlaceholder key={`r-${i}`} index={i} />
-          ))}
-        </Marquee>
-        <Marquee pauseOnHover className="[--duration:32s]">
-          {[1, 3, 5, 2, 4, 0].map((i) => (
-            <PortfolioPlaceholder key={`t-${i}`} index={i} />
-          ))}
-        </Marquee>
-      </div>
+        {/* Closing CTA block - Live Rolling Tape Concept */}
+        <BlurFade delay={0.6}>
+          <div className="relative mt-24 md:mt-32 p-8 md:p-16 rounded-[2.5rem] bg-indigo-950/20 border border-indigo-500/20 overflow-hidden group">
 
-      {/* Closing CTA block */}
-      <div className="relative max-w-5xl mx-auto px-4 md:px-6 mt-16 md:mt-20">
-        <BlurFade delay={0.3}>
-          <div className="relative p-8 md:p-12 rounded-3xl bg-gradient-to-br from-indigo-600 to-indigo-700 text-center md:text-left overflow-hidden">
-            <Particles
-              className="absolute inset-0"
-              quantity={40}
-              color="#ffffff"
-              size={0.3}
-              staticity={30}
-            />
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[80px]" />
-            <div className="relative">
-              <h3 className="text-3xl md:text-4xl font-bold leading-snug text-white whitespace-pre-line">
-                {SECTION_PROOF.closingTitle}
-              </h3>
-              <p className="mt-4 text-lg md:text-xl font-normal leading-[1.7] text-indigo-100 whitespace-pre-line">
-                {SECTION_PROOF.closingBody}
-              </p>
-              <a
-                href="#cta"
-                className="mt-6 inline-flex items-center justify-center h-12 md:h-14 px-8 text-base font-semibold rounded-full bg-white text-indigo-700 hover:bg-indigo-50 transition-colors shadow-lg"
+            {/* Background Ambient */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.15),transparent_70%)] pointer-events-none" />
+
+            {/* Animated Marquee Tapes (Background) */}
+            <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none overflow-hidden flex flex-col justify-around -rotate-3 scale-110">
+              <motion.div
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="whitespace-nowrap font-mono text-4xl md:text-6xl font-black"
               >
-                {SECTION_PROOF.closingCta}
-              </a>
+                DATA DRIVEN MARKETING • 10 YEARS PROVEN RECORD • ROI MAXIMIZATION • DATA DRIVEN MARKETING • 10 YEARS PROVEN RECORD • ROI MAXIMIZATION •
+              </motion.div>
+              <motion.div
+                animate={{ x: ["-50%", "0%"] }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                className="whitespace-nowrap font-mono text-4xl md:text-6xl font-black mt-12"
+              >
+                DATA DRIVEN MARKETING • 10 YEARS PROVEN RECORD • ROI MAXIMIZATION • DATA DRIVEN MARKETING • 10 YEARS PROVEN RECORD • ROI MAXIMIZATION •
+              </motion.div>
+            </div>
+
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
+
+              {/* Left Content */}
+              <div className="flex-1 text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-bold tracking-widest uppercase mb-6 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+                  10년의 실전 데이터
+                </div>
+
+                <h3 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.1] text-white whitespace-pre-line mb-6 tracking-tight">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                    지난 10년간 직접 팔아본
+                  </span>
+                  <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                    수십만 개
+                  </span>
+                  의 택배 상자
+                </h3>
+
+                <p className="text-lg md:text-xl font-medium leading-[1.6] text-indigo-100/70 whitespace-pre-line mb-8 max-w-xl">
+                  그리고 수십억 원의 매출 데이터.
+                  이 매출을 만든 그 '설득 공식'과 '유입 공식'을 그대로 대표님 사업에 이식해드립니다.
+                </p>
+
+                <div className="group/btn relative inline-flex">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded border border-indigo-400/50 opacity-0 group-hover/btn:opacity-100 transition duration-300 blur-sm" />
+                  <button
+                    type="button"
+                    onClick={open}
+                    className="relative inline-flex items-center justify-center h-14 px-8 text-base font-bold bg-indigo-600 text-white hover:bg-indigo-500 transition-all rounded cursor-pointer"
+                  >
+                    {SECTION_PROOF.closingCta}
+                    <svg className="ml-2 w-5 h-5 group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Right Decorative Element (Delivery Boxes Grid) */}
+              <div className="hidden lg:grid grid-cols-4 gap-3 shrink-0 opacity-90 pr-4">
+                {[...Array(16)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0.3, scale: 0.9 }}
+                    whileInView={{ opacity: [0.3, 1, 0.3], scale: [0.9, 1.05, 0.9] }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      delay: (i % 4) * 0.2 + Math.floor(i / 4) * 0.1, // Stagger effect
+                      ease: "easeInOut"
+                    }}
+                    className="w-14 h-14 rounded-xl bg-indigo-950/60 border border-indigo-500/30 flex items-center justify-center relative overflow-hidden group-hover:bg-indigo-900/60 group-hover:border-indigo-400/60 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.3)] transition-all duration-500"
+                  >
+                    <Package className="w-6 h-6 text-indigo-400/70 group-hover:text-indigo-200 transition-colors duration-500" strokeWidth={1.5} />
+                  </motion.div>
+                ))}
+              </div>
+
             </div>
           </div>
         </BlurFade>
+
       </div>
     </section>
   );

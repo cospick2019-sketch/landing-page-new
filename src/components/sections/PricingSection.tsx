@@ -5,24 +5,42 @@ import { cn } from "@/lib/utils";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
+import { NumberTicker } from "@/components/ui/number-ticker";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { useConsultation } from "@/components/consultation/ConsultationContext";
+
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={cn("w-5 h-5 shrink-0", className)}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2.5}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+  );
+}
 
 function PricingCard({
   plan,
   index,
+  onCtaClick,
 }: {
   plan: (typeof SECTION_PRICING.plans)[number];
   index: number;
+  onCtaClick: () => void;
 }) {
   const isPopular = "popular" in plan && plan.popular;
 
   return (
-    <BlurFade delay={0.15 + index * 0.1}>
+    <BlurFade delay={0.15 + index * 0.1} className="flex">
       <div
         className={cn(
-          "relative p-6 md:p-8 rounded-2xl border flex flex-col h-full text-center transition-all duration-300 overflow-hidden",
+          "relative pt-10 p-6 md:p-8 md:pt-10 rounded-2xl border flex flex-col w-full transition-all duration-300 overflow-visible",
           isPopular
-            ? "border-indigo-600 border-2 bg-white shadow-xl shadow-indigo-600/10 md:scale-105 md:-my-4"
+            ? "border-indigo-500 border-2 bg-white shadow-xl shadow-indigo-500/10"
             : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-lg"
         )}
       >
@@ -34,63 +52,92 @@ function PricingCard({
               duration={8}
               size={60}
             />
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-semibold text-white bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-1 rounded-full shadow-md z-10">
-              가장 인기
+            <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold text-white bg-indigo-600 px-4 py-1.5 rounded-full shadow-md z-10 tracking-wide whitespace-nowrap">
+              BEST
             </span>
           </>
         )}
 
-        <div className="mb-6">
-          <h3 className="text-xl md:text-2xl font-semibold text-gray-900">{plan.name}</h3>
-          <p className="mt-2 text-base text-gray-500">{plan.desc}</p>
-        </div>
+        {/* Tag */}
+        <p className="text-xs font-semibold tracking-widest text-gray-400 uppercase">
+          {plan.tag}
+        </p>
 
-        <div className="mb-6">
-          <span className="text-3xl md:text-4xl font-extrabold text-gray-900">
-            {plan.price}
+        {/* Name & Desc */}
+        <h3 className="mt-2 text-2xl md:text-3xl font-bold text-gray-900">
+          {plan.name}
+        </h3>
+        <p className="mt-1 text-sm text-gray-500">{plan.desc}</p>
+
+        {/* Price */}
+        <div className="mt-6 flex items-baseline justify-center gap-1">
+          <span className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-none">
+            <NumberTicker
+              value={Number(plan.priceNum)}
+              delay={0.2 + index * 0.1}
+              className="text-gray-900"
+            />
+          </span>
+          <span className="text-lg md:text-xl font-medium text-gray-500">
+            {plan.priceSuffix}
           </span>
         </div>
 
-        <ul className="space-y-3 mb-8 flex-1 text-left">
-          {plan.features.map((f) => (
+        {/* Pages */}
+        <div className="mt-4 mb-6">
+          <span
+            className={cn(
+              "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold",
+              isPopular
+                ? "bg-indigo-50 text-indigo-700"
+                : "bg-gray-100 text-gray-700"
+            )}
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            {plan.pages}
+          </span>
+        </div>
+
+        {/* Base Features */}
+        <ul className="space-y-3 mb-8 flex-1">
+          {SECTION_PRICING.baseFeatures.map((f) => (
             <li
               key={f}
-              className="flex items-start gap-2.5 text-base text-gray-700"
+              className="flex items-start gap-2.5 text-sm text-gray-600"
             >
-              <svg
+              <CheckIcon
                 className={cn(
-                  "w-5 h-5 mt-0.5 shrink-0",
+                  "mt-0.5",
                   isPopular ? "text-indigo-600" : "text-gray-400"
                 )}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
+              />
               {f}
             </li>
           ))}
         </ul>
 
+        {/* CTA */}
         {isPopular ? (
           <ShimmerButton
             shimmerColor="#a5b4fc"
             shimmerSize="0.05em"
             background="#4F46E5"
             borderRadius="100px"
-            className="w-full h-12 px-6 text-base font-medium rounded-full text-white"
+            className="w-full h-12 px-6 text-base font-semibold rounded-full text-white"
+            onClick={onCtaClick}
           >
-            시작하기
+            무료 상담 신청
           </ShimmerButton>
         ) : (
-          <a
-            href="#cta"
-            className="inline-flex items-center justify-center w-full h-12 px-6 text-base font-medium rounded-full border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+          <button
+            type="button"
+            onClick={onCtaClick}
+            className="inline-flex items-center justify-center w-full h-12 px-6 text-base font-semibold rounded-full border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
           >
-            시작하기
-          </a>
+            무료 상담 신청
+          </button>
         )}
       </div>
     </BlurFade>
@@ -98,15 +145,26 @@ function PricingCard({
 }
 
 export default function PricingSection() {
+  const { open } = useConsultation();
   return (
-    <section id="pricing" className="relative py-20 md:py-32 bg-gradient-to-b from-gray-50 via-white to-gray-50 overflow-hidden">
+    <section
+      id="pricing"
+      className="relative py-20 md:py-32 bg-gradient-to-b from-gray-50 via-white to-gray-50 overflow-hidden"
+    >
       {/* Decorative */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
       <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-gradient-to-br from-indigo-100/30 to-purple-100/20 blur-[120px]" />
       <div className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full bg-gradient-to-tl from-blue-100/20 to-indigo-100/10 blur-[100px]" />
-      <div className="absolute top-40 right-[10%] w-48 h-48 rounded-full border border-indigo-100/40 hidden md:block" />
 
       <div className="relative max-w-5xl mx-auto px-4 md:px-6 text-center">
+        {/* Eyebrow */}
+        <BlurFade delay={0.05}>
+          <p className="text-sm font-semibold tracking-widest text-indigo-500 uppercase mb-3">
+            {SECTION_PRICING.eyebrow}
+          </p>
+        </BlurFade>
+
+        {/* Title */}
         <TextAnimate
           as="h2"
           by="word"
@@ -116,17 +174,34 @@ export default function PricingSection() {
         >
           {SECTION_PRICING.title}
         </TextAnimate>
+
+        {/* Sub */}
         <BlurFade delay={0.15}>
           <p className="mt-4 text-lg md:text-xl text-gray-500">
             {SECTION_PRICING.sub}
           </p>
         </BlurFade>
 
-        <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:items-center">
+        {/* Cards */}
+        <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:items-stretch">
           {SECTION_PRICING.plans.map((plan, i) => (
-            <PricingCard key={plan.name} plan={plan} index={i} />
+            <PricingCard
+              key={plan.name}
+              plan={plan}
+              index={i}
+              onCtaClick={open}
+            />
           ))}
         </div>
+
+        {/* Notice */}
+        <BlurFade delay={0.4}>
+          <p className="mt-14 text-sm text-gray-400 leading-relaxed">
+            * VAT 미포함
+            <br />
+            모든 작업은 고객사의 작업량과 의견에 따라 추가비용 발생 및 소요 기간이 연장될 수 있습니다.
+          </p>
+        </BlurFade>
       </div>
     </section>
   );
