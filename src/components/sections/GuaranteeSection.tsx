@@ -57,7 +57,6 @@ export default function GuaranteeSection() {
           by="word"
           animation="blurInUp"
           startOnView
-          once
           className="text-4xl md:text-6xl font-bold leading-tight tracking-tight text-white whitespace-pre-line"
         >
           {SECTION_GUARANTEE.title}

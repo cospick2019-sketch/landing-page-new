@@ -57,7 +57,6 @@ export default function ProofSection() {
             by="character"
             animation="blurInUp"
             startOnView
-            once
             className="mt-3 text-4xl md:text-6xl font-bold leading-tight tracking-tight text-white"
           >
             {SECTION_PROOF.title}

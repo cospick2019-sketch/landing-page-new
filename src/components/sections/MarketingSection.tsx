@@ -29,7 +29,6 @@ export default function MarketingSection() {
             by="word"
             animation="blurInUp"
             startOnView
-            once
             className="mt-3 text-4xl md:text-6xl font-bold leading-tight tracking-tight text-gray-900"
           >
             {SECTION_MARKETING.title}

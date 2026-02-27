@@ -40,10 +40,12 @@ export const HERO_CREDENTIALS = {
    ═══════════════════════════════════════════════════════ */
 
 export const SECTION_PROBLEM = {
+  eyebrow: "매출 0원의 진짜 이유",
   title: "혹시 비싼 돈 주고 만든 랜딩페이지,\n'예쁜 쓰레기'가 되진 않았나요?",
   points: [
     { text: "디자인은 그럴싸한데 매출은 0원이었던 경험." },
     { text: "밑 빠진 독에 광고비만 태우고 속 쓰렸던 경험." },
+    { text: "업체는 '완료'라 했는데, 문의는 0건." },
     { text: "그건 대표님 상품 탓이 아닙니다." },
   ],
   conclusion: "고객을 설득하는 '기획' 없이,\n'디자인'만 했기 때문입니다.",
@@ -54,11 +56,16 @@ export const SECTION_PROBLEM = {
    ═══════════════════════════════════════════════════════ */
 
 export const SECTION_SOLUTION = {
+  eyebrow: "팔리는 기획의 시작",
   title: "머리 아픈 기획, 하지 마세요.\n팔리는 논리는 제가 짭니다.",
   comparison: {
     bad: {
       label: "일반 웹 에이전시",
-      desc: "\"원고 주세요, 사진 주세요, 기획안 주세요...\"",
+      messages: [
+        "원고 주세요",
+        "사진 주세요",
+        "기획안 주세요",
+      ],
       sub: "결국 대표님이 다 해야 합니다.",
     },
     good: {
@@ -271,6 +278,108 @@ export const SECTION_FINAL_CTA = {
   cta: "내 아이템 진단받고 신청하기",
   ctaSub: "무료 상담 · 부담 없이 시작하세요",
   trustBadges: ["100% 환불 보장", "월 12건 한정", "무료 상담"],
+} as const;
+
+export const SECTION_PROCESS = {
+  eyebrow: "진행 프로세스",
+  title: "이렇게 진행됩니다",
+  sub: "체계적인 4단계 프로세스로 확실한 결과를 만듭니다.",
+} as const;
+
+export const SECTION_RESULTS = {
+  eyebrow: "실제 성과",
+  title: "데이터가 증명하는 결과",
+  sub: "랜딩페이지 도입 전후 실제 지표 변화입니다.",
+} as const;
+
+export const SECTION_REVENUE = {
+  eyebrow: "매출 시뮬레이션",
+  title: "전환율 차이가 만드는 매출 격차",
+  sub: "슬라이더를 움직여 직접 확인해보세요.",
+} as const;
+
+/* ═══════════════════════════════════════════════════════
+   Showcase — 인터랙티브 데모 섹션
+   ═══════════════════════════════════════════════════════ */
+
+export const SHOWCASE = {
+  sectionTitle: "직접 체험해보세요",
+  sectionSub: "팔리는 페이지가 어떻게 다른지 눈으로 확인하세요.",
+  tabs: [
+    { id: "morph", label: "Before → After", shortLabel: "B/A" },
+    { id: "calculator", label: "매출 계산기", shortLabel: "계산기" },
+    { id: "livebuild", label: "라이브 빌드", shortLabel: "빌드" },
+    { id: "dashboard", label: "성과 대시보드", shortLabel: "대시보드" },
+    { id: "particle", label: "파티클 텍스트", shortLabel: "파티클" },
+  ],
+} as const;
+
+export const SHOWCASE_MORPH = {
+  bad: {
+    headline: "고품질 프리미엄 제품을 만나보세요",
+    sub: "다양한 제품 라인업으로 고객님의 니즈에 맞는 최적의 솔루션을 제공합니다.",
+    extras: ["무료배송", "정품보장", "AS가능", "빠른배송"],
+    cta: "구매하기",
+  },
+  good: {
+    headline: "3일 만에 피부가\n달라집니다",
+    sub: "2,847명이 이미 경험한 변화",
+    trust: "효과 없으면 100% 환불",
+    cta: "3일 체험팩 무료 받기",
+  },
+  sliderLabel: "슬라이더를 움직여 비교해보세요",
+} as const;
+
+export const SHOWCASE_CALCULATOR = {
+  normalCvr: 0.012,
+  proCvr: 0.048,
+  visitorsLabel: "일일 방문자 수",
+  avgOrderLabel: "평균 객단가",
+  normalLabel: "일반 랜딩페이지",
+  normalCvrLabel: "전환율 1.2%",
+  proLabel: "장사꾼의 랜딩페이지",
+  proCvrLabel: "전환율 4.8%",
+  monthlyLabel: "월 예상 매출",
+  annualDiffLabel: "연간 매출 차이",
+} as const;
+
+export const SHOWCASE_LIVEBUILD = {
+  stages: [
+    { code: '<h1 className="text-4xl font-bold">그들은 장사를 모릅니다</h1>' },
+    { code: '<p className="text-indigo-600">효과 없으면 100% 환불해 드립니다</p>' },
+    { code: '<Button variant="shimmer">내 아이템 진단받고 신청하기</Button>' },
+  ],
+} as const;
+
+export const SHOWCASE_DASHBOARD = {
+  beforeBadge: "도입 전",
+  afterBadge: "도입 후",
+  cvr: {
+    label: "전환율 (CVR)",
+    before: 1.2,
+    after: 4.8,
+    unit: "%",
+    decimals: 1,
+  },
+  bounce: {
+    label: "이탈률",
+    before: 72,
+    after: 31,
+    unit: "%",
+    decimals: 0,
+  },
+  duration: {
+    label: "평균 체류시간",
+    before: 45,
+    after: 187,
+    unit: "초",
+    decimals: 0,
+  },
+} as const;
+
+export const SHOWCASE_PARTICLE = {
+  text: "SELLING",
+  subtitle: "마우스를 움직여보세요",
 } as const;
 
 /* ═══════════════════════════════════════════════════════

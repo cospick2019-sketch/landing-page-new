@@ -50,7 +50,7 @@ export function TypingAnimation({
   const elementRef = useRef<HTMLElement | null>(null)
   const isInView = useInView(elementRef as React.RefObject<Element>, {
     amount: 0.3,
-    once: true,
+    once: false,
   })
 
   const wordsToAnimate = useMemo(

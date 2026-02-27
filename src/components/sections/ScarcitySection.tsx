@@ -36,7 +36,6 @@ export default function ScarcitySection() {
           by="character"
           animation="blurInUp"
           startOnView
-          once
           className="mt-3 text-4xl md:text-6xl font-bold leading-tight tracking-tight text-white"
         >
           {SECTION_SCARCITY.title}
@@ -59,7 +58,7 @@ export default function ScarcitySection() {
             initial={{ scale: 0.95, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="mt-10 md:mt-12 inline-block px-8 py-6 rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-700 shadow-xl shadow-indigo-600/20"
           >
             <p className="text-2xl md:text-3xl font-semibold leading-snug text-white whitespace-pre-line">

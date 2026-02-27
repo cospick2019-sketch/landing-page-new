@@ -105,6 +105,46 @@ export const ANIM = {
    히어로 전용 스타일
    ═══════════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════════
+   팔레트 (공통 색상 토큰)
+   ═══════════════════════════════════════════════════════ */
+
+export const PALETTE = {
+  surface: "bg-[#F8FAFB]",
+  text: {
+    primary: "text-slate-900",
+    secondary: "text-slate-500",
+    muted: "text-slate-400",
+    trust: "text-indigo-600",
+  },
+  cta: {
+    hex: "#4F46E5",
+    shimmerColor: "#a5b4fc",
+  },
+} as const;
+
+/* ═══════════════════════════════════════════════════════
+   Showcase 섹션 테마
+   ═══════════════════════════════════════════════════════ */
+
+export const SHOWCASE_THEME = {
+  section: "py-16 md:py-24",
+  container: "max-w-6xl mx-auto px-4 md:px-6",
+  vizContainer: "max-w-4xl mx-auto",
+  card: "rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden",
+  toggle: {
+    wrapper:
+      "inline-flex items-center gap-1 rounded-full bg-slate-100 p-1",
+    item: "relative px-4 py-2 text-sm font-medium rounded-full transition-colors",
+    active: "text-slate-900",
+    inactive: "text-slate-500 hover:text-slate-700",
+    indicator: "absolute inset-0 rounded-full bg-white shadow-sm",
+  },
+  codeEditor: {
+    text: "font-mono text-xs md:text-sm leading-relaxed text-emerald-300 whitespace-pre-wrap",
+  },
+} as const;
+
 import type { CSSProperties } from "react";
 
 export const HERO_STYLE = {

@@ -40,7 +40,6 @@ export default function FinalCtaSection() {
           by="character"
           animation="blurInUp"
           startOnView
-          once
           className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight tracking-tight text-white whitespace-pre-line"
         >
           {SECTION_FINAL_CTA.title}

@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { label: "문제 인식", href: "#problem" },
-  { label: "프로세스", href: "#process" },
-  { label: "실적", href: "#results" },
-  { label: "가격", href: "#pricing" },
-  { label: "FAQ", href: "#faq" },
+  { label: "서비스 소개", href: "#process" },
+  { label: "포트폴리오", href: "#results" },
+  { label: "가격 안내", href: "#pricing" },
+  { label: "자주 묻는 질문", href: "#faq" },
 ];
 
 export default function Header() {

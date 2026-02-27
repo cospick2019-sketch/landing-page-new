@@ -2,7 +2,6 @@
 
 import Header from "@/components/Header";
 import HeroSection from "@/components/hero/HeroSection";
-import CredentialsBand from "@/components/visual-breaks/CredentialsBand";
 import ProblemSection from "@/components/sections/ProblemSection";
 import SolutionSection from "@/components/sections/SolutionSection";
 import ServiceMarquee from "@/components/visual-breaks/ServiceMarquee";
@@ -23,7 +22,6 @@ export default function Home() {
       <Header />
       <main>
         <HeroSection />
-        <CredentialsBand />
         <ProblemSection />
         <SolutionSection />
         <ServiceMarquee />

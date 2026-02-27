@@ -112,7 +112,6 @@ export default function PricingSection() {
           by="word"
           animation="blurInUp"
           startOnView
-          once
           className="text-4xl md:text-6xl font-bold leading-tight tracking-tight text-gray-900"
         >
           {SECTION_PRICING.title}

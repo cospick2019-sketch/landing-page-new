@@ -22,7 +22,7 @@ const vizMap: Record<string, React.ComponentType> = {
 };
 
 export default function ShowcaseSection() {
-  const [activeTab, setActiveTab] = useState(SHOWCASE.tabs[0].id);
+  const [activeTab, setActiveTab] = useState<string>(SHOWCASE.tabs[0].id);
   const ActiveViz = vizMap[activeTab];
 
   return (
