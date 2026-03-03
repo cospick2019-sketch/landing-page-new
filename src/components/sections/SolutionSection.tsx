@@ -110,9 +110,9 @@ export default function SolutionSection() {
                 </h3>
               </div>
 
-              <div className="flex flex-col gap-5 flex-1 justify-start relative">
+              <div className="flex flex-col gap-4 flex-1 justify-start relative pb-6">
                 {/* Connecting line behind blocks */}
-                <div className="absolute left-6 top-8 bottom-8 w-px bg-slate-700" />
+                <div className="absolute left-6 top-8 bottom-16 w-px bg-slate-700" />
 
                 {comparison.bad.messages.map((msg, i) => (
                   <motion.div
@@ -121,19 +121,65 @@ export default function SolutionSection() {
                     viewport={{ once: false }}
                     transition={{ duration: 0.5, delay: 0.3 + i * 0.1, ease: EASE_SMOOTH }}
                     key={i}
-                    className="flex items-center gap-5 p-5 rounded-2xl bg-slate-900 border border-slate-700 relative z-10 shadow-lg"
+                    className="flex items-center gap-5 p-5 rounded-2xl bg-slate-900 border border-slate-700 relative z-30 shadow-lg"
                   >
                     <div className="w-3 h-3 rounded-full bg-slate-600 shrink-0 ml-1 ring-4 ring-slate-900" />
                     <p className="text-lg font-medium text-slate-400">{msg}</p>
                   </motion.div>
                 ))}
+
+                {/* Stacked effect & Ellipsis for more requests */}
+                <div className="relative flex flex-col items-center z-10 w-full mt-[-8px]">
+                  {/* Layer 1 (Closest) */}
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ duration: 0.5, delay: 0.6, ease: EASE_SMOOTH }}
+                    className="h-10 rounded-b-3xl bg-[#0F172A] border-x border-b border-slate-700 w-[94%] z-20 shadow-[0_10px_10px_rgba(0,0,0,0.5)] flex items-end justify-center pb-2"
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-slate-600/80 mx-1" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-slate-600/80 mx-1" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-slate-600/80 mx-1" />
+                  </motion.div>
+
+                  {/* Layer 2 (Middle) */}
+                  <motion.div
+                    initial={{ opacity: 0, y: -15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ duration: 0.5, delay: 0.7, ease: EASE_SMOOTH }}
+                    className="h-8 rounded-b-3xl bg-[#0F172A]/70 border-x border-b border-slate-700/60 w-[86%] -mt-6 z-10 shadow-[0_5px_10px_rgba(0,0,0,0.4)] backdrop-blur-sm"
+                  />
+
+                  {/* Layer 3 (Furthest - Fading out) */}
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ duration: 0.5, delay: 0.8, ease: EASE_SMOOTH }}
+                    className="h-6 rounded-b-3xl bg-gradient-to-b from-[#0F172A]/40 to-transparent border-x border-b border-slate-700/30 w-[78%] -mt-4 z-0 backdrop-blur-md"
+                  />
+                </div>
               </div>
 
-              <p className="mt-auto pt-8 text-center text-slate-500 font-bold text-sm md:text-base bg-transparent">
-                <span className="bg-slate-900/50 py-3 px-6 rounded-xl block">
-                  ({comparison.bad.sub})
-                </span>
-              </p>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false }}
+                transition={{ duration: 0.5, delay: 0.9, ease: EASE_SMOOTH }}
+                className="mt-auto pt-6 relative z-20 w-full"
+              >
+                <div className="relative p-5 md:p-6 rounded-2xl bg-[#0F1123] border border-indigo-500/30 overflow-hidden text-center shadow-2xl">
+                  {/* Subtle warning stripes / danger pattern in dark mode style */}
+                  <div className="absolute inset-0 opacity-[0.03] bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#fff_10px,#fff_20px)] pointer-events-none" />
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-1 bg-gradient-to-r from-transparent via-indigo-500/80 to-transparent" />
+
+                  <span className="relative z-10 text-white font-black text-xl md:text-2xl tracking-tight">
+                    {comparison.bad.sub}
+                  </span>
+                </div>
+              </motion.div>
             </motion.div>
 
             {/* Mobile VS Badge */}
@@ -170,17 +216,30 @@ export default function SolutionSection() {
 
               <div className="relative z-10 flex flex-col gap-8 flex-1 justify-start pt-2">
 
-                {/* Highlight Quote Box */}
+                {/* Highlight Quote Box - Bold Typography Approach */}
                 <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: false }}
                   transition={{ duration: 0.6, delay: 0.4, ease: EASE_SMOOTH }}
-                  className="p-6 md:p-8 rounded-2xl bg-white/10 border border-white/20 relative overflow-hidden"
+                  className="relative p-6 md:p-8 rounded-2xl bg-white/[0.03] border border-white/10 overflow-hidden group hover:bg-white/[0.05] transition-colors"
                 >
-                  <AnimatedShinyText className="inline-flex items-center justify-center text-white dark:text-white font-bold text-center break-keep leading-snug">
-                    <span className="text-xl md:text-2xl">"{comparison.good.desc.replace(/"/g, '')}"</span>
-                  </AnimatedShinyText>
+                  {/* Decorative large quote mark */}
+                  <div className="absolute -top-8 -left-4 text-[10rem] font-serif font-black text-indigo-500/10 leading-none select-none group-hover:text-indigo-500/20 transition-colors duration-500">
+                    "
+                  </div>
+
+                  {/* Glowing vertical left accent */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-indigo-400 to-indigo-600 shadow-[0_0_15px_rgba(99,102,241,0.5)]" />
+
+                  <div className="relative z-10 pl-3 md:pl-5 flex flex-col justify-center">
+                    <p className="text-2xl md:text-[1.75rem] font-black text-white leading-[1.3] tracking-tight break-keep">
+                      {comparison.good.desc.replace(/"/g, '')}
+                    </p>
+                    <p className="text-xs md:text-sm font-bold text-indigo-400 mt-3 md:mt-4 uppercase tracking-[0.2em]">
+                      Our Promise
+                    </p>
+                  </div>
                 </motion.div>
 
                 {/* Steps List */}
@@ -219,11 +278,8 @@ export default function SolutionSection() {
           <div className="mx-auto w-16 h-1 bg-slate-800 rounded-full mb-12" />
 
           <h3 className="text-3xl md:text-5xl lg:text-[4rem] font-black leading-[1.3] tracking-tight whitespace-pre-line">
-            <span className="text-white">대표님은 그 시간에</span>
-            <br />
-            <span className="text-indigo-400">
-              제품 소싱과 배송에만
-            </span>
+            <span className="text-white">대표님은 그 시간에 </span>
+            <span className="text-indigo-400">매출만</span>
             <span className="text-white"> 신경 쓰세요.</span>
           </h3>
 

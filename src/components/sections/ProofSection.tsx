@@ -129,8 +129,7 @@ export default function ProofSection() {
                 </h3>
 
                 <p className="text-lg md:text-xl font-medium leading-[1.6] text-indigo-100/70 whitespace-pre-line mb-8 max-w-xl">
-                  그리고 수십억 원의 매출 데이터.
-                  이 매출을 만든 그 '설득 공식'과 '유입 공식'을 그대로 대표님 사업에 이식해드립니다.
+                  그리고 수십억 원의 매출 데이터.{"\n"}이 매출을 만든 '설득 공식'과 '유입 공식'을{"\n"}대표님 사업에 그대로 적용해드립니다.
                 </p>
 
                 <div className="group/btn relative inline-flex">
