@@ -44,7 +44,7 @@ export default function Header() {
     e.preventDefault();
     const targetElement = document.getElementById(hash);
     if (targetElement) {
-      const headerOffset = 64;
+      const headerOffset = 72;
       const elementPosition = targetElement.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
       window.scrollTo({ top: offsetPosition, behavior: "smooth" });
@@ -54,7 +54,7 @@ export default function Header() {
   return (
     <header
       className={cn(
-        "fixed top-0 w-full h-14 md:h-16 z-50 transition-all duration-300",
+        "fixed top-0 w-full h-16 md:h-[72px] z-50 transition-all duration-300",
         showDark
           ? "bg-white/90 backdrop-blur-md border-b border-white/20 shadow-sm"
           : "bg-transparent"
@@ -62,23 +62,32 @@ export default function Header() {
     >
       <div className="relative h-full max-w-7xl mx-auto px-4 md:px-6 flex items-center">
         {/* 좌측: 로고 */}
-        <Link href="/" className="flex-shrink-0 relative h-8 w-24" onClick={() => { if (pathname === "/") window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-          <img
-            src="/logo_white.png"
-            alt="장사꾼"
-            className={cn(
-              "absolute inset-0 h-full w-auto object-contain transition-opacity duration-300",
-              showDark ? "opacity-0" : "opacity-100"
-            )}
-          />
-          <img
-            src="/logo_black.png"
-            alt="장사꾼"
-            className={cn(
-              "absolute inset-0 h-full w-auto object-contain transition-opacity duration-300",
-              showDark ? "opacity-100" : "opacity-0"
-            )}
-          />
+        <Link href="/" className="flex-shrink-0 flex items-end -gap-px" onClick={() => { if (pathname === "/") window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+          <div className="relative h-9 w-9 md:h-10 md:w-10 shrink-0">
+            <img
+              src="/LandingPick-simple-white.png"
+              alt=""
+              className={cn(
+                "absolute inset-0 h-full w-full object-contain transition-opacity duration-300",
+                showDark ? "opacity-0" : "opacity-100"
+              )}
+            />
+            <img
+              src="/LandingPick-simple-black.png"
+              alt=""
+              className={cn(
+                "absolute inset-0 h-full w-full object-contain transition-opacity duration-300",
+                showDark ? "opacity-100" : "opacity-0"
+              )}
+            />
+          </div>
+          <span className="text-base md:text-lg font-bold tracking-tight -ml-0.5 leading-none mb-px">
+            <span className={cn(
+              "transition-colors duration-300",
+              showDark ? "text-gray-900" : "text-white"
+            )}>Landing </span>
+            <span className="text-indigo-600">Pick</span>
+          </span>
         </Link>
 
         {/* 중앙: 네비게이션 (뷰포트 정중앙) */}

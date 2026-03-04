@@ -46,11 +46,11 @@ export default function MarketingSection() {
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
 
           {/* Left Side: Sticky Content (40%) */}
-          <div className="lg:w-[40%] sticky top-24 lg:top-40 shrink-0 z-20">
+          <div className="lg:w-[40%] lg:sticky top-24 lg:top-40 shrink-0 z-20">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, margin: "-10%" }}
+              viewport={{ once: true, margin: "-10%" }}
               transition={{ duration: 0.8, ease: EASE_SMOOTH }}
             >
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-sm font-bold tracking-widest uppercase mb-6 shadow-sm">
@@ -89,7 +89,7 @@ export default function MarketingSection() {
                   key={i}
                   initial={{ opacity: 0, y: 50, scale: 0.95 }}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: false, margin: "-15%" }}
+                  viewport={{ once: true, margin: "-15%" }}
                   transition={{ duration: 0.8, delay: 0.1, ease: EASE_SMOOTH }}
                   className="relative group p-8 md:p-10 rounded-[2rem] bg-white/80 backdrop-blur-md border border-gray-200 hover:border-indigo-300 transition-colors duration-500 overflow-hidden shadow-xl shadow-gray-200/50"
                 >

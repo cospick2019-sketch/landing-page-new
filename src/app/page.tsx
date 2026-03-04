@@ -1,18 +1,20 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import HeroSection from "@/components/hero/HeroSection";
 import ProblemSection from "@/components/sections/ProblemSection";
 import SolutionSection from "@/components/sections/SolutionSection";
 import ServiceMarquee from "@/components/visual-breaks/ServiceMarquee";
-import MarketingSection from "@/components/sections/MarketingSection";
-import ProofSection from "@/components/sections/ProofSection";
-import GuaranteeSection from "@/components/sections/GuaranteeSection";
-import FaqSection from "@/components/sections/FaqSection";
-import FinalCtaSection from "@/components/sections/FinalCtaSection";
-import Footer from "@/components/Footer";
 import { ConsultationProvider } from "@/components/consultation/ConsultationContext";
 import ConsultationForm from "@/components/consultation/ConsultationForm";
+
+const MarketingSection = dynamic(() => import("@/components/sections/MarketingSection"), { ssr: false });
+const ProofSection = dynamic(() => import("@/components/sections/ProofSection"), { ssr: false });
+const GuaranteeSection = dynamic(() => import("@/components/sections/GuaranteeSection"), { ssr: false });
+const FaqSection = dynamic(() => import("@/components/sections/FaqSection"), { ssr: false });
+const FinalCtaSection = dynamic(() => import("@/components/sections/FinalCtaSection"), { ssr: false });
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
 
 export default function Home() {
   return (

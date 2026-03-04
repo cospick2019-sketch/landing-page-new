@@ -10,7 +10,7 @@ import { useConsultation } from "@/components/consultation/ConsultationContext";
 export default function FinalCtaSection() {
   const { open } = useConsultation();
   return (
-    <section id="cta" className="relative py-32 md:py-48 lg:py-56 bg-[#030513] overflow-hidden flex flex-col items-center justify-center min-h-[85vh]">
+    <section id="cta" className="relative py-20 md:py-48 lg:py-56 bg-[#030513] overflow-hidden flex flex-col items-center justify-center min-h-[60vh] md:min-h-[85vh]">
 
       {/* Background Particles - Sparse and slow, like stardust */}
       <Particles
@@ -50,7 +50,7 @@ export default function FinalCtaSection() {
               by="word"
               animation="blurInUp"
               startOnView
-              className="text-5xl md:text-7xl lg:text-[5rem] font-black leading-[1.3] md:leading-[1.2] tracking-tight text-white whitespace-pre-line drop-shadow-2xl"
+              className="text-3xl md:text-7xl lg:text-[5rem] font-black leading-[1.3] md:leading-[1.2] tracking-tight text-white whitespace-pre-line drop-shadow-2xl"
             >
               {line.trim()}
             </TextAnimate>
@@ -69,7 +69,7 @@ export default function FinalCtaSection() {
           <button
             type="button"
             onClick={open}
-            className="group relative inline-flex justify-center items-center py-5 px-10 md:px-14 border border-transparent text-xl md:text-2xl font-bold rounded-2xl text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-[#030513] transition-all duration-300 overflow-hidden shadow-[0_0_30px_rgba(99,102,241,0.3)] hover:shadow-[0_0_50px_rgba(99,102,241,0.5)] hover:-translate-y-1"
+            className="group relative inline-flex justify-center items-center py-4 px-8 md:py-5 md:px-14 border border-transparent text-lg md:text-2xl font-bold rounded-2xl text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-[#030513] transition-all duration-300 overflow-hidden shadow-[0_0_30px_rgba(99,102,241,0.3)] hover:shadow-[0_0_50px_rgba(99,102,241,0.5)] hover:-translate-y-1"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0" />
             <span className="relative z-10 flex items-center gap-3">

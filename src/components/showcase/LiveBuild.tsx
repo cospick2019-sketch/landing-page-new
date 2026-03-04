@@ -113,7 +113,7 @@ export default function LiveBuild() {
                 그들은 장사를 모릅니다
               </h3>
               <p className={cn("mt-2 text-base", PALETTE.text.secondary)}>
-                연매출 30억 장사꾼이 직접 만드는 팔리는 페이지
+                연매출 30억 전문가가 직접 만드는 팔리는 페이지
               </p>
             </BlurFade>
           )}

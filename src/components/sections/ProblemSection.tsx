@@ -63,7 +63,7 @@ export default function ProblemSection() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, ease: EASE_SMOOTH }}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-sm font-bold tracking-widest uppercase mb-6 shadow-sm"
           >
@@ -79,7 +79,7 @@ export default function ProblemSection() {
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.1, ease: EASE_SMOOTH }}
               className="text-3xl md:text-[3.2rem] font-bold leading-tight tracking-tight text-gray-900"
             >
@@ -88,7 +88,7 @@ export default function ProblemSection() {
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.25, ease: EASE_SMOOTH }}
               className="text-3xl md:text-[3.2rem] font-bold leading-tight tracking-tight mt-1 md:mt-3"
             >
@@ -96,7 +96,7 @@ export default function ProblemSection() {
                 className="relative inline-block text-indigo-600"
                 initial={{ backgroundSize: "0% 40%" }}
                 whileInView={{ backgroundSize: "100% 40%" }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
                 style={{
                   backgroundImage:
@@ -122,7 +122,7 @@ export default function ProblemSection() {
             <motion.div
               initial={{ opacity: 0, scale: 0.92 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3, ease: EASE_SMOOTH }}
               className="relative w-full max-w-[380px] md:max-w-[440px]"
             >
@@ -153,6 +153,8 @@ export default function ProblemSection() {
                     src="/images/bad-landing-page.png"
                     alt="매출이 나오지 않는 랜딩페이지 예시"
                     fill
+                    sizes="(max-width: 768px) 100vw, 440px"
+                    loading="lazy"
                     className="object-cover object-top"
                   />
                   <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
@@ -163,9 +165,9 @@ export default function ProblemSection() {
               <motion.div
                 initial={{ opacity: 0, y: 24, scale: 0.9 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.7, ease: EASE_SMOOTH }}
-                className="absolute -bottom-5 -left-5 md:-left-8 z-20"
+                className="absolute -bottom-3 left-0 md:-left-8 z-20"
               >
                 <motion.div
                   animate={{ y: [0, -6, 0] }}
@@ -201,9 +203,9 @@ export default function ProblemSection() {
               <motion.div
                 initial={{ opacity: 0, y: -24, scale: 0.9 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.9, ease: EASE_SMOOTH }}
-                className="absolute top-20 -right-5 md:-right-8 z-20"
+                className="absolute top-20 right-0 md:-right-8 z-20"
               >
                 <motion.div
                   animate={{ y: [0, 6, 0] }}
@@ -239,7 +241,7 @@ export default function ProblemSection() {
             <motion.h3
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.4, ease: EASE_SMOOTH }}
               className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 leading-snug break-keep"
             >
@@ -249,7 +251,7 @@ export default function ProblemSection() {
                 className="inline-block text-indigo-600"
                 initial={{ opacity: 0, x: -12 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.8, ease: EASE_SNAP }}
               >
                 매출은 0원.
@@ -263,7 +265,7 @@ export default function ProblemSection() {
                   key={i}
                   initial={{ opacity: 0, x: -16 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{
                     duration: 0.5,
                     delay: 0.5 + i * 0.15,
@@ -283,7 +285,7 @@ export default function ProblemSection() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 1, ease: EASE_SMOOTH }}
               className="relative rounded-2xl bg-white border border-gray-200/80 shadow-lg shadow-gray-900/5 p-7 md:p-9"
             >

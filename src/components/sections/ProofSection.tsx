@@ -14,7 +14,7 @@ import { useConsultation } from "@/components/consultation/ConsultationContext";
 export default function ProofSection() {
   const { open } = useConsultation();
   return (
-    <section id="proof" className="relative py-24 md:py-32 lg:py-48 bg-[#030513] overflow-hidden">
+    <section id="proof" className="relative py-16 md:py-32 lg:py-48 bg-[#030513] overflow-hidden">
       {/* Absolute Dark Ambient Glows */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[50vh] bg-indigo-600/10 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
 
@@ -39,7 +39,7 @@ export default function ProofSection() {
             by="word"
             animation="blurInUp"
             startOnView
-            className="mt-3 text-4xl md:text-6xl lg:text-[4rem] font-black leading-tight tracking-tight text-white mb-16 md:mb-24"
+            className="mt-3 text-3xl md:text-6xl lg:text-[4rem] font-black leading-tight tracking-tight text-white mb-10 md:mb-24"
           >
             {SECTION_PROOF.title}
           </TextAnimate>
@@ -60,11 +60,11 @@ export default function ProofSection() {
                 </div>
 
                 <div className="relative z-10 flex flex-col items-center justify-center">
-                  <div className="flex items-baseline justify-center text-7xl md:text-8xl lg:text-[7rem] font-black text-white leading-none tracking-tighter mb-6 group-hover:scale-110 transition-transform duration-500 ease-out whitespace-nowrap min-w-[200px]">
+                  <div className="flex items-baseline justify-center text-5xl md:text-8xl lg:text-[7rem] font-black text-white leading-none tracking-tighter mb-6 group-hover:scale-110 transition-transform duration-500 ease-out whitespace-nowrap min-w-0 md:min-w-[200px]">
                     <div className="inline-block text-right">
                       <NumberTicker value={stat.value} delay={0.1 + i * 0.1} className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover:drop-shadow-[0_0_40px_rgba(99,102,241,0.5)] transition-all duration-500" />
                     </div>
-                    <span className="text-4xl md:text-5xl lg:text-7xl ml-1 text-indigo-400 group-hover:text-indigo-300 transition-colors duration-500 shrink-0">
+                    <span className="text-3xl md:text-5xl lg:text-7xl ml-1 text-indigo-400 group-hover:text-indigo-300 transition-colors duration-500 shrink-0">
                       {stat.suffix}
                     </span>
                   </div>
@@ -85,7 +85,7 @@ export default function ProofSection() {
 
         {/* Closing CTA block - Live Rolling Tape Concept */}
         <BlurFade delay={0.6}>
-          <div className="relative mt-24 md:mt-32 p-8 md:p-16 rounded-[2.5rem] bg-indigo-950/20 border border-indigo-500/20 overflow-hidden group">
+          <div className="relative mt-16 md:mt-32 p-6 md:p-16 rounded-2xl md:rounded-[2.5rem] bg-indigo-950/20 border border-indigo-500/20 overflow-hidden group">
 
             {/* Background Ambient */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.15),transparent_70%)] pointer-events-none" />
@@ -117,7 +117,7 @@ export default function ProofSection() {
                   10년의 실전 데이터
                 </div>
 
-                <h3 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.1] text-white whitespace-pre-line mb-6 tracking-tight">
+                <h3 className="text-2xl md:text-5xl lg:text-6xl font-black leading-[1.2] text-white whitespace-pre-line mb-6 tracking-tight">
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
                     지난 10년간 직접 팔아본
                   </span>
@@ -150,20 +150,13 @@ export default function ProofSection() {
               {/* Right Decorative Element (Delivery Boxes Grid) */}
               <div className="hidden lg:grid grid-cols-4 gap-3 shrink-0 opacity-90 pr-4">
                 {[...Array(16)].map((_, i) => (
-                  <motion.div
+                  <div
                     key={i}
-                    initial={{ opacity: 0.3, scale: 0.9 }}
-                    whileInView={{ opacity: [0.3, 1, 0.3], scale: [0.9, 1.05, 0.9] }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      delay: (i % 4) * 0.2 + Math.floor(i / 4) * 0.1, // Stagger effect
-                      ease: "easeInOut"
-                    }}
-                    className="w-14 h-14 rounded-xl bg-indigo-950/60 border border-indigo-500/30 flex items-center justify-center relative overflow-hidden group-hover:bg-indigo-900/60 group-hover:border-indigo-400/60 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.3)] transition-all duration-500"
+                    className="w-14 h-14 rounded-xl bg-indigo-950/60 border border-indigo-500/30 flex items-center justify-center relative overflow-hidden group-hover:bg-indigo-900/60 group-hover:border-indigo-400/60 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.3)] transition-all duration-500 animate-pulse"
+                    style={{ animationDelay: `${(i % 4) * 200 + Math.floor(i / 4) * 100}ms`, animationDuration: "3s" }}
                   >
                     <Package className="w-6 h-6 text-indigo-400/70 group-hover:text-indigo-200 transition-colors duration-500" strokeWidth={1.5} />
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 

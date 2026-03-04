@@ -63,7 +63,7 @@ export default function HeroSection() {
         </BlurFade>
 
         {/* H1 - Character-level animation, line-break aware */}
-        <h1 className="mt-4 md:mt-6 text-5xl md:text-8xl lg:text-9xl font-extrabold leading-[1.2] md:leading-[1.15] text-white">
+        <h1 className="mt-4 md:mt-6 text-4xl md:text-8xl lg:text-9xl font-extrabold leading-[1.2] md:leading-[1.15] text-white">
           {HERO.h1.split("\n").map((line, i) => (
             <TextAnimate
               key={i}
@@ -88,7 +88,7 @@ export default function HeroSection() {
           startOnView={false}
           delay={0.8}
           duration={0.8}
-          className="mt-4 md:mt-6 text-2xl md:text-4xl font-normal leading-snug text-gray-300"
+          className="mt-4 md:mt-6 text-lg md:text-4xl font-normal leading-snug text-gray-300"
         >
           {HERO.subHeadline}
         </TextAnimate>
@@ -97,7 +97,7 @@ export default function HeroSection() {
         <BlurFade delay={1.2}>
           <div className="mt-8 md:mt-10 flex justify-center">
             <TypingAnimation
-              className="text-xl md:text-2xl font-medium leading-[1.7] text-indigo-400"
+              className="text-base md:text-2xl font-medium leading-[1.7] text-indigo-400"
               duration={ANIM.typing.duration}
               loop
               pauseDelay={4000}
@@ -119,7 +119,7 @@ export default function HeroSection() {
                 shimmerSize={ANIM.shimmer.size}
                 background={H.cta.hex}
                 borderRadius={ANIM.shimmer.borderRadius}
-                className="h-14 md:h-16 px-10 text-lg font-semibold rounded-full mx-auto text-white"
+                className="h-12 md:h-16 px-8 md:px-10 text-base md:text-lg font-semibold rounded-full mx-auto text-white"
                 onClick={open}
               >
                 {HERO.cta}

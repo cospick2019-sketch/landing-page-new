@@ -25,7 +25,7 @@ export default function SolutionSection() {
     <section
       ref={sectionRef}
       id="solution"
-      className="relative pt-32 pb-24 md:pt-40 md:pb-32 bg-[#030513] overflow-hidden"
+      className="relative pt-20 pb-16 md:pt-40 md:pb-32 bg-[#030513] overflow-hidden"
     >
       {/* Ambient glowing radial gradients for background depth */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
@@ -44,11 +44,11 @@ export default function SolutionSection() {
       <div className="relative max-w-6xl mx-auto px-4 md:px-6 z-10">
 
         {/* Title Area */}
-        <div className="text-center max-w-4xl mx-auto mb-20 md:mb-28">
+        <div className="text-center max-w-4xl mx-auto mb-12 md:mb-28">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, ease: EASE_SMOOTH }}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-bold tracking-widest uppercase mb-6 shadow-sm"
           >
@@ -58,7 +58,7 @@ export default function SolutionSection() {
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.7, ease: EASE_SMOOTH }}
             className="text-3xl md:text-5xl lg:text-[3.5rem] font-bold leading-tight tracking-tight text-white whitespace-pre-line"
           >
@@ -67,7 +67,7 @@ export default function SolutionSection() {
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE_SMOOTH }}
             className="text-3xl md:text-5xl lg:text-[3.5rem] font-bold leading-tight tracking-tight text-indigo-400 mt-2 whitespace-pre-line"
           >
@@ -83,7 +83,7 @@ export default function SolutionSection() {
             <motion.div
               initial={{ scale: 0, opacity: 0, rotate: -15 }}
               whileInView={{ scale: 1, opacity: 1, rotate: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.8, ease: EASE_SMOOTH }}
               className="relative w-16 h-16 rounded-full bg-slate-900 border-[4px] border-[#0a0a0a] text-white flex items-center justify-center text-xl font-black shadow-2xl shadow-indigo-500/20"
             >
@@ -97,7 +97,7 @@ export default function SolutionSection() {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.8, ease: EASE_SMOOTH }}
               className="relative flex flex-col p-8 md:p-12 rounded-[2rem] bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 shadow-xl"
             >
@@ -118,7 +118,7 @@ export default function SolutionSection() {
                   <motion.div
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.3 + i * 0.1, ease: EASE_SMOOTH }}
                     key={i}
                     className="flex items-center gap-5 p-5 rounded-2xl bg-slate-900 border border-slate-700 relative z-30 shadow-lg"
@@ -134,7 +134,7 @@ export default function SolutionSection() {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.6, ease: EASE_SMOOTH }}
                     className="h-10 rounded-b-3xl bg-[#0F172A] border-x border-b border-slate-700 w-[94%] z-20 shadow-[0_10px_10px_rgba(0,0,0,0.5)] flex items-end justify-center pb-2"
                   >
@@ -147,7 +147,7 @@ export default function SolutionSection() {
                   <motion.div
                     initial={{ opacity: 0, y: -15 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.7, ease: EASE_SMOOTH }}
                     className="h-8 rounded-b-3xl bg-[#0F172A]/70 border-x border-b border-slate-700/60 w-[86%] -mt-6 z-10 shadow-[0_5px_10px_rgba(0,0,0,0.4)] backdrop-blur-sm"
                   />
@@ -156,7 +156,7 @@ export default function SolutionSection() {
                   <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.8, ease: EASE_SMOOTH }}
                     className="h-6 rounded-b-3xl bg-gradient-to-b from-[#0F172A]/40 to-transparent border-x border-b border-slate-700/30 w-[78%] -mt-4 z-0 backdrop-blur-md"
                   />
@@ -166,7 +166,7 @@ export default function SolutionSection() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.9, ease: EASE_SMOOTH }}
                 className="mt-auto pt-6 relative z-20 w-full"
               >
@@ -187,7 +187,7 @@ export default function SolutionSection() {
               <motion.div
                 initial={{ scale: 0, opacity: 0 }}
                 whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.5, ease: EASE_SMOOTH }}
                 className="w-12 h-12 rounded-full bg-slate-900 border-[3px] border-[#0a0a0a] text-white flex items-center justify-center text-lg font-black shadow-xl"
               >
@@ -199,7 +199,7 @@ export default function SolutionSection() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2, ease: EASE_SMOOTH }}
               className="relative flex flex-col p-8 md:p-12 rounded-[2rem] bg-[#1a1c4b]/80 backdrop-blur-sm border-[2px] border-indigo-500 overflow-hidden shadow-[0_0_80px_rgba(99,102,241,0.15)]"
             >
@@ -220,7 +220,7 @@ export default function SolutionSection() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.4, ease: EASE_SMOOTH }}
                   className="relative p-6 md:p-8 rounded-2xl bg-white/[0.03] border border-white/10 overflow-hidden group hover:bg-white/[0.05] transition-colors"
                 >
@@ -248,7 +248,7 @@ export default function SolutionSection() {
                     <motion.div
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: false }}
+                      viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: 0.6 + i * 0.1, ease: EASE_SMOOTH }}
                       key={i}
                       className="flex items-center gap-5"
@@ -270,14 +270,14 @@ export default function SolutionSection() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.4, ease: EASE_SMOOTH }}
-          className="mt-24 md:mt-36 relative text-center"
+          className="mt-16 md:mt-36 relative text-center"
         >
           {/* Subtle upper line */}
           <div className="mx-auto w-16 h-1 bg-slate-800 rounded-full mb-12" />
 
-          <h3 className="text-3xl md:text-5xl lg:text-[4rem] font-black leading-[1.3] tracking-tight whitespace-pre-line">
+          <h3 className="text-2xl md:text-5xl lg:text-[4rem] font-black leading-[1.3] tracking-tight whitespace-pre-line">
             <span className="text-white">대표님은 그 시간에 </span>
             <span className="text-indigo-400">매출만</span>
             <span className="text-white"> 신경 쓰세요.</span>

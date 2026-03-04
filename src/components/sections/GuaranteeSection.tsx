@@ -26,7 +26,7 @@ const itemVariants = {
 
 export default function GuaranteeSection() {
   return (
-    <section id="guarantee" className="relative py-24 md:py-32 lg:py-48 bg-slate-50 overflow-hidden">
+    <section id="guarantee" className="relative py-16 md:py-32 lg:py-48 bg-slate-50 overflow-hidden">
       {/* Background ambient particles (dark & light mixed) */}
       <Particles className="absolute inset-0 z-0 opacity-40 mix-blend-multiply" quantity={40} color="#4f46e5" size={0.5} />
 
@@ -40,7 +40,7 @@ export default function GuaranteeSection() {
               LEFT: Guarantee Card (Light Theme)
               ======================= */}
           <BlurFade delay={0.1} className="h-full">
-            <div className="relative h-full flex flex-col justify-between p-8 md:p-12 lg:p-14 rounded-[2.5rem] bg-white/70 backdrop-blur-xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden group hover:shadow-[0_20px_40px_rgba(99,102,241,0.08)] hover:-translate-y-1 transition-all duration-500">
+            <div className="relative h-full flex flex-col justify-between p-6 md:p-12 lg:p-14 rounded-2xl md:rounded-[2.5rem] bg-white/70 backdrop-blur-xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden group hover:shadow-[0_20px_40px_rgba(99,102,241,0.08)] hover:-translate-y-1 transition-all duration-500">
 
               {/* Subtle hover glow in bottom right */}
               <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-colors duration-700 pointer-events-none" />
@@ -90,7 +90,7 @@ export default function GuaranteeSection() {
               RIGHT: Scarcity Card (Dark Theme)
               ======================= */}
           <BlurFade delay={0.3} className="h-full">
-            <div className="relative h-full flex flex-col justify-between p-8 md:p-12 lg:p-14 rounded-[2.5rem] bg-[#030513] border border-white/10 shadow-[0_8px_40px_rgb(0,0,0,0.2)] overflow-hidden group hover:shadow-[0_20px_50px_rgba(99,102,241,0.2)] hover:-translate-y-1 transition-all duration-500">
+            <div className="relative h-full flex flex-col justify-between p-6 md:p-12 lg:p-14 rounded-2xl md:rounded-[2.5rem] bg-[#030513] border border-white/10 shadow-[0_8px_40px_rgb(0,0,0,0.2)] overflow-hidden group hover:shadow-[0_20px_50px_rgba(99,102,241,0.2)] hover:-translate-y-1 transition-all duration-500">
 
               {/* Internal Particles for dark card */}
               <Particles className="absolute inset-0 z-0 opacity-50" quantity={20} color="#818cf8" size={0.6} staticity={20} />

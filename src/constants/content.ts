@@ -4,9 +4,9 @@
  */
 
 export const SITE_META = {
-  title: "장사꾼의 랜딩페이지 | 그들은 장사를 모릅니다",
+  title: "Landing Pick | 그들은 장사를 모릅니다",
   description:
-    "연매출 30억 장사꾼이 직접 만드는 팔리는 페이지. 효과 없으면 100% 환불.",
+    "연매출 30억 전문가가 직접 만드는 팔리는 페이지. 효과 없으면 100% 환불.",
 } as const;
 
 /* ═══════════════════════════════════════════════════════
@@ -16,7 +16,7 @@ export const SITE_META = {
 export const HERO = {
   eyebrow: "디자이너에게 맡기지 마세요",
   h1: "그들은\n 장사를 모릅니다",
-  subHeadline: "연매출 30억 장사꾼이 직접 만드는 '팔리는 페이지'",
+  subHeadline: "연매출 30억 전문가가 직접 만드는 '팔리는 페이지'",
   trustSignal: "효과 없으면 100% 환불해 드립니다",
   cta: "내 아이템 진단받고 신청하기",
   ctaSub: "월 12건 한정",
@@ -332,7 +332,7 @@ export const SHOWCASE_CALCULATOR = {
   avgOrderLabel: "평균 객단가",
   normalLabel: "일반 랜딩페이지",
   normalCvrLabel: "전환율 1.2%",
-  proLabel: "장사꾼의 랜딩페이지",
+  proLabel: "Landing Pick",
   proCvrLabel: "전환율 4.8%",
   monthlyLabel: "월 예상 매출",
   annualDiffLabel: "연간 매출 차이",

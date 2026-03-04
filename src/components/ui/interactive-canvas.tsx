@@ -56,6 +56,7 @@ export function InteractiveCanvas({
 
     let w = 0;
     let h = 0;
+    let visible = true;
 
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -77,12 +78,12 @@ export function InteractiveCanvas({
     };
 
     const draw = () => {
+      if (!visible) return;
       ctx.clearRect(0, 0, w, h);
       const mx = mouse.current.x;
       const my = mouse.current.y;
       const pts = dots.current;
 
-      // Update positions
       for (const p of pts) {
         p.x += p.vx;
         p.y += p.vy;
@@ -92,7 +93,6 @@ export function InteractiveCanvas({
         p.y = Math.max(0, Math.min(h, p.y));
       }
 
-      // Draw ambient connections + mouse-reactive connections + dots
       for (let i = 0; i < pts.length; i++) {
         const a = pts[i];
         const dm = Math.hypot(a.x - mx, a.y - my);
@@ -104,7 +104,6 @@ export function InteractiveCanvas({
           if (dist < linkDist) {
             const linkFade = 1 - dist / linkDist;
             if (nearMouse) {
-              // Bright connections near mouse
               const mouseFade = 1 - dm / mouseRadius;
               const alpha = linkFade * mouseFade * 0.4;
               ctx.beginPath();
@@ -114,7 +113,6 @@ export function InteractiveCanvas({
               ctx.lineWidth = 0.8;
               ctx.stroke();
             } else if (dist < linkDist * 0.6) {
-              // Subtle ambient connections always visible
               const alpha = linkFade * 0.06;
               ctx.beginPath();
               ctx.moveTo(a.x, a.y);
@@ -126,7 +124,6 @@ export function InteractiveCanvas({
           }
         }
 
-        // Dot — always visible, brighter near mouse
         const glow = nearMouse ? 1 + (1 - dm / mouseRadius) * 2.5 : 1;
         const dotAlpha = nearMouse
           ? 0.3 + (1 - dm / mouseRadius) * 0.5
@@ -138,7 +135,6 @@ export function InteractiveCanvas({
         ctx.fill();
       }
 
-      // Soft cursor glow
       if (mx > -999) {
         const grad = ctx.createRadialGradient(mx, my, 0, mx, my, mouseRadius * 0.6);
         grad.addColorStop(0, `rgba(${rgb}, 0.07)`);
@@ -150,6 +146,16 @@ export function InteractiveCanvas({
       raf.current = requestAnimationFrame(draw);
     };
 
+    // Pause animation when off-screen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible && !raf.current) draw();
+      },
+      { threshold: 0 }
+    );
+    observer.observe(cvs);
+
     resize();
     draw();
 
@@ -159,6 +165,7 @@ export function InteractiveCanvas({
 
     return () => {
       cancelAnimationFrame(raf.current);
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       cvs.removeEventListener("mousemove", onMove);
       cvs.removeEventListener("mouseleave", onLeave);
