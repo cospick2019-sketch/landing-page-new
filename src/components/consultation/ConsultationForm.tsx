@@ -292,6 +292,7 @@ export default function ConsultationForm() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<FormData>(INITIAL);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const backdropRef = useRef<HTMLDivElement>(null);
 
   // Lock body scroll
@@ -326,10 +327,22 @@ export default function ConsultationForm() {
     return true;
   };
 
-  const handleSubmit = () => {
-    // TODO: 실제 API 연동
-    console.log("Form submitted:", data);
-    setSubmitted(true);
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/consultation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("API error");
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Submission failed:", error);
+      alert("신청에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleClose = () => {
@@ -429,9 +442,10 @@ export default function ConsultationForm() {
                       <button
                         type="button"
                         onClick={handleSubmit}
-                        className="flex-1 h-12 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base transition-all duration-200 shadow-lg shadow-indigo-600/25"
+                        disabled={submitting}
+                        className={`flex-1 h-12 rounded-full text-white font-bold text-base transition-all duration-200 shadow-lg shadow-indigo-600/25 ${submitting ? "bg-indigo-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-500"}`}
                       >
-                        무료 신청하기
+                        {submitting ? "신청 중..." : "무료 신청하기"}
                       </button>
                     )}
                   </div>

@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
-import { NumberTicker } from "@/components/ui/number-ticker";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { useConsultation } from "@/components/consultation/ConsultationContext";
 
@@ -58,6 +57,16 @@ function PricingCard({
           </>
         )}
 
+        {/* Event Badge */}
+        {"originalPriceNum" in plan && (
+          <span className="inline-flex items-center gap-1.5 w-fit px-3 py-1.5 mb-3 rounded-md bg-indigo-600 text-white text-xs font-bold tracking-wide animate-shimmer bg-[length:200%_100%] bg-[linear-gradient(110deg,#4f46e5_0%,#818cf8_40%,#4f46e5_60%,#4f46e5_100%)] shadow-sm">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            기간 한정 특가
+          </span>
+        )}
+
         {/* Tag */}
         <p className="text-xs font-semibold tracking-widest text-gray-400 uppercase">
           {plan.tag}
@@ -70,17 +79,28 @@ function PricingCard({
         <p className="mt-1 text-sm text-gray-500">{plan.desc}</p>
 
         {/* Price */}
-        <div className="mt-6 flex items-baseline justify-center gap-1">
-          <span className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-none">
-            <NumberTicker
-              value={Number(plan.priceNum)}
-              delay={0.2 + index * 0.1}
-              className="text-gray-900"
-            />
-          </span>
-          <span className="text-lg md:text-xl font-medium text-gray-500">
-            {plan.priceSuffix}
-          </span>
+        <div className="mt-6 flex flex-col items-center gap-1">
+          {"originalPriceNum" in plan && (
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-lg md:text-xl text-gray-400 line-through font-medium decoration-indigo-300 decoration-2">
+                {plan.originalPriceNum}{plan.priceSuffix}
+              </span>
+            </div>
+          )}
+          <div className="flex items-baseline justify-center gap-1">
+            <span className={cn(
+              "text-5xl md:text-6xl font-extrabold leading-none tracking-tight",
+              "originalPriceNum" in plan ? "text-indigo-600" : "text-gray-900"
+            )}>
+              {plan.priceNum}
+            </span>
+            <span className={cn(
+              "text-lg md:text-xl font-medium",
+              "originalPriceNum" in plan ? "text-indigo-500" : "text-gray-500"
+            )}>
+              {plan.priceSuffix}
+            </span>
+          </div>
         </div>
 
         {/* Pages */}
@@ -158,11 +178,13 @@ export default function PricingSection() {
 
       <div className="relative max-w-5xl mx-auto px-4 md:px-6 text-center">
         {/* Eyebrow */}
-        <BlurFade delay={0.05}>
-          <p className="text-sm font-semibold tracking-widest text-indigo-500 uppercase mb-3">
-            {SECTION_PRICING.eyebrow}
-          </p>
-        </BlurFade>
+        {SECTION_PRICING.eyebrow && (
+          <BlurFade delay={0.05}>
+            <p className="text-sm font-semibold tracking-widest text-indigo-500 uppercase mb-3">
+              {SECTION_PRICING.eyebrow}
+            </p>
+          </BlurFade>
+        )}
 
         {/* Title */}
         <TextAnimate

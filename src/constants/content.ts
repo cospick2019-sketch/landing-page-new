@@ -199,7 +199,7 @@ export const SECTION_TESTIMONIALS = {
 } as const;
 
 export const SECTION_PRICING = {
-  eyebrow: "기획 포함 / 광고 미포함",
+  eyebrow: "",
   title: "가격 안내",
   sub: "합리적인 가격으로 팔리는 랜딩페이지를 만들어 드립니다.",
   plans: [
@@ -207,7 +207,8 @@ export const SECTION_PRICING = {
       tag: "LIGHT",
       name: "라이트",
       desc: "빠르게 시작하고 싶은 분들을 위한 플랜",
-      priceNum: "40",
+      priceNum: "20",
+      originalPriceNum: "40",
       priceSuffix: "만원~",
       pages: "2섹션",
     },
@@ -215,7 +216,8 @@ export const SECTION_PRICING = {
       tag: "BASIC",
       name: "베이직",
       desc: "전환율을 높이고 싶은 분들을 위한 플랜",
-      priceNum: "70",
+      priceNum: "30",
+      originalPriceNum: "50",
       priceSuffix: "만원~",
       popular: true,
       pages: "4섹션",
@@ -224,12 +226,14 @@ export const SECTION_PRICING = {
       tag: "PREMIUM",
       name: "프리미엄",
       desc: "최고의 퍼포먼스를 원하는 분들을 위한 플랜",
-      priceNum: "100",
+      priceNum: "50",
+      originalPriceNum: "80",
       priceSuffix: "만원~",
       pages: "7섹션 이상",
     },
   ],
   baseFeatures: [
+    "페이지 기획 및 카피라이팅 포함",
     "반응형 웹 디자인",
     "관리자 페이지 제공",
     "기본 유지보수 1개월",
