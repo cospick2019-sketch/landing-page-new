@@ -4,10 +4,18 @@ import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 
 const COLLECTION = "consultations";
 
+function isAuthenticated(request: NextRequest) {
+  return request.cookies.get("admin_session")?.value === "authenticated";
+}
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!isAuthenticated(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { id } = await params;
     const body = await request.json();
@@ -33,9 +41,13 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!isAuthenticated(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { id } = await params;
     await deleteDoc(doc(db, COLLECTION, id));

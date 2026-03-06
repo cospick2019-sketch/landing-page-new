@@ -112,8 +112,7 @@ test.describe("깨진 리소스 감지", () => {
     page.on("response", (response) => {
       if (response.status() === 404) {
         const url = response.url();
-        // 알려진 이슈 제외
-        if (url.endsWith("/grid.svg")) return;
+        // grid.svg 해결됨 (2026-03-06)
         errors404.push(url);
       }
     });

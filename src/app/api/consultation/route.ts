@@ -46,7 +46,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const session = request.cookies.get("admin_session")?.value;
+  if (session !== "authenticated") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const q = query(
       collection(db, COLLECTION),

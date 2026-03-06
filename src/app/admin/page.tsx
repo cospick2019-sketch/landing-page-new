@@ -88,7 +88,66 @@ function DetailPanel({ item }: { item: Consultation }) {
   );
 }
 
+function LoginGate({ onAuth }: { onAuth: () => void }) {
+  const [pw, setPw] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: pw }),
+      });
+      if (res.ok) {
+        onAuth();
+      } else {
+        setError("비밀번호가 올바르지 않습니다.");
+      }
+    } catch {
+      setError("서버 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-sm bg-white rounded-2xl border border-gray-200 p-8 space-y-5"
+      >
+        <div className="text-center">
+          <h1 className="text-xl font-bold text-gray-900">관리자 인증</h1>
+          <p className="text-sm text-gray-500 mt-1">비밀번호를 입력하세요</p>
+        </div>
+        <input
+          type="password"
+          value={pw}
+          onChange={(e) => setPw(e.target.value)}
+          placeholder="비밀번호"
+          className="w-full h-11 px-4 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          autoFocus
+        />
+        {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+        <button
+          type="submit"
+          disabled={loading || !pw}
+          className="w-full h-11 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-500 transition-colors disabled:opacity-50 text-sm"
+        >
+          {loading ? "확인 중..." : "로그인"}
+        </button>
+      </form>
+    </div>
+  );
+}
+
 export default function AdminPage() {
+  const [authed, setAuthed] = useState(false);
   const [data, setData] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -97,6 +156,10 @@ export default function AdminPage() {
     setLoading(true);
     try {
       const res = await fetch("/api/consultation");
+      if (res.status === 401) {
+        setAuthed(false);
+        return;
+      }
       if (!res.ok) throw new Error("Fetch failed");
       const json = await res.json();
       setData(json);
@@ -107,9 +170,22 @@ export default function AdminPage() {
     }
   }, []);
 
+  // Check existing session on mount
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetch("/api/consultation")
+      .then((res) => {
+        if (res.ok) {
+          setAuthed(true);
+          return res.json();
+        }
+        return null;
+      })
+      .then((json) => {
+        if (json) setData(json);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   const updateStatus = async (id: string, status: string) => {
     try {
@@ -148,6 +224,17 @@ export default function AdminPage() {
     contacted: data.filter((d) => d.status === "contacted").length,
     completed: data.filter((d) => d.status === "completed").length,
   };
+
+  if (!authed) {
+    return (
+      <LoginGate
+        onAuth={() => {
+          setAuthed(true);
+          fetchData();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
