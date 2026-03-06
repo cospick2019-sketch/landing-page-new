@@ -27,7 +27,7 @@ function Tooltip({ text }: { text: string }) {
   }, [open]);
 
   return (
-    <span className="relative inline-flex ml-0.5 -top-5">
+    <span className="relative inline-flex ml-1.5 -top-5">
       <button
         ref={btnRef}
         type="button"
@@ -42,7 +42,7 @@ function Tooltip({ text }: { text: string }) {
           <>
             <div className="fixed inset-0 z-[60]" onClick={toggle} />
             <div
-              className="fixed z-[61] w-56 p-3 rounded-xl bg-gray-900 border border-white/10 shadow-2xl text-sm text-gray-300 font-normal leading-relaxed text-center"
+              className="fixed z-[61] w-56 p-3 rounded-xl bg-gray-950 border border-white/15 shadow-2xl text-sm text-gray-300 font-normal leading-relaxed text-center"
               style={{ top: pos.top, left: pos.left, transform: "translateX(-50%)" }}
             >
               {text}
