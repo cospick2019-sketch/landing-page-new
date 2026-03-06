@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://landing-pick.vercel.app"),
   verification: {
     google: "rfS4LKuwQyDnRAkmin3MSgHBkSO_gyzPpyBMwklPQlU",
+    other: {
+      "naver-site-verification": "8ba2913fbceec5fbdd2cde42d0553fed831b701c",
+    },
   },
   title: {
     default: SITE_META.title,
