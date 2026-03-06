@@ -40,10 +40,10 @@ function Tooltip({ text }: { text: string }) {
       {open &&
         createPortal(
           <>
-            <div className="fixed inset-0 z-[60]" onClick={toggle} />
+            <div className="fixed inset-0" style={{ zIndex: 9998 }} onClick={toggle} />
             <div
-              className="fixed z-[61] w-56 p-3 rounded-xl bg-gray-950 border border-white/15 shadow-2xl text-sm text-gray-300 font-normal leading-relaxed text-center"
-              style={{ top: pos.top, left: pos.left, transform: "translateX(-50%)" }}
+              className="fixed w-56 p-3 rounded-xl border border-white/10 text-sm text-gray-200 font-normal leading-relaxed text-center"
+              style={{ top: pos.top, left: pos.left, transform: "translateX(-50%)", backgroundColor: "#1e1e2e", boxShadow: "0 8px 32px rgba(0,0,0,0.6)", zIndex: 9999 }}
             >
               {text}
             </div>
