@@ -42,8 +42,9 @@ function Tooltip({ text }: { text: string }) {
           <>
             <div className="fixed inset-0" style={{ zIndex: 9998 }} onClick={toggle} />
             <div
-              className="fixed w-56 p-3 rounded-xl border border-white/10 text-sm text-gray-200 font-normal leading-relaxed text-center"
+              className="fixed w-56 p-3 rounded-xl border border-white/10 text-sm text-gray-200 font-normal leading-relaxed text-center cursor-pointer"
               style={{ top: pos.top, left: pos.left, transform: "translateX(-50%)", backgroundColor: "#1e1e2e", boxShadow: "0 8px 32px rgba(0,0,0,0.6)", zIndex: 9999 }}
+              onClick={toggle}
             >
               {text}
             </div>
