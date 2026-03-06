@@ -113,7 +113,7 @@ export default function GuaranteeSection() {
                   </motion.div>
 
                   <motion.h2 variants={itemVariants} className="text-3xl md:text-5xl lg:text-[3.25rem] font-black text-white leading-[1.2] tracking-tight mb-8 whitespace-pre-line text-balance">
-                    매월 딱 <span className="bg-clip-text text-transparent bg-gradient-to-br from-indigo-400 to-purple-400">12팀</span>만<br />
+                    매월 딱 <span className="bg-clip-text text-transparent bg-gradient-to-br from-indigo-400 to-purple-400">10팀</span>만<br />
                     계약합니다.
                   </motion.h2>
 

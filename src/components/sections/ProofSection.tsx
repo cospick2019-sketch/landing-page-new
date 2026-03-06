@@ -93,7 +93,7 @@ export default function ProofSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {SECTION_PROOF.stats.map((stat, i) => (
             <BlurFade key={stat.label} delay={0.25 + i * 0.15}>
-              <div className="group relative text-center p-8 md:p-12 lg:p-16 rounded-[2.5rem] bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:border-indigo-500/40 hover:bg-white/[0.04] transition-all duration-500 shadow-2xl">
+              <div className="group relative text-center p-8 md:p-10 lg:p-10 rounded-[2.5rem] bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:border-indigo-500/40 hover:bg-white/[0.04] transition-all duration-500 shadow-2xl overflow-hidden">
 
                 {/* Glow on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/0 via-transparent to-purple-500/0 group-hover:from-indigo-500/10 transition-colors duration-500 pointer-events-none" />
@@ -104,11 +104,11 @@ export default function ProofSection() {
                 </div>
 
                 <div className="relative z-10 flex flex-col items-center justify-center">
-                  <div className="flex items-baseline justify-center text-5xl md:text-8xl lg:text-[7rem] font-black text-white leading-none tracking-tighter mb-6 group-hover:scale-110 transition-transform duration-500 ease-out whitespace-nowrap min-w-0 md:min-w-[200px]">
+                  <div className="flex items-baseline justify-center text-5xl md:text-7xl lg:text-[5.5rem] font-black text-white leading-none tracking-tighter mb-6 group-hover:scale-110 transition-transform duration-500 ease-out whitespace-nowrap min-w-0 md:min-w-[200px]">
                     <div className="inline-block text-right">
                       <NumberTicker value={stat.value} delay={0.1 + i * 0.1} className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover:drop-shadow-[0_0_40px_rgba(99,102,241,0.5)] transition-all duration-500" />
                     </div>
-                    <span className="text-3xl md:text-5xl lg:text-7xl ml-1 text-indigo-400 group-hover:text-indigo-300 transition-colors duration-500 shrink-0">
+                    <span className="text-3xl md:text-4xl lg:text-5xl ml-1 text-indigo-400 group-hover:text-indigo-300 transition-colors duration-500 shrink-0">
                       {stat.suffix}
                     </span>
                   </div>

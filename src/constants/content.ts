@@ -19,7 +19,7 @@ export const HERO = {
   subHeadline: "연매출 30억 전문가가 직접 만드는 '팔리는 페이지'",
   trustSignal: "효과 없으면 100% 환불해 드립니다",
   cta: "내 아이템 진단받고 신청하기",
-  ctaSub: "월 12건 한정",
+  ctaSub: "월 10건 한정",
 } as const;
 
 export const HERO_CREDENTIALS = {
@@ -137,10 +137,10 @@ export const SECTION_GUARANTEE = {
 
 export const SECTION_SCARCITY = {
   intro: "죄송합니다",
-  title: "월 12팀만 받습니다",
+  title: "월 10팀만 받습니다",
   body: [
     "공장식으로 찍어내지 않습니다. 한 땀 한 땀 제 사업처럼 기획하고 광고까지 해야 직성이 풀립니다.",
-    "환불 공약을 걸었기 때문에, 제가 봐도 확신이 없는 아이템은 정중히 거절합니다.",
+    "환불 공약을 걸었기 때문에,\n제가 봐도 확신이 없는 아이템은 정중히 거절합니다.",
   ],
   closing: "즉, 제가 계약을 수락했다면?\n대표님의 아이템은 성공 가능성이 매우 높다는 뜻입니다.",
 } as const;
@@ -273,10 +273,10 @@ export const SECTION_FAQ = {
 
 export const SECTION_FINAL_CTA = {
   title: "지금 시작하면 \n다음달 매출이 달라집니다",
-  sub: "월 12건 한정 · 효과 없으면 100% 환불",
+  sub: "월 10건 한정 · 효과 없으면 100% 환불",
   cta: "내 아이템 진단받고 신청하기",
   ctaSub: "무료 상담 · 부담 없이 시작하세요",
-  trustBadges: ["100% 환불 보장", "월 12건 한정", "무료 상담"],
+  trustBadges: ["100% 환불 보장", "월 10건 한정", "무료 상담"],
 } as const;
 
 export const SECTION_PROCESS = {

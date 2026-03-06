@@ -8,11 +8,11 @@ import ConsultationForm from "@/components/consultation/ConsultationForm";
 export const metadata = {
   title: "포트폴리오",
   description:
-    "연매출 30억 전문가가 직접 만든 팔리는 랜딩페이지 포트폴리오를 확인하세요.",
+    "남의 포트폴리오가 아닌, 직접 팔아본 페이지만 보여드립니다. 대표님이 우리의 포트폴리오가 되어주세요.",
   openGraph: {
     title: "포트폴리오 | Landing Pick",
     description:
-      "연매출 30억 전문가가 직접 만든 팔리는 랜딩페이지 포트폴리오를 확인하세요.",
+      "남의 포트폴리오가 아닌, 직접 팔아본 페이지만 보여드립니다. 대표님이 우리의 포트폴리오가 되어주세요.",
   },
 };
 
