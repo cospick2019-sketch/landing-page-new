@@ -4,7 +4,7 @@
  */
 
 export const SITE_META = {
-  title: "Landing Pick | 그들은 장사를 모릅니다",
+  title: "랜딩픽(Landing Pick) | 매출이 오르는 랜딩페이지 제작",
   description:
     "연매출 30억 전문가가 직접 만드는 팔리는 페이지. 효과 없으면 100% 환불.",
 } as const;
