@@ -116,8 +116,8 @@ export const SECTION_PROOF = {
   intro: "말로만 전문가?",
   title: "숫자로 증명합니다.",
   stats: [
-    { value: 340, suffix: "%", label: "평균 전환율 상승", sub: "랜딩페이지 도입 후" },
-    { value: 10, suffix: "억+", label: "누적 광고 집행", sub: "검증된 마케팅 노하우" },
+    { value: 340, suffix: "%+", label: "평균 광고 ROAS", sub: "자사 광고 운영 기준", tooltip: "ROAS(Return On Ad Spend)란 광고비 대비 매출 수익률입니다. 340%는 광고비 100만원 당 340만원의 매출을 의미합니다." },
+    { value: 10, suffix: "억+", label: "누적 광고비 집행", sub: "검증된 마케팅 노하우" },
     { value: 120, suffix: "억+", label: "누적 매출", sub: "자사 총 매출 기준" },
   ],
   closingTitle: "지난 10년간 직접 팔아본\n수십만 개의 택배 상자",

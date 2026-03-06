@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "motion/react";
-import { Package } from "lucide-react";
+import { Package, HelpCircle, X } from "lucide-react";
 
 import { SECTION_PROOF } from "@/constants/content";
 import { TextAnimate } from "@/components/ui/text-animate";
@@ -10,6 +11,37 @@ import { NumberTicker } from "@/components/ui/number-ticker";
 import { Particles } from "@/components/ui/particles";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { useConsultation } from "@/components/consultation/ConsultationContext";
+
+function Tooltip({ text }: { text: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span className="relative inline-flex ml-1.5 align-middle">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="w-5 h-5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition-colors cursor-pointer"
+        aria-label="도움말"
+      >
+        <HelpCircle className="w-3 h-3 text-gray-400" />
+      </button>
+      {open && (
+        <>
+          <span className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <span className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[min(20rem,calc(100vw-2rem))] p-4 rounded-xl bg-gray-900 border border-white/10 shadow-2xl text-sm text-gray-300 font-normal leading-relaxed">
+            {text}
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-white transition-colors"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </span>
+        </>
+      )}
+    </span>
+  );
+}
 
 export default function ProofSection() {
   const { open } = useConsultation();
@@ -71,9 +103,12 @@ export default function ProofSection() {
 
                   <div className="h-px w-12 bg-indigo-500/50 rounded-full mb-6 group-hover:w-24 group-hover:bg-indigo-400 transition-all duration-500" />
 
-                  <p className="text-xl md:text-2xl font-bold text-white mb-2">
+                  <div className="text-xl md:text-2xl font-bold text-white mb-2 flex items-center justify-center">
                     {stat.label}
-                  </p>
+                    {"tooltip" in stat && stat.tooltip && (
+                      <Tooltip text={stat.tooltip as string} />
+                    )}
+                  </div>
                   <p className="text-base text-gray-500 group-hover:text-gray-400 transition-colors duration-300">
                     {stat.sub}
                   </p>
