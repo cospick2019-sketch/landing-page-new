@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { motion } from "motion/react";
-import { Package, HelpCircle, X } from "lucide-react";
+import { createPortal } from "react-dom";
+import { Package, HelpCircle } from "lucide-react";
 
 import { SECTION_PROOF } from "@/constants/content";
 import { TextAnimate } from "@/components/ui/text-animate";
@@ -14,31 +15,41 @@ import { useConsultation } from "@/components/consultation/ConsultationContext";
 
 function Tooltip({ text }: { text: string }) {
   const [open, setOpen] = useState(false);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+
+  const toggle = useCallback(() => {
+    if (!open && btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      setPos({ top: rect.bottom + 6, left: rect.left + rect.width / 2 });
+    }
+    setOpen(!open);
+  }, [open]);
+
   return (
-    <span className="relative inline-flex ml-1.5 align-middle">
+    <span className="relative inline-flex ml-0.5 -top-5">
       <button
+        ref={btnRef}
         type="button"
-        onClick={() => setOpen(!open)}
-        className="w-5 h-5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition-colors cursor-pointer"
+        onClick={toggle}
+        className="w-4 h-4 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition-colors cursor-pointer"
         aria-label="도움말"
       >
-        <HelpCircle className="w-3 h-3 text-gray-400" />
+        <HelpCircle className="w-2.5 h-2.5 text-gray-400" />
       </button>
-      {open && (
-        <>
-          <span className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <span className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[min(20rem,calc(100vw-2rem))] p-4 rounded-xl bg-gray-900 border border-white/10 shadow-2xl text-sm text-gray-300 font-normal leading-relaxed">
-            {text}
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-white transition-colors"
+      {open &&
+        createPortal(
+          <>
+            <div className="fixed inset-0 z-[60]" onClick={toggle} />
+            <div
+              className="fixed z-[61] w-56 p-3 rounded-xl bg-gray-900 border border-white/10 shadow-2xl text-sm text-gray-300 font-normal leading-relaxed text-center"
+              style={{ top: pos.top, left: pos.left, transform: "translateX(-50%)" }}
             >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          </span>
-        </>
-      )}
+              {text}
+            </div>
+          </>,
+          document.body
+        )}
     </span>
   );
 }
@@ -103,7 +114,7 @@ export default function ProofSection() {
 
                   <div className="h-px w-12 bg-indigo-500/50 rounded-full mb-6 group-hover:w-24 group-hover:bg-indigo-400 transition-all duration-500" />
 
-                  <div className="text-xl md:text-2xl font-bold text-white mb-2 flex items-center justify-center">
+                  <div className="text-xl md:text-2xl font-bold text-white mb-2 flex items-start justify-center">
                     {stat.label}
                     {"tooltip" in stat && stat.tooltip && (
                       <Tooltip text={stat.tooltip as string} />
