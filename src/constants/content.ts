@@ -118,7 +118,7 @@ export const SECTION_PROOF = {
   stats: [
     { value: 340, suffix: "%", label: "평균 전환율 상승", sub: "랜딩페이지 도입 후" },
     { value: 200, suffix: "K+", label: "누적 광고 집행", sub: "검증된 마케팅 노하우" },
-    { value: 30, suffix: "억+", label: "누적 매출", sub: "고객사 총 매출 기준" },
+    { value: 120, suffix: "억+", label: "누적 매출", sub: "고객사 총 매출 기준" },
   ],
   closingTitle: "지난 10년간 직접 팔아본\n수십만 개의 택배 상자",
   closingBody: "그리고 수십억 원의 매출 데이터.\n이 매출을 만든 '설득 공식'과 '유입 공식'을\n대표님 사업에 그대로 적용해드립니다.",
