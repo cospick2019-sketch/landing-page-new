@@ -214,30 +214,24 @@ export default function SolutionSection() {
                 </h3>
               </div>
 
-              <div className="relative z-10 flex flex-col gap-8 flex-1 justify-start pt-2">
+              <div className="relative z-10 flex flex-col gap-6 flex-1 justify-start pt-2 pb-6">
 
-                {/* Highlight Quote Box - Bold Typography Approach */}
+                {/* Full-width Unified Highlight Block */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.4, ease: EASE_SMOOTH }}
-                  className="relative p-6 md:p-8 rounded-2xl bg-white/[0.03] border border-white/10 overflow-hidden group hover:bg-white/[0.05] transition-colors"
+                  className="relative z-20 mb-8 mt-2 w-full"
                 >
-                  {/* Decorative large quote mark */}
-                  <div className="absolute -top-8 -left-4 text-[10rem] font-serif font-black text-indigo-500/10 leading-none select-none group-hover:text-indigo-500/20 transition-colors duration-500">
-                    "
-                  </div>
+                  <div className="relative w-full flex items-center justify-center bg-indigo-600 px-6 py-5 md:px-8 md:py-6 rounded-2xl shadow-[0_15px_30px_rgba(79,70,229,0.5)] overflow-hidden">
+                    {/* Subtle premium gradient for depth */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
 
-                  {/* Glowing vertical left accent */}
-                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-indigo-400 to-indigo-600 shadow-[0_0_15px_rgba(99,102,241,0.5)]" />
-
-                  <div className="relative z-10 pl-3 md:pl-5 flex flex-col justify-center">
-                    <p className="text-2xl md:text-[1.75rem] font-black text-white leading-[1.3] tracking-tight break-keep">
-                      {comparison.good.desc.replace(/"/g, '')}
-                    </p>
-                    <p className="text-xs md:text-sm font-bold text-indigo-400 mt-3 md:mt-4 uppercase tracking-[0.2em]">
-                      Our Promise
+                    <p className="relative z-10 flex items-center justify-center text-2xl sm:text-3xl md:text-3xl lg:text-[2.25rem] font-black text-white whitespace-nowrap tracking-tight drop-shadow-md">
+                      <span className="text-indigo-200 font-serif text-3xl md:text-4xl mr-3 md:mr-4 transform -translate-y-1 opacity-90">&ldquo;</span>
+                      <span className="mt-1">{comparison.good.desc.replace(/"/g, '')}</span>
+                      <span className="text-indigo-200 font-serif text-3xl md:text-4xl ml-3 md:ml-4 transform -translate-y-1 opacity-90">&rdquo;</span>
                     </p>
                   </div>
                 </motion.div>
@@ -249,14 +243,14 @@ export default function SolutionSection() {
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.6 + i * 0.1, ease: EASE_SMOOTH }}
+                      transition={{ duration: 0.5, delay: 0.5 + i * 0.1, ease: EASE_SMOOTH }}
                       key={i}
-                      className="flex items-center gap-5"
+                      className="flex items-center gap-5 p-4 rounded-2xl bg-[#0b0e26]/60 border border-indigo-500/30 shadow-md backdrop-blur-sm"
                     >
-                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 text-white font-black text-sm shrink-0 shadow-sm">
+                      <div className="flex items-center justify-center w-9 h-9 rounded-full bg-indigo-500 text-white font-black text-sm shrink-0 shadow-lg shadow-indigo-500/50">
                         {i + 1}
                       </div>
-                      <p className="text-lg font-bold text-slate-100 break-keep">{step}</p>
+                      <p className="text-[1.1rem] md:text-lg font-bold text-white break-keep">{step}</p>
                     </motion.div>
                   ))}
                 </div>

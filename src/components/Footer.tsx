@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useConsultation } from "@/components/consultation/ConsultationContext";
 
@@ -20,8 +21,8 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-wrap gap-4 md:gap-6">
-            <a href="#" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">이용약관</a>
-            <a href="#" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">개인정보처리방침</a>
+            <Link href="/terms" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">이용약관</Link>
+            <Link href="/privacy" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">개인정보처리방침</Link>
             <button type="button" onClick={open} className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors cursor-pointer">문의하기</button>
           </div>
         </div>

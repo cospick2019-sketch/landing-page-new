@@ -69,7 +69,7 @@ export default function MarketingSection() {
                 </span>
               </h2>
 
-              <p className="text-gray-600 text-lg md:text-xl leading-relaxed font-medium">
+              <p className="text-gray-600 text-lg md:text-xl leading-relaxed font-medium whitespace-pre-line">
                 {SECTION_MARKETING.lead}
               </p>
             </motion.div>

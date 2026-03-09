@@ -17,6 +17,9 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { open } = useConsultation();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const showDark = scrolled || !isHome;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 0);
@@ -25,9 +28,31 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const pathname = usePathname();
-  const isHome = pathname === "/";
-  const showDark = scrolled || !isHome;
+  // 다른 페이지에서 /#faq 등으로 이동해 왔을 때 해시 스크롤 처리
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+
+    let cancelled = false;
+    const scrollToHash = () => {
+      const el = document.getElementById(hash);
+      if (el) {
+        const offsetPosition = el.getBoundingClientRect().top + window.pageYOffset - 72;
+        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        return true;
+      }
+      return false;
+    };
+
+    // 동적 로드 섹션을 위해 엘리먼트가 나타날 때까지 폴링
+    let attempts = 0;
+    const poll = setInterval(() => {
+      if (cancelled || scrollToHash() || ++attempts > 20) clearInterval(poll);
+    }, 200);
+
+    return () => { cancelled = true; clearInterval(poll); };
+  }, [pathname]);
 
   const isHashLink = (href: string) => href.includes("#");
 
