@@ -33,6 +33,20 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     type: "website",
     url: "https://landing-pick.vercel.app",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Landing Pick — 매출이 오르는 랜딩페이지 제작",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_META.title,
+    description: SITE_META.description,
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,

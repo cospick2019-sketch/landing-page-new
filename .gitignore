@@ -26,6 +26,12 @@
 # misc
 .DS_Store
 *.pem
+NUL
+
+# temp screenshots (playwright / debug)
+/*.png
+/*.js
+!next-env.d.ts
 
 # debug
 npm-debug.log*
