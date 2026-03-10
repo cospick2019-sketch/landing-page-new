@@ -10,7 +10,7 @@ import { useConsultation } from "@/components/consultation/ConsultationContext";
 export default function FinalCtaSection() {
   const { open } = useConsultation();
   return (
-    <section id="cta" className="relative py-20 md:py-48 lg:py-56 bg-[#030513] overflow-hidden flex flex-col items-center justify-center min-h-[60vh] md:min-h-[85vh]">
+    <section id="cta" className="relative py-16 md:py-48 lg:py-56 bg-[#030513] overflow-hidden flex flex-col items-center justify-center min-h-[60vh] md:min-h-[85vh]">
 
       {/* Background Particles - Sparse and slow, like stardust */}
       <Particles
@@ -31,7 +31,7 @@ export default function FinalCtaSection() {
       {/* Subtle Grid overlay for texture */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] mix-blend-overlay pointer-events-none z-0" />
 
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 md:px-6 text-center flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-5 md:px-6 text-center flex flex-col items-center">
 
         {/* Eyebrow Label */}
         <BlurFade delay={0.1}>

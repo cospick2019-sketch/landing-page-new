@@ -8,7 +8,7 @@ export default function Footer() {
   const { open } = useConsultation();
   return (
     <footer className="relative py-12 md:py-16 bg-[#050711] border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
+      <div className="max-w-7xl mx-auto px-5 md:px-6">
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-10">
           <div>

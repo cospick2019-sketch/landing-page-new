@@ -85,7 +85,7 @@ export default function Header() {
           : "bg-transparent"
       )}
     >
-      <div className="relative h-full max-w-7xl mx-auto px-4 md:px-6 flex items-center">
+      <div className="relative h-full max-w-7xl mx-auto px-5 md:px-6 flex items-center">
         {/* 좌측: 로고 */}
         <Link href="/" className="flex-shrink-0 flex items-end -gap-px" onClick={() => { if (pathname === "/") window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
           <div className="relative h-9 w-9 md:h-10 md:w-10 shrink-0">
@@ -190,7 +190,7 @@ export default function Header() {
       {/* 모바일 메뉴 */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
-          <nav className="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-3">
+          <nav className="max-w-7xl mx-auto px-5 py-4 flex flex-col gap-3">
             {NAV_ITEMS.map((item) =>
               isHashLink(item.href) ? (
                 <a

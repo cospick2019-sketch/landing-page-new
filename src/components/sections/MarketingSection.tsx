@@ -42,11 +42,11 @@ export default function MarketingSection() {
         className="absolute bottom-[5%] right-[-5%] w-[35vw] h-[35vw] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none mix-blend-multiply"
       />
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-24 md:py-32 lg:py-48 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 md:px-6 py-20 md:py-32 lg:py-48 relative z-10">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
 
           {/* Left Side: Sticky Content (40%) */}
-          <div className="lg:w-[40%] lg:sticky top-24 lg:top-40 shrink-0 z-20">
+          <div className="lg:w-[40%] lg:sticky top-24 lg:top-40 shrink-0 z-20 text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -63,20 +63,20 @@ export default function MarketingSection() {
 
               <h2 className="text-4xl md:text-5xl lg:text-[4rem] font-black leading-[1.15] tracking-tight whitespace-pre-line mb-8 drop-shadow-sm text-gray-900">
                 <span className="bg-clip-text text-transparent bg-gradient-to-br from-gray-900 to-gray-600">
-                  결국 <span className="text-indigo-600">'매출'</span>이
+                  결국 <span className="text-indigo-600">&lsquo;매출&rsquo;</span>이
                   <br />
                   목적 아닌가요?
                 </span>
               </h2>
 
-              <p className="text-gray-600 text-lg md:text-xl leading-relaxed font-medium whitespace-pre-line">
+              <p className="text-gray-600 text-lg md:text-xl leading-relaxed font-medium whitespace-pre-line max-w-md mx-auto lg:mx-0">
                 {SECTION_MARKETING.lead}
               </p>
             </motion.div>
           </div>
 
           {/* Right Side: Scrolling Cards (60%) */}
-          <div className="lg:w-[60%] flex flex-col gap-8 md:gap-12 mt-8 lg:mt-0 relative z-10 lg:pb-[20vh]">
+          <div className="lg:w-[60%] flex flex-col gap-6 md:gap-12 mt-6 lg:mt-0 relative z-10 lg:pb-[20vh]">
 
             {/* Vertical connector line behind cards */}
             <div className="absolute left-10 md:left-14 top-10 bottom-10 w-px bg-gradient-to-b from-indigo-200/0 via-indigo-200 to-indigo-200/0 hidden lg:block" />
@@ -91,7 +91,7 @@ export default function MarketingSection() {
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   viewport={{ once: true, margin: "-15%" }}
                   transition={{ duration: 0.8, delay: 0.1, ease: EASE_SMOOTH }}
-                  className="relative group p-8 md:p-10 rounded-[2rem] bg-white/80 backdrop-blur-md border border-gray-200 hover:border-indigo-300 transition-colors duration-500 overflow-hidden shadow-xl shadow-gray-200/50"
+                  className="relative group p-6 md:p-10 rounded-[2rem] bg-white/80 backdrop-blur-md border border-gray-200 hover:border-indigo-300 transition-colors duration-500 overflow-hidden shadow-xl shadow-gray-200/50"
                 >
                   {/* Hover Soft Background inside card */}
                   <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/0 via-transparent to-blue-50/0 group-hover:from-indigo-50/50 transition-colors duration-500" />

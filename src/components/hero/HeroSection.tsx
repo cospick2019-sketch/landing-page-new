@@ -50,7 +50,7 @@ export default function HeroSection() {
         mouseRadius={250}
       />
 
-      <div className="relative z-10 text-center pointer-events-none max-w-4xl mx-auto px-4 md:px-6">
+      <div className="relative z-10 text-center pointer-events-none max-w-4xl mx-auto px-5 md:px-6">
         {/* Eyebrow - WordRotate */}
         <BlurFade delay={0}>
           <div className="flex justify-center">

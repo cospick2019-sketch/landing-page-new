@@ -96,7 +96,7 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative py-20 md:py-32 lg:py-40 bg-[#030513] overflow-hidden">
+    <section id="faq" className="relative py-16 md:py-32 lg:py-40 bg-[#030513] overflow-hidden">
 
       {/* Dark Ambient Glows */}
       <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-indigo-900/20 rounded-full blur-[120px] pointer-events-none" />
@@ -107,8 +107,8 @@ export default function FaqSection() {
         QUESTIONS
       </span>
 
-      <div className="relative max-w-4xl mx-auto px-4 md:px-6 z-10">
-        <div className="text-center mb-10 md:mb-24">
+      <div className="relative max-w-4xl mx-auto px-5 md:px-6 z-10">
+        <div className="text-center mb-8 md:mb-24">
           <BlurFade delay={0.05}>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-bold tracking-widest uppercase mb-6 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />

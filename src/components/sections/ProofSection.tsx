@@ -58,7 +58,7 @@ function Tooltip({ text }: { text: string }) {
 export default function ProofSection() {
   const { open } = useConsultation();
   return (
-    <section id="proof" className="relative py-16 md:py-32 lg:py-48 bg-[#030513] overflow-hidden">
+    <section id="proof" className="relative py-16 md:py-32 lg:py-48 bg-[#030513] overflow-hidden" style={{ contain: "paint" }}>
       {/* Absolute Dark Ambient Glows */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[50vh] bg-indigo-600/10 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
 
@@ -70,7 +70,7 @@ export default function ProofSection() {
         RESULTS
       </span>
 
-      <div className="relative max-w-7xl mx-auto px-4 md:px-6 z-10">
+      <div className="relative max-w-7xl mx-auto px-5 md:px-6 z-10">
         <div className="text-center max-w-3xl mx-auto">
           <BlurFade delay={0.05}>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-bold tracking-widest uppercase mb-6 shadow-sm">
@@ -90,38 +90,40 @@ export default function ProofSection() {
         </div>
 
         {/* 3 Massive Number Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <div className="flex gap-3 md:grid md:grid-cols-3 md:gap-8 lg:gap-12">
           {SECTION_PROOF.stats.map((stat, i) => (
-            <BlurFade key={stat.label} delay={0.25 + i * 0.15}>
-              <div className="group relative text-center p-8 md:p-10 lg:p-10 rounded-[2.5rem] bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:border-indigo-500/40 hover:bg-white/[0.04] transition-all duration-500 shadow-2xl overflow-hidden">
+            <BlurFade key={stat.label} delay={0.25 + i * 0.15} className="flex-1 min-w-0">
+              <div className="group relative text-center px-2 py-5 md:p-10 lg:p-10 rounded-2xl md:rounded-[2.5rem] bg-white/[0.02] backdrop-blur-xl border border-white/10 hover:border-indigo-500/40 hover:bg-white/[0.04] transition-all duration-500 shadow-2xl overflow-hidden h-full">
 
                 {/* Glow on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/0 via-transparent to-purple-500/0 group-hover:from-indigo-500/10 transition-colors duration-500 pointer-events-none" />
 
                 {/* Border Beam - Hidden by default, bright on hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[2.5rem] overflow-hidden">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-2xl md:rounded-[2.5rem] overflow-hidden">
                   <BorderBeam size={200} duration={8} delay={i * 2} colorFrom="#6366f1" colorTo="#a855f7" borderWidth={2} />
                 </div>
 
                 <div className="relative z-10 flex flex-col items-center justify-center">
-                  <div className="flex items-baseline justify-center text-5xl md:text-7xl lg:text-[5.5rem] font-black text-white leading-none tracking-tighter mb-6 group-hover:scale-110 transition-transform duration-500 ease-out whitespace-nowrap min-w-0 md:min-w-[200px]">
+                  <div className="flex items-baseline justify-center text-2xl md:text-7xl lg:text-[5.5rem] font-black text-white leading-none tracking-tighter mb-2 md:mb-6 group-hover:scale-110 transition-transform duration-500 ease-out whitespace-nowrap min-w-0 md:min-w-[200px]">
                     <div className="inline-block text-right">
                       <NumberTicker value={stat.value} delay={0.1 + i * 0.1} className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover:drop-shadow-[0_0_40px_rgba(99,102,241,0.5)] transition-all duration-500" />
                     </div>
-                    <span className="text-3xl md:text-4xl lg:text-5xl ml-1 text-indigo-400 group-hover:text-indigo-300 transition-colors duration-500 shrink-0">
+                    <span className="text-sm md:text-4xl lg:text-5xl ml-0.5 md:ml-1 text-indigo-400 group-hover:text-indigo-300 transition-colors duration-500 shrink-0">
                       {stat.suffix}
                     </span>
                   </div>
 
-                  <div className="h-px w-12 bg-indigo-500/50 rounded-full mb-6 group-hover:w-24 group-hover:bg-indigo-400 transition-all duration-500" />
+                  <div className="h-px w-6 md:w-12 bg-indigo-500/50 rounded-full mb-2 md:mb-6 group-hover:w-12 md:group-hover:w-24 group-hover:bg-indigo-400 transition-all duration-500" />
 
-                  <div className="text-xl md:text-2xl font-bold text-white mb-2 flex items-start justify-center">
+                  <div className="text-xs md:text-2xl font-bold text-white mb-0.5 md:mb-2 flex items-start justify-center leading-tight">
                     {stat.label}
-                    {"tooltip" in stat && stat.tooltip && (
-                      <Tooltip text={stat.tooltip as string} />
-                    )}
+                    <span className="hidden md:inline">
+                      {"tooltip" in stat && stat.tooltip && (
+                        <Tooltip text={stat.tooltip as string} />
+                      )}
+                    </span>
                   </div>
-                  <p className="text-base text-gray-500 group-hover:text-gray-400 transition-colors duration-300">
+                  <p className="text-[10px] md:text-base text-gray-500 group-hover:text-gray-400 transition-colors duration-300 leading-tight">
                     {stat.sub}
                   </p>
                 </div>
@@ -132,7 +134,7 @@ export default function ProofSection() {
 
         {/* Closing CTA block - Live Rolling Tape Concept */}
         <BlurFade delay={0.6}>
-          <div className="relative mt-16 md:mt-32 p-6 md:p-16 rounded-2xl md:rounded-[2.5rem] bg-indigo-950/20 border border-indigo-500/20 overflow-hidden group">
+          <div className="relative mt-14 md:mt-32 p-7 md:p-16 rounded-2xl md:rounded-[2.5rem] bg-indigo-950/20 border border-indigo-500/20 overflow-hidden group">
 
             {/* Background Ambient */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.15),transparent_70%)] pointer-events-none" />

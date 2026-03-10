@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useMotionValue } from "motion/react";
+import { useRef, useEffect, useState } from "react";
 import { SECTION_PROBLEM } from "@/constants/content";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
@@ -15,20 +15,27 @@ const EASE_SNAP = [0.785, 0.135, 0.15, 0.86] as const;
 
 export default function ProblemSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
 
-  /* Parallax values */
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+  /* Parallax values — disabled on mobile */
   const glowY = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const mockupY = useTransform(scrollYProgress, [0, 1], [40, -20]);
+  const mockupYDesktop = useTransform(scrollYProgress, [0, 1], [40, -20]);
+  const mockupYZero = useMotionValue(0);
+  const mockupY = isMobile ? mockupYZero : mockupYDesktop;
 
   return (
     <section
       ref={sectionRef}
       id="problem"
-      className="relative pt-16 md:pt-28 pb-24 md:pb-40 bg-[#F8FAFB] overflow-hidden"
+      className="relative pt-16 md:pt-28 pb-16 md:pb-40 bg-[#F8FAFB] overflow-hidden"
     >
       {/* Background: single dramatic spotlight */}
       <motion.div
@@ -57,7 +64,7 @@ export default function ProblemSection() {
         />
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-4 md:px-6">
+      <div className="relative max-w-6xl mx-auto px-5 md:px-6">
         {/* Eyebrow */}
         <div className="text-center max-w-3xl mx-auto">
           <motion.div
@@ -113,7 +120,7 @@ export default function ProblemSection() {
         </div>
 
         {/* Two Column: Mockup + Pain Points */}
-        <div className="mt-10 md:mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="mt-10 md:mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center">
           {/* Left: Browser Mockup with parallax */}
           <motion.div
             style={{ y: mockupY }}
@@ -124,7 +131,7 @@ export default function ProblemSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3, ease: EASE_SMOOTH }}
-              className="relative w-full max-w-[380px] md:max-w-[440px]"
+              className="relative w-full max-w-[340px] md:max-w-[440px]"
             >
               {/* Glow behind mockup */}
               <div className="absolute -inset-8 bg-indigo-100/40 rounded-[2rem] blur-2xl pointer-events-none" />
@@ -161,13 +168,13 @@ export default function ProblemSection() {
                 </div>
               </div>
 
-              {/* Floating card: CVR metric */}
+              {/* Floating card: CVR metric — hidden on mobile to avoid overlap */}
               <motion.div
                 initial={{ opacity: 0, y: 24, scale: 0.9 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.7, ease: EASE_SMOOTH }}
-                className="absolute -bottom-3 left-0 md:-left-8 z-20"
+                className="absolute -bottom-3 left-0 md:-left-8 z-20 scale-90 md:scale-100 origin-bottom-left"
               >
                 <motion.div
                   animate={{ y: [0, -6, 0] }}
@@ -199,13 +206,13 @@ export default function ProblemSection() {
                 </motion.div>
               </motion.div>
 
-              {/* Floating card: Ad spend */}
+              {/* Floating card: Ad spend — hidden on mobile to avoid overlap */}
               <motion.div
                 initial={{ opacity: 0, y: -24, scale: 0.9 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.9, ease: EASE_SMOOTH }}
-                className="absolute top-20 right-0 md:-right-8 z-20"
+                className="absolute top-16 md:top-20 right-0 md:-right-8 z-20 scale-90 md:scale-100 origin-top-right"
               >
                 <motion.div
                   animate={{ y: [0, 6, 0] }}
@@ -236,14 +243,14 @@ export default function ProblemSection() {
           </motion.div>
 
           {/* Right: Pain Points + Conclusion */}
-          <div className="flex flex-col gap-10 lg:gap-12">
+          <div className="flex flex-col items-center lg:items-start gap-6 lg:gap-12">
             {/* Big emotional line */}
             <motion.h3
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.4, ease: EASE_SMOOTH }}
-              className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 leading-snug break-keep"
+              transition={{ duration: 0.7, delay: 0.15, ease: EASE_SMOOTH }}
+              className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 leading-snug break-keep text-center lg:text-left"
             >
               디자인은 그럴싸한데
               <br />
@@ -252,14 +259,14 @@ export default function ProblemSection() {
                 initial={{ opacity: 0, x: -12 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.8, ease: EASE_SNAP }}
+                transition={{ duration: 0.5, delay: 0.3, ease: EASE_SNAP }}
               >
                 매출은 0원.
               </motion.span>
             </motion.h3>
 
             {/* Pain points — staggered entrance */}
-            <div className="space-y-5">
+            <div className="space-y-5 max-w-sm lg:max-w-none">
               {SECTION_PROBLEM.points.slice(1).map((point, i) => (
                 <motion.div
                   key={i}
@@ -268,7 +275,7 @@ export default function ProblemSection() {
                   viewport={{ once: true }}
                   transition={{
                     duration: 0.5,
-                    delay: 0.5 + i * 0.15,
+                    delay: 0.1 + i * 0.1,
                     ease: EASE_SMOOTH,
                   }}
                   className="flex items-start gap-3.5"
@@ -286,12 +293,12 @@ export default function ProblemSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 1, ease: EASE_SMOOTH }}
-              className="relative rounded-2xl bg-white border border-gray-200/80 shadow-lg shadow-gray-900/5 p-7 md:p-9"
+              transition={{ duration: 0.7, delay: 0.3, ease: EASE_SMOOTH }}
+              className="relative w-full rounded-2xl bg-white border border-gray-200/80 shadow-lg shadow-gray-900/5 p-6 md:p-9"
             >
               {/* Top accent bar */}
-              <div className="absolute top-0 left-8 md:left-10 w-12 h-1 bg-indigo-600 rounded-b-full" />
-              <p className="text-xl md:text-2xl font-medium leading-relaxed text-gray-900 break-keep">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 lg:left-10 lg:translate-x-0 w-12 h-1 bg-indigo-600 rounded-b-full" />
+              <p className="text-xl md:text-2xl font-medium leading-relaxed text-gray-900 break-keep text-center lg:text-left">
                 고객을 설득하는{" "}
                 <span className="font-bold bg-indigo-100 px-2 py-1 rounded-md">
                   기획

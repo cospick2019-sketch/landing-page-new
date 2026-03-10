@@ -25,7 +25,7 @@ export default function SolutionSection() {
     <section
       ref={sectionRef}
       id="solution"
-      className="relative pt-20 pb-16 md:pt-40 md:pb-32 bg-[#030513] overflow-hidden"
+      className="relative pt-16 pb-24 md:pt-40 md:pb-32 bg-[#030513] overflow-hidden"
     >
       {/* Ambient glowing radial gradients for background depth */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
@@ -41,10 +41,10 @@ export default function SolutionSection() {
         className="absolute inset-0 h-full w-full fill-indigo-500/20 [mask-image:radial-gradient(900px_circle_at_top,white,transparent)]"
       />
 
-      <div className="relative max-w-6xl mx-auto px-4 md:px-6 z-10">
+      <div className="relative max-w-6xl mx-auto px-5 md:px-6 z-10">
 
         {/* Title Area */}
-        <div className="text-center max-w-4xl mx-auto mb-12 md:mb-28">
+        <div className="text-center max-w-4xl mx-auto mb-10 md:mb-28">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -91,7 +91,7 @@ export default function SolutionSection() {
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-stretch">
 
             {/* Left: General Agency (Bad) */}
             <motion.div
@@ -99,9 +99,9 @@ export default function SolutionSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: EASE_SMOOTH }}
-              className="relative flex flex-col p-8 md:p-12 rounded-[2rem] bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 shadow-xl"
+              className="relative flex flex-col p-6 md:p-12 rounded-[2rem] bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 shadow-xl"
             >
-              <div className="flex items-center gap-4 mb-10">
+              <div className="flex items-center gap-4 mb-6 md:mb-10">
                 <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center shadow-inner border border-slate-700">
                   <XCircle className="w-6 h-6 text-slate-400" />
                 </div>
@@ -110,9 +110,9 @@ export default function SolutionSection() {
                 </h3>
               </div>
 
-              <div className="flex flex-col gap-4 flex-1 justify-start relative pb-6">
+              <div className="flex flex-col gap-3 md:gap-4 flex-1 justify-start relative pb-4 md:pb-6">
                 {/* Connecting line behind blocks */}
-                <div className="absolute left-6 top-8 bottom-16 w-px bg-slate-700" />
+                <div className="absolute left-6 top-8 bottom-16 w-px bg-slate-700 hidden md:block" />
 
                 {comparison.bad.messages.map((msg, i) => (
                   <motion.div
@@ -121,15 +121,15 @@ export default function SolutionSection() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.3 + i * 0.1, ease: EASE_SMOOTH }}
                     key={i}
-                    className="flex items-center gap-5 p-5 rounded-2xl bg-slate-900 border border-slate-700 relative z-30 shadow-lg"
+                    className="flex items-center gap-4 md:gap-5 p-4 md:p-5 rounded-2xl bg-slate-900 border border-slate-700 relative z-30 shadow-lg"
                   >
                     <div className="w-3 h-3 rounded-full bg-slate-600 shrink-0 ml-1 ring-4 ring-slate-900" />
                     <p className="text-lg font-medium text-slate-400">{msg}</p>
                   </motion.div>
                 ))}
 
-                {/* Stacked effect & Ellipsis for more requests */}
-                <div className="relative flex flex-col items-center z-10 w-full mt-[-8px]">
+                {/* Stacked effect & Ellipsis for more requests - desktop only */}
+                <div className="relative hidden md:flex flex-col items-center z-10 w-full mt-[-8px]">
                   {/* Layer 1 (Closest) */}
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
@@ -160,6 +160,12 @@ export default function SolutionSection() {
                     transition={{ duration: 0.5, delay: 0.8, ease: EASE_SMOOTH }}
                     className="h-6 rounded-b-3xl bg-gradient-to-b from-[#0F172A]/40 to-transparent border-x border-b border-slate-700/30 w-[78%] -mt-4 z-0 backdrop-blur-md"
                   />
+                </div>
+                {/* Mobile: simple ellipsis */}
+                <div className="flex md:hidden items-center justify-center gap-1.5 pt-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-slate-600/80" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-slate-600/80" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-slate-600/80" />
                 </div>
               </div>
 
@@ -201,11 +207,11 @@ export default function SolutionSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2, ease: EASE_SMOOTH }}
-              className="relative flex flex-col p-8 md:p-12 rounded-[2rem] bg-[#1a1c4b]/80 backdrop-blur-sm border-[2px] border-indigo-500 overflow-hidden shadow-[0_0_80px_rgba(99,102,241,0.15)]"
+              className="relative flex flex-col p-6 md:p-12 rounded-[2rem] bg-[#1a1c4b]/80 backdrop-blur-sm border-[2px] border-indigo-500 overflow-hidden shadow-[0_0_80px_rgba(99,102,241,0.15)]"
             >
               <BorderBeam colorFrom="#6366f1" colorTo="#ffffff" duration={10} size={200} borderWidth={2} />
 
-              <div className="relative z-10 flex items-center gap-4 mb-10">
+              <div className="relative z-10 flex items-center gap-4 mb-6 md:mb-10">
                 <div className="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/40">
                   <CheckCircle2 className="w-6 h-6 text-white" />
                 </div>
@@ -214,7 +220,7 @@ export default function SolutionSection() {
                 </h3>
               </div>
 
-              <div className="relative z-10 flex flex-col gap-6 flex-1 justify-start pt-2 pb-6">
+              <div className="relative z-10 flex flex-col gap-4 md:gap-6 flex-1 justify-start pt-2 pb-4 md:pb-6">
 
                 {/* Full-width Unified Highlight Block */}
                 <motion.div
@@ -222,7 +228,7 @@ export default function SolutionSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.4, ease: EASE_SMOOTH }}
-                  className="relative z-20 mb-8 mt-2 w-full"
+                  className="relative z-20 mb-5 md:mb-8 mt-2 w-full"
                 >
                   <div className="relative w-full flex items-center justify-center bg-indigo-600 px-6 py-5 md:px-8 md:py-6 rounded-2xl shadow-[0_15px_30px_rgba(79,70,229,0.5)] overflow-hidden">
                     {/* Subtle premium gradient for depth */}
@@ -237,15 +243,15 @@ export default function SolutionSection() {
                 </motion.div>
 
                 {/* Steps List */}
-                <div className="space-y-4">
+                <div className="space-y-3 md:space-y-4">
                   {comparison.good.steps.map((step, i) => (
                     <motion.div
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.5 + i * 0.1, ease: EASE_SMOOTH }}
+                      transition={{ duration: 0.5, delay: 0.2 + i * 0.08, ease: EASE_SMOOTH }}
                       key={i}
-                      className="flex items-center gap-5 p-4 rounded-2xl bg-[#0b0e26]/60 border border-indigo-500/30 shadow-md backdrop-blur-sm"
+                      className="flex items-center gap-4 md:gap-5 p-3.5 md:p-4 rounded-2xl bg-[#0b0e26]/60 border border-indigo-500/30 shadow-md backdrop-blur-sm"
                     >
                       <div className="flex items-center justify-center w-9 h-9 rounded-full bg-indigo-500 text-white font-black text-sm shrink-0 shadow-lg shadow-indigo-500/50">
                         {i + 1}
@@ -266,7 +272,7 @@ export default function SolutionSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.4, ease: EASE_SMOOTH }}
-          className="mt-16 md:mt-36 relative text-center"
+          className="mt-12 md:mt-36 relative text-center"
         >
           {/* Subtle upper line */}
           <div className="mx-auto w-16 h-1 bg-slate-800 rounded-full mb-12" />
