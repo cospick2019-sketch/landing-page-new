@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 
 interface ConsultationContextValue {
   isOpen: boolean;
@@ -15,6 +15,13 @@ export function ConsultationProvider({ children }: { children: ReactNode }) {
 
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("consultation") === "true") {
+      setIsOpen(true);
+    }
+  }, []);
 
   return (
     <ConsultationContext.Provider value={{ isOpen, open, close }}>

@@ -2,6 +2,7 @@
 
 import type { Metadata } from "next";
 import { SITE_META } from "@/constants/content";
+import KakaoFloatingButton from "@/components/KakaoFloatingButton";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -72,6 +73,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased font-[family-name:'Pretendard_Variable',system-ui,sans-serif]">
         {children}
+        <KakaoFloatingButton />
       </body>
     </html>
   );

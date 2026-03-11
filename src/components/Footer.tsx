@@ -24,6 +24,7 @@ export default function Footer() {
             <Link href="/terms" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">이용약관</Link>
             <Link href="/privacy" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">개인정보처리방침</Link>
             <button type="button" onClick={open} className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors cursor-pointer">문의하기</button>
+            <a href="http://pf.kakao.com/_DLuZX/chat" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">카카오톡 상담</a>
           </div>
         </div>
 
