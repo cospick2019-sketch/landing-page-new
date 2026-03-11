@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 interface FormData {
   siteType: "landing" | "brand" | null;
   industry: string;
+  company: string;
   name: string;
   phone: string;
   refLinks: [string, string, string];
@@ -20,6 +21,7 @@ interface FormData {
 const INITIAL: FormData = {
   siteType: null,
   industry: "",
+  company: "",
   name: "",
   phone: "",
   refLinks: ["", "", ""],
@@ -141,7 +143,7 @@ function Step2({ data, update }: { data: FormData; update: (d: Partial<FormData>
         필수 항목을 포함한<br />항목을 입력해주세요.
       </p>
       <div className="mt-6 space-y-5">
-        {/* 업종 + 성함 */}
+        {/* 업종 + 업체명 + 성함 */}
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-3 text-base text-gray-700">
           <span className="font-medium">저는</span>
           <input
@@ -151,7 +153,15 @@ function Step2({ data, update }: { data: FormData; update: (d: Partial<FormData>
             onChange={(e) => update({ industry: e.target.value })}
             className="w-24 border-b-2 border-gray-300 focus:border-indigo-500 outline-none bg-transparent text-center font-semibold text-gray-900 pb-0.5 transition-colors"
           />
-          <span className="font-medium">업종의</span>
+          <span className="font-medium">업종</span>
+          <input
+            type="text"
+            placeholder="업체명"
+            value={data.company}
+            onChange={(e) => update({ company: e.target.value })}
+            className="w-24 border-b-2 border-gray-300 focus:border-indigo-500 outline-none bg-transparent text-center font-semibold text-gray-900 pb-0.5 transition-colors"
+          />
+          <span className="font-medium">의</span>
           <input
             type="text"
             placeholder="성함"
@@ -167,9 +177,13 @@ function Step2({ data, update }: { data: FormData; update: (d: Partial<FormData>
           <span className="font-medium">전화번호는</span>
           <input
             type="tel"
-            placeholder="010-0000-0000"
+            inputMode="numeric"
+            placeholder="01012345678"
             value={data.phone}
-            onChange={(e) => update({ phone: e.target.value })}
+            onChange={(e) => {
+              const v = e.target.value.replace(/[^0-9]/g, "");
+              if (v.length <= 11) update({ phone: v });
+            }}
             className="w-40 border-b-2 border-gray-300 focus:border-indigo-500 outline-none bg-transparent text-center font-semibold text-gray-900 pb-0.5 transition-colors"
           />
           <span className="font-medium">입니다.</span>
@@ -264,23 +278,42 @@ function Step3({ data, update }: { data: FormData; update: (d: Partial<FormData>
 
 /* ─── Success Screen ─── */
 function SuccessScreen({ onClose }: { onClose: () => void }) {
+  const handleKakaoChat = () => {
+    onClose();
+    window.open("http://pf.kakao.com/_DLuZX/chat", "_blank");
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center py-12 text-center">
+    <div className="flex flex-col items-center justify-center py-10 text-center">
       <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-6">
         <svg className="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
         </svg>
       </div>
-      <h3 className="text-2xl font-bold text-gray-900">신청이 완료되었습니다!</h3>
-      <p className="mt-3 text-base text-gray-500 max-w-xs leading-relaxed">
-        빠른 시일 내에 연락드리겠습니다.<br />감사합니다.
+      <h3 className="text-xl font-bold text-gray-900">신청이 완료되었습니다!</h3>
+      <p className="mt-4 text-sm text-gray-500 max-w-[280px] leading-relaxed">
+        카카오톡 채널에서 <strong className="text-gray-700">업체명</strong>을 남겨주시면<br />
+        더 빠른 상담 진행이 가능합니다.
       </p>
       <button
         type="button"
-        onClick={onClose}
-        className="mt-8 h-12 px-8 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-500 transition-colors"
+        onClick={handleKakaoChat}
+        className="mt-6 h-12 px-8 rounded-full bg-[#FEE500] text-[#3C1E1E] font-bold text-base flex items-center gap-2 hover:brightness-95 transition-all cursor-pointer"
       >
-        확인
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 3C6.48 3 2 6.58 2 10.94c0 2.8 1.86 5.27 4.66 6.67-.15.53-.96 3.4-.99 3.63 0 0-.02.17.09.24.11.06.24.01.24.01.32-.04 3.7-2.44 4.28-2.85.56.08 1.14.12 1.72.12 5.52 0 10-3.58 10-7.82C22 6.58 17.52 3 12 3Z"
+            fill="#3C1E1E"
+          />
+        </svg>
+        카카오톡으로 이동
+      </button>
+      <button
+        type="button"
+        onClick={onClose}
+        className="mt-3 text-sm text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+      >
+        닫기
       </button>
     </div>
   );
@@ -323,7 +356,7 @@ export default function ConsultationForm() {
 
   const canNext = (): boolean => {
     if (step === 1) return data.siteType !== null;
-    if (step === 2) return data.industry.trim() !== "" && data.name.trim() !== "" && data.phone.trim() !== "";
+    if (step === 2) return data.industry.trim() !== "" && data.company.trim() !== "" && data.name.trim() !== "" && data.phone.trim() !== "";
     return true;
   };
 

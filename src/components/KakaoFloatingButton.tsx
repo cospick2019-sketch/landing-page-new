@@ -9,15 +9,38 @@ export default function KakaoFloatingButton() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="fixed bottom-6 right-5 md:bottom-8 md:right-8 z-50 flex flex-col items-end gap-2">
-      {/* 펼침 메뉴 */}
+    <div
+      style={{
+        position: "fixed",
+        bottom: 24,
+        right: 20,
+        zIndex: 9999,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-end",
+        gap: 8,
+      }}
+    >
       {expanded && (
-        <div className="flex flex-col gap-2">
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <a
             href={KAKAO_CHAT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FEE500] text-[#3C1E1E] text-sm font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all whitespace-nowrap"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "10px 16px",
+              borderRadius: 999,
+              backgroundColor: "#FEE500",
+              color: "#3C1E1E",
+              fontSize: 14,
+              fontWeight: 600,
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            }}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path
@@ -31,7 +54,21 @@ export default function KakaoFloatingButton() {
             href={KAKAO_CHANNEL_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white text-[#3C1E1E] text-sm font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all whitespace-nowrap border border-gray-200"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "10px 16px",
+              borderRadius: 999,
+              backgroundColor: "#fff",
+              color: "#3C1E1E",
+              fontSize: 14,
+              fontWeight: 600,
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+              border: "1px solid #e5e7eb",
+            }}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M12 5v14M5 12h14" stroke="#3C1E1E" strokeWidth="2.5" strokeLinecap="round" />
@@ -41,19 +78,32 @@ export default function KakaoFloatingButton() {
         </div>
       )}
 
-      {/* 메인 버튼 - 항상 노출 */}
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
         aria-label="카카오톡 메뉴"
-        className="flex items-center justify-center w-14 h-14 md:w-[60px] md:h-[60px] rounded-full bg-[#FEE500] shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 56,
+          height: 56,
+          borderRadius: "50%",
+          backgroundColor: "#FEE500",
+          border: "none",
+          cursor: "pointer",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+        }}
       >
         <svg
           width="28"
           height="28"
           viewBox="0 0 24 24"
           fill="none"
-          className={`transition-transform duration-300 ${expanded ? "rotate-45" : ""}`}
+          style={{
+            transition: "transform 0.3s",
+            transform: expanded ? "rotate(45deg)" : "none",
+          }}
         >
           {expanded ? (
             <path d="M12 5v14M5 12h14" stroke="#3C1E1E" strokeWidth="2.5" strokeLinecap="round" />
