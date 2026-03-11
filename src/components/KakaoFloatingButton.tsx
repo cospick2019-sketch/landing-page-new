@@ -1,61 +1,47 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
 const KAKAO_CHANNEL_URL = "http://pf.kakao.com/_DLuZX";
 
 export default function KakaoFloatingButton() {
-  const [show, setShow] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  useEffect(() => {
-    const t = setTimeout(() => setShow(true), 1500);
-    return () => clearTimeout(t);
-  }, []);
-
   return (
-    <div
-      className={`fixed bottom-6 right-5 md:bottom-8 md:right-8 z-50 flex flex-col items-end gap-2 transition-all duration-500 ${
-        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
-      }`}
-    >
+    <div className="fixed bottom-6 right-5 md:bottom-8 md:right-8 z-50 flex flex-col items-end gap-2">
       {/* 펼침 메뉴 */}
-      <div
-        className={`flex flex-col gap-2 transition-all duration-300 ${
-          expanded
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-2 pointer-events-none"
-        }`}
-      >
-        <a
-          href={KAKAO_CHAT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FEE500] text-[#3C1E1E] text-sm font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all whitespace-nowrap"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M12 3C6.48 3 2 6.58 2 10.94c0 2.8 1.86 5.27 4.66 6.67-.15.53-.96 3.4-.99 3.63 0 0-.02.17.09.24.11.06.24.01.24.01.32-.04 3.7-2.44 4.28-2.85.56.08 1.14.12 1.72.12 5.52 0 10-3.58 10-7.82C22 6.58 17.52 3 12 3Z"
-              fill="#3C1E1E"
-            />
-          </svg>
-          상담하기
-        </a>
-        <a
-          href={KAKAO_CHANNEL_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white text-[#3C1E1E] text-sm font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all whitespace-nowrap border border-gray-200"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M12 5v14M5 12h14" stroke="#3C1E1E" strokeWidth="2.5" strokeLinecap="round" />
-          </svg>
-          채널 추가
-        </a>
-      </div>
+      {expanded && (
+        <div className="flex flex-col gap-2">
+          <a
+            href={KAKAO_CHAT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FEE500] text-[#3C1E1E] text-sm font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all whitespace-nowrap"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 3C6.48 3 2 6.58 2 10.94c0 2.8 1.86 5.27 4.66 6.67-.15.53-.96 3.4-.99 3.63 0 0-.02.17.09.24.11.06.24.01.24.01.32-.04 3.7-2.44 4.28-2.85.56.08 1.14.12 1.72.12 5.52 0 10-3.58 10-7.82C22 6.58 17.52 3 12 3Z"
+                fill="#3C1E1E"
+              />
+            </svg>
+            상담하기
+          </a>
+          <a
+            href={KAKAO_CHANNEL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white text-[#3C1E1E] text-sm font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all whitespace-nowrap border border-gray-200"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5v14M5 12h14" stroke="#3C1E1E" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+            채널 추가
+          </a>
+        </div>
+      )}
 
-      {/* 메인 플로팅 버튼 */}
+      {/* 메인 버튼 - 항상 노출 */}
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
