@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 /* ─── Types ─── */
 interface FormData {
   siteType: "landing" | "brand" | null;
+  designConcept: string | null;
   industry: string;
   company: string;
   name: string;
@@ -20,6 +21,7 @@ interface FormData {
 
 const INITIAL: FormData = {
   siteType: null,
+  designConcept: null,
   industry: "",
   company: "",
   name: "",
@@ -29,6 +31,15 @@ const INITIAL: FormData = {
   timeline: "",
   extra: "",
 };
+
+const DESIGN_CONCEPTS = [
+  { value: "minimal", label: "심플/미니멀", desc: "깔끔하고 군더더기 없는" },
+  { value: "modern", label: "모던/트렌디", desc: "세련되고 감각적인" },
+  { value: "premium", label: "고급/프리미엄", desc: "럭셔리하고 격조 있는" },
+  { value: "friendly", label: "친근/캐주얼", desc: "따뜻하고 편안한" },
+  { value: "bold", label: "강렬/임팩트", desc: "눈에 확 띄는 파워풀한" },
+  { value: "natural", label: "자연/감성", desc: "내추럴하고 감성적인" },
+] as const;
 
 /* ─── Step Indicator ─── */
 function StepIndicator({ current, total }: { current: number; total: number }) {
@@ -57,7 +68,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
               )}
             </div>
             {i < total - 1 && (
-              <div className={cn("w-8 h-0.5 transition-colors duration-300", step < current ? "bg-indigo-600" : "bg-gray-200")} />
+              <div className={cn("w-6 h-0.5 transition-colors duration-300", step < current ? "bg-indigo-600" : "bg-gray-200")} />
             )}
           </div>
         );
@@ -75,7 +86,6 @@ function Step1({ data, update }: { data: FormData; update: (d: Partial<FormData>
         제작하시려는<br />홈페이지의 유형을 정해주세요.
       </p>
       <div className="mt-6 grid grid-cols-2 gap-4">
-        {/* 랜딩형 */}
         <button
           type="button"
           onClick={() => update({ siteType: "landing" })}
@@ -89,7 +99,6 @@ function Step1({ data, update }: { data: FormData; update: (d: Partial<FormData>
           <span className={cn("text-xs font-bold", data.siteType === "landing" ? "text-indigo-600" : "text-gray-400")}>01</span>
           <p className={cn("mt-1 text-sm font-bold", data.siteType === "landing" ? "text-indigo-600" : "text-gray-900")}>랜딩형 홈페이지</p>
           <p className="mt-1 text-xs text-gray-500 leading-relaxed">한 페이지에 모든 정보를 담는 일자 형태의 유형</p>
-          {/* Mini preview */}
           <div className="mt-3 mx-auto w-full max-w-[80px]">
             <svg viewBox="0 0 60 80" fill="none" className="w-full">
               <rect x="2" y="2" width="56" height="76" rx="4" stroke={data.siteType === "landing" ? "#4F46E5" : "#d1d5db"} strokeWidth="1.5" fill={data.siteType === "landing" ? "#EEF2FF" : "#f9fafb"} />
@@ -103,8 +112,6 @@ function Step1({ data, update }: { data: FormData; update: (d: Partial<FormData>
             </svg>
           </div>
         </button>
-
-        {/* 브랜드형 */}
         <button
           type="button"
           onClick={() => update({ siteType: "brand" })}
@@ -118,7 +125,6 @@ function Step1({ data, update }: { data: FormData; update: (d: Partial<FormData>
           <span className={cn("text-xs font-bold", data.siteType === "brand" ? "text-indigo-600" : "text-gray-400")}>02</span>
           <p className={cn("mt-1 text-sm font-bold", data.siteType === "brand" ? "text-indigo-600" : "text-gray-900")}>브랜드형 홈페이지</p>
           <p className="mt-1 text-xs text-gray-500 leading-relaxed">다양한 페이지로 구성된 브랜드 중심의 유형</p>
-          {/* Mini preview */}
           <div className="mt-3 mx-auto w-full max-w-[80px]">
             <svg viewBox="0 0 60 80" fill="none" className="w-full">
               <rect x="2" y="2" width="56" height="76" rx="4" stroke={data.siteType === "brand" ? "#4F46E5" : "#d1d5db"} strokeWidth="1.5" fill={data.siteType === "brand" ? "#EEF2FF" : "#f9fafb"} />
@@ -134,11 +140,46 @@ function Step1({ data, update }: { data: FormData; update: (d: Partial<FormData>
   );
 }
 
-/* ─── Step 2: Required Info ─── */
+/* ─── Step 2: Design Concept ─── */
 function Step2({ data, update }: { data: FormData; update: (d: Partial<FormData>) => void }) {
   return (
     <div>
       <p className="text-indigo-500 text-sm font-bold tracking-wide">STEP 2</p>
+      <p className="mt-2 text-lg font-semibold text-gray-900 leading-snug">
+        원하시는 디자인 컨셉을<br />선택해주세요.
+      </p>
+      <div className="mt-6 grid grid-cols-2 gap-3">
+        {DESIGN_CONCEPTS.map((concept) => {
+          const selected = data.designConcept === concept.value;
+          return (
+            <button
+              key={concept.value}
+              type="button"
+              onClick={() => update({ designConcept: concept.value })}
+              className={cn(
+                "p-4 rounded-xl border-2 text-center transition-all duration-200 cursor-pointer",
+                selected
+                  ? "border-indigo-600 bg-indigo-50/50 shadow-sm"
+                  : "border-gray-200 hover:border-gray-300 bg-white"
+              )}
+            >
+              <p className={cn("text-sm font-bold", selected ? "text-indigo-600" : "text-gray-900")}>
+                {concept.label}
+              </p>
+              <p className="mt-1 text-xs text-gray-500">{concept.desc}</p>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Step 3: Required Info ─── */
+function Step3({ data, update }: { data: FormData; update: (d: Partial<FormData>) => void }) {
+  return (
+    <div>
+      <p className="text-indigo-500 text-sm font-bold tracking-wide">STEP 3</p>
       <p className="mt-2 text-lg font-semibold text-gray-900 leading-snug">
         필수 항목을 포함한<br />항목을 입력해주세요.
       </p>
@@ -194,8 +235,8 @@ function Step2({ data, update }: { data: FormData; update: (d: Partial<FormData>
   );
 }
 
-/* ─── Step 3: Optional Info ─── */
-function Step3({ data, update }: { data: FormData; update: (d: Partial<FormData>) => void }) {
+/* ─── Step 4: Optional Info ─── */
+function Step4({ data, update }: { data: FormData; update: (d: Partial<FormData>) => void }) {
   const updateRefLink = (index: number, value: string) => {
     const links = [...data.refLinks] as [string, string, string];
     links[index] = value;
@@ -205,7 +246,7 @@ function Step3({ data, update }: { data: FormData; update: (d: Partial<FormData>
   return (
     <div>
       <p className="text-indigo-500 text-sm font-bold tracking-wide">
-        STEP 3 <span className="text-gray-400 font-normal">선택사항</span>
+        STEP 4 <span className="text-gray-400 font-normal">선택사항</span>
       </p>
       <p className="mt-2 text-lg font-semibold text-gray-900">추가 정보를 입력해주세요.</p>
 
@@ -284,36 +325,41 @@ function SuccessScreen({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-10 text-center">
-      <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-6">
+    <div className="flex flex-col items-center justify-center py-8 text-center">
+      <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-5">
         <svg className="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
         </svg>
       </div>
       <h3 className="text-xl font-bold text-gray-900">신청이 완료되었습니다!</h3>
-      <p className="mt-4 text-sm text-gray-500 max-w-[280px] leading-relaxed">
-        카카오톡 채널에서 <strong className="text-gray-700">업체명</strong>을 남겨주시면<br />
-        더 빠른 상담 진행이 가능합니다.
-      </p>
+
+      {/* 할인 안내 강조 박스 */}
+      <div className="mt-5 w-full bg-red-50 border-2 border-red-200 rounded-xl p-4">
+        <p className="text-xs font-bold text-red-500 tracking-wide">필수 안내</p>
+        <p className="mt-2 text-[15px] font-extrabold text-gray-900 leading-snug">
+          카카오톡 채널 추가 후<br />
+          <span className="text-indigo-600 text-lg">업체명</span>을 톡으로 남겨주셔야<br />
+          <span className="text-red-600 text-lg underline underline-offset-4 decoration-2">할인가 적용이 가능</span>합니다.
+        </p>
+        <p className="mt-2.5 text-sm text-gray-500 leading-relaxed">
+          * 카카오톡으로 업체명을 남겨주셔야 신청 확인 및<br />
+          원활한 상담 진행이 가능합니다
+        </p>
+      </div>
+
       <button
         type="button"
         onClick={handleKakaoChat}
-        className="mt-6 h-12 px-8 rounded-full bg-[#FEE500] text-[#3C1E1E] font-bold text-base flex items-center gap-2 hover:brightness-95 transition-all cursor-pointer"
+        style={{ backgroundColor: "#FEE500" }}
+        className="mt-5 w-full h-14 rounded-xl font-bold text-base flex items-center justify-center gap-2 hover:brightness-95 transition-all cursor-pointer shadow-lg"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
           <path
             d="M12 3C6.48 3 2 6.58 2 10.94c0 2.8 1.86 5.27 4.66 6.67-.15.53-.96 3.4-.99 3.63 0 0-.02.17.09.24.11.06.24.01.24.01.32-.04 3.7-2.44 4.28-2.85.56.08 1.14.12 1.72.12 5.52 0 10-3.58 10-7.82C22 6.58 17.52 3 12 3Z"
             fill="#3C1E1E"
           />
         </svg>
-        카카오톡으로 이동
-      </button>
-      <button
-        type="button"
-        onClick={onClose}
-        className="mt-3 text-sm text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-      >
-        닫기
+        <span style={{ color: "#3C1E1E" }}>카카오톡 채널 추가하고 할인받기</span>
       </button>
     </div>
   );
@@ -356,7 +402,8 @@ export default function ConsultationForm() {
 
   const canNext = (): boolean => {
     if (step === 1) return data.siteType !== null;
-    if (step === 2) return data.industry.trim() !== "" && data.company.trim() !== "" && data.name.trim() !== "" && data.phone.trim() !== "";
+    if (step === 2) return data.designConcept !== null;
+    if (step === 3) return data.industry.trim() !== "" && data.company.trim() !== "" && data.name.trim() !== "" && data.phone.trim() !== "";
     return true;
   };
 
@@ -421,7 +468,7 @@ export default function ConsultationForm() {
 
               {!submitted && (
                 <div className="mt-5">
-                  <StepIndicator current={step} total={3} />
+                  <StepIndicator current={step} total={4} />
                 </div>
               )}
             </div>
@@ -443,6 +490,7 @@ export default function ConsultationForm() {
                       {step === 1 && <Step1 data={data} update={update} />}
                       {step === 2 && <Step2 data={data} update={update} />}
                       {step === 3 && <Step3 data={data} update={update} />}
+                      {step === 4 && <Step4 data={data} update={update} />}
                     </motion.div>
                   </AnimatePresence>
 
@@ -457,7 +505,7 @@ export default function ConsultationForm() {
                         이전
                       </button>
                     )}
-                    {step < 3 ? (
+                    {step < 4 ? (
                       <button
                         type="button"
                         disabled={!canNext()}

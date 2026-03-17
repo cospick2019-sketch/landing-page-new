@@ -14,9 +14,9 @@ const COLLECTION = "consultations";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { siteType, industry, company, name, phone } = body;
+    const { siteType, designConcept, industry, company, name, phone } = body;
 
-    if (!siteType || !industry?.trim() || !company?.trim() || !name?.trim() || !phone?.trim()) {
+    if (!siteType || !designConcept || !industry?.trim() || !company?.trim() || !name?.trim() || !phone?.trim()) {
       return NextResponse.json(
         { error: "필수 항목을 모두 입력해주세요." },
         { status: 400 }
@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
 
     const docRef = await addDoc(collection(db, COLLECTION), {
       siteType: body.siteType,
+      designConcept: body.designConcept,
       industry: body.industry,
       company: body.company,
       name: body.name,

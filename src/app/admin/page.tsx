@@ -8,6 +8,7 @@ import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard";
 interface Consultation {
   id: string;
   siteType: "landing" | "brand";
+  designConcept: string;
   industry: string;
   company: string;
   name: string;
@@ -30,6 +31,15 @@ const SITE_TYPE_MAP = {
   landing: "랜딩페이지",
   brand: "브랜드 사이트",
 } as const;
+
+const DESIGN_CONCEPT_MAP: Record<string, string> = {
+  minimal: "심플/미니멀",
+  modern: "모던/트렌디",
+  premium: "고급/프리미엄",
+  friendly: "친근/캐주얼",
+  bold: "강렬/임팩트",
+  natural: "자연/감성",
+};
 
 function formatDate(iso: string | null) {
   if (!iso) return "-";
@@ -315,6 +325,7 @@ export default function AdminPage() {
                       </a>
                     </div>
                     <InfoRow label="유형" value={SITE_TYPE_MAP[item.siteType] || item.siteType} />
+                    <InfoRow label="컨셉" value={DESIGN_CONCEPT_MAP[item.designConcept] || item.designConcept} />
                     <InfoRow label="업종" value={item.industry} />
                     <InfoRow label="목적" value={item.purpose} />
                     <InfoRow label="희망일정" value={item.timeline} />
