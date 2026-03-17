@@ -1,12 +1,15 @@
 "use client";
 
-import { useState, useEffect, useCallback, Fragment } from "react";
+import { useState, useEffect, useCallback } from "react";
+
 import { cn } from "@/lib/utils";
+import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard";
 
 interface Consultation {
   id: string;
   siteType: "landing" | "brand";
   industry: string;
+  company: string;
   name: string;
   phone: string;
   refLinks: string[];
@@ -43,47 +46,13 @@ function StatusBadge({ status }: { status: keyof typeof STATUS_MAP }) {
   );
 }
 
-function DetailPanel({ item }: { item: Consultation }) {
-  const refLinks = item.refLinks?.filter((l) => l.trim()) || [];
+function InfoRow({ label, value }: { label: string; value: string | undefined | null }) {
   return (
-    <div className="bg-gray-50 rounded-xl p-4 mt-3 space-y-3 text-sm">
-      {item.purpose && (
-        <div>
-          <span className="font-semibold text-gray-700">목적: </span>
-          <span className="text-gray-600">{item.purpose}</span>
-        </div>
-      )}
-      {item.timeline && (
-        <div>
-          <span className="font-semibold text-gray-700">일정: </span>
-          <span className="text-gray-600">{item.timeline}</span>
-        </div>
-      )}
-      {refLinks.length > 0 && (
-        <div>
-          <span className="font-semibold text-gray-700">참고 링크:</span>
-          <ul className="mt-1 space-y-1">
-            {refLinks.map((link, i) => (
-              <li key={i}>
-                <a
-                  href={link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-indigo-600 hover:underline break-all"
-                >
-                  {link}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {item.extra && (
-        <div>
-          <span className="font-semibold text-gray-700">추가 요청:</span>
-          <p className="mt-1 text-gray-600 whitespace-pre-wrap">{item.extra}</p>
-        </div>
-      )}
+    <div className="flex gap-2">
+      <span className="text-xs font-semibold text-gray-500 shrink-0 w-16">{label}</span>
+      <span className={cn("text-sm", value?.trim() ? "text-gray-800" : "text-gray-300")}>
+        {value?.trim() || "-"}
+      </span>
     </div>
   );
 }
@@ -148,9 +117,9 @@ function LoginGate({ onAuth }: { onAuth: () => void }) {
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
+  const [activeTab, setActiveTab] = useState<"consultations" | "analytics">("consultations");
   const [data, setData] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -239,33 +208,62 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
         <div className="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
-          <h1 className="text-lg font-bold text-gray-900">상담 신청 관리</h1>
-          <button
-            onClick={fetchData}
-            disabled={loading}
-            className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
-          >
-            <svg
-              className={cn("w-4 h-4", loading && "animate-spin")}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setActiveTab("consultations")}
+              className={cn(
+                "px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors",
+                activeTab === "consultations"
+                  ? "bg-gray-900 text-white"
+                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+              )}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-            새로고침
-          </button>
+              상담 신청
+            </button>
+            <button
+              onClick={() => setActiveTab("analytics")}
+              className={cn(
+                "px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors",
+                activeTab === "analytics"
+                  ? "bg-gray-900 text-white"
+                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+              )}
+            >
+              통계
+            </button>
+          </div>
+          {activeTab === "consultations" && (
+            <button
+              onClick={fetchData}
+              disabled={loading}
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            >
+              <svg
+                className={cn("w-4 h-4", loading && "animate-spin")}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
+              </svg>
+              새로고침
+            </button>
+          )}
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 md:px-6 py-6">
+      <main className="max-w-6xl mx-auto px-4 md:px-6 py-6 isolate">
+        {activeTab === "analytics" && <AnalyticsDashboard />}
+
+        {activeTab === "consultations" && (
+        <>
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {[
@@ -288,33 +286,81 @@ export default function AdminPage() {
             아직 신청 내역이 없습니다.
           </div>
         ) : (
-          <>
-            {/* Mobile: Card View */}
-            <div className="md:hidden space-y-3">
-              {data.map((item) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {data.map((item) => {
+              const refLinks = item.refLinks?.filter((l) => l.trim()) || [];
+
+              return (
                 <div
                   key={item.id}
-                  className="bg-white rounded-xl border border-gray-200 p-4"
+                  className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col"
                 >
-                  <div className="flex items-start justify-between mb-3">
+                  {/* Header: 이름/업체/연락처 + 상태/날짜 */}
+                  <div className="flex items-start justify-between mb-4">
                     <div>
-                      <p className="font-semibold text-gray-900">{item.name}</p>
-                      <p className="text-sm text-gray-500">{item.phone}</p>
+                      <p className="text-base font-bold text-gray-900">{item.name}</p>
+                      {item.company && (
+                        <p className="text-sm text-gray-600 mt-0.5">{item.company}</p>
+                      )}
+                      <a
+                        href={`tel:${item.phone}`}
+                        className="text-sm text-indigo-600 font-medium mt-0.5 block hover:underline"
+                      >
+                        {item.phone}
+                      </a>
                     </div>
-                    <StatusBadge status={item.status} />
+                    <div className="flex flex-col items-end gap-1.5 shrink-0">
+                      <StatusBadge status={item.status} />
+                      <span className="text-xs text-gray-400">{formatDate(item.createdAt)}</span>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-                    <span className="px-2 py-0.5 bg-gray-100 rounded text-xs font-medium">
+                  {/* 필수 정보 */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-semibold">
                       {SITE_TYPE_MAP[item.siteType] || item.siteType}
                     </span>
-                    <span>{item.industry}</span>
+                    <span className="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium">
+                      {item.industry}
+                    </span>
                   </div>
 
-                  <p className="text-xs text-gray-400 mb-3">{formatDate(item.createdAt)}</p>
+                  {/* 선택 정보 */}
+                  <div className="bg-gray-50 rounded-lg p-3.5 mb-4 space-y-2.5">
+                    <InfoRow label="목적" value={item.purpose} />
+                    <InfoRow label="희망일정" value={item.timeline} />
+                    <div className="flex gap-2">
+                      <span className="text-xs font-semibold text-gray-500 shrink-0 w-16">참고링크</span>
+                      {refLinks.length > 0 ? (
+                        <div className="space-y-1">
+                          {refLinks.map((link, i) => (
+                            <a
+                              key={i}
+                              href={link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-indigo-600 hover:underline break-all block"
+                            >
+                              {link}
+                            </a>
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="text-sm text-gray-300">-</span>
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-xs font-semibold text-gray-500 shrink-0 w-16">추가요청</span>
+                      {item.extra?.trim() ? (
+                        <p className="text-sm text-gray-800 whitespace-pre-wrap">{item.extra}</p>
+                      ) : (
+                        <span className="text-sm text-gray-300">-</span>
+                      )}
+                    </div>
+                  </div>
 
                   {/* Actions */}
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mt-auto pt-2">
                     <select
                       value={item.status}
                       onChange={(e) => updateStatus(item.id, e.target.value)}
@@ -331,86 +377,12 @@ export default function AdminPage() {
                       삭제
                     </button>
                   </div>
-
-                  <button
-                    onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}
-                    className="w-full text-center text-sm text-indigo-600 font-medium py-1"
-                  >
-                    {expandedId === item.id ? "접기" : "상세 보기"}
-                  </button>
-
-                  {expandedId === item.id && <DetailPanel item={item} />}
                 </div>
-              ))}
-            </div>
-
-            {/* Desktop: Table View */}
-            <div className="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    <th className="px-4 py-3">이름</th>
-                    <th className="px-4 py-3">연락처</th>
-                    <th className="px-4 py-3">유형</th>
-                    <th className="px-4 py-3">업종</th>
-                    <th className="px-4 py-3">상태</th>
-                    <th className="px-4 py-3">신청일</th>
-                    <th className="px-4 py-3 text-right">관리</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {data.map((item) => (
-                    <Fragment key={item.id}>
-                      <tr
-                        className="hover:bg-gray-50 transition-colors cursor-pointer"
-                        onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}
-                      >
-                        <td className="px-4 py-3 font-medium text-gray-900">{item.name}</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">{item.phone}</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">
-                          {SITE_TYPE_MAP[item.siteType] || item.siteType}
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-600">{item.industry}</td>
-                        <td className="px-4 py-3">
-                          <select
-                            value={item.status}
-                            onClick={(e) => e.stopPropagation()}
-                            onChange={(e) => updateStatus(item.id, e.target.value)}
-                            className="h-8 text-xs border border-gray-300 rounded-lg px-2 bg-white"
-                          >
-                            <option value="new">신규</option>
-                            <option value="contacted">연락완료</option>
-                            <option value="completed">완료</option>
-                          </select>
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-400">
-                          {formatDate(item.createdAt)}
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              deleteSubmission(item.id);
-                            }}
-                            className="text-sm text-red-500 hover:text-red-700 transition-colors"
-                          >
-                            삭제
-                          </button>
-                        </td>
-                      </tr>
-                      {expandedId === item.id && (
-                        <tr key={`${item.id}-detail`}>
-                          <td colSpan={7} className="px-4 pb-4">
-                            <DetailPanel item={item} />
-                          </td>
-                        </tr>
-                      )}
-                    </Fragment>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
+              );
+            })}
+          </div>
+        )}
+        </>
         )}
       </main>
     </div>
