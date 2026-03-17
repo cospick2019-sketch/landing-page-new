@@ -390,47 +390,67 @@ export default function AnalyticsDashboard() {
         ) : (
           <div>
             {/* Chart */}
-            <div className="flex items-end gap-[2px] sm:gap-1 h-44 md:h-56">
-              {data.daily.map((d, i) => {
-                const val = chartMode === "views" ? d.views : d.visitors;
-                const heightPercent = (val / maxDaily) * 100;
+            <div className="relative h-48 md:h-64">
+              {/* Y-axis grid lines */}
+              {[0, 25, 50, 75, 100].map((pct) => (
+                <div
+                  key={pct}
+                  className="absolute left-0 right-0 border-t border-dashed border-gray-100"
+                  style={{ bottom: `${pct}%` }}
+                >
+                  {pct > 0 && (
+                    <span className="absolute -top-2.5 -left-1 text-[9px] font-medium text-gray-300 tabular-nums">
+                      {Math.round((maxDaily * pct) / 100).toLocaleString()}
+                    </span>
+                  )}
+                </div>
+              ))}
 
-                return (
-                  <div
-                    key={d.date}
-                    className="flex-1 h-full flex flex-col items-center justify-end min-w-0 group relative"
-                  >
-                    {/* Tooltip */}
-                    <div className="absolute bottom-full mb-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none flex flex-col items-center">
-                      <div className="bg-gray-900 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded-md shadow-lg whitespace-nowrap">
-                        {val.toLocaleString()}
-                        <span className="block text-[9px] font-medium text-gray-400">
-                          {d.date.slice(5).replace("-", "/")}
-                        </span>
-                      </div>
-                    </div>
+              {/* Bars */}
+              <div className="absolute inset-0 flex items-end gap-[3px] sm:gap-1 pl-6 md:pl-8">
+                {data.daily.map((d) => {
+                  const val = chartMode === "views" ? d.views : d.visitors;
+                  const heightPercent = (val / maxDaily) * 100;
 
-                    {/* Bar */}
+                  return (
                     <div
-                      className={cn(
-                        "w-full rounded-t transition-all duration-300 group-hover:opacity-75",
-                        val > 0
-                          ? chartMode === "views"
-                            ? "bg-indigo-500"
-                            : "bg-emerald-500"
-                          : "bg-gray-100"
-                      )}
-                      style={{
-                        height: `${Math.max(heightPercent, val > 0 ? 3 : 1)}%`,
-                      }}
-                    />
-                  </div>
-                );
-              })}
+                      key={d.date}
+                      className="flex-1 h-full flex flex-col items-center justify-end min-w-0 group relative"
+                    >
+                      {/* Tooltip */}
+                      <div className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-10 scale-90 group-hover:scale-100">
+                        <div className="bg-gray-900 text-white text-[10px] md:text-xs font-bold px-2.5 py-1.5 rounded-lg shadow-xl whitespace-nowrap text-center">
+                          {val.toLocaleString()}
+                          <span className="block text-[9px] font-medium text-gray-400 mt-0.5">
+                            {d.date.slice(5).replace("-", "/")}
+                          </span>
+                        </div>
+                        <div className="w-2 h-2 bg-gray-900 rotate-45 mx-auto -mt-1" />
+                      </div>
+
+                      {/* Bar */}
+                      <div
+                        className={cn(
+                          "w-full rounded-t-sm sm:rounded-t transition-all duration-500 ease-out cursor-pointer",
+                          "group-hover:brightness-110 group-hover:shadow-sm",
+                          val > 0
+                            ? chartMode === "views"
+                              ? "bg-gradient-to-t from-indigo-600 to-indigo-400"
+                              : "bg-gradient-to-t from-emerald-600 to-emerald-400"
+                            : "bg-gray-100"
+                        )}
+                        style={{
+                          height: `${Math.max(heightPercent, val > 0 ? 4 : 1)}%`,
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             {/* X-axis labels */}
-            <div className="flex mt-2 border-t border-gray-100 pt-1.5">
+            <div className="flex pl-6 md:pl-8 mt-2 border-t border-gray-100 pt-2">
               {data.daily.map((d, i) => (
                 <div key={d.date} className="flex-1 min-w-0 text-center">
                   {(i % showEveryN === 0 || i === data.daily.length - 1) && (
