@@ -454,12 +454,12 @@ export default function AnalyticsDashboard() {
                     chartData
                       .map((d, i) => {
                         const val = chartMode === "views" ? d.views : d.visitors;
-                        const x = n === 1 ? 500 : (i / (n - 1)) * 1000;
+                        const x = ((i + 0.5) / n) * 1000;
                         const y = 500 - (val / maxVal) * 500;
                         return `${x},${y}`;
                       })
                       .join(" ") +
-                    " 1000,500 0,500"
+                    ` ${((n - 0.5) / n) * 1000},500 ${(0.5 / n) * 1000},500`
                   }
                   fill={areaColor}
                 />
@@ -474,8 +474,8 @@ export default function AnalyticsDashboard() {
                   if (i === n - 1) return null;
                   const val1 = chartMode === "views" ? d.views : d.visitors;
                   const val2 = chartMode === "views" ? chartData[i + 1].views : chartData[i + 1].visitors;
-                  const x1Pct = n === 1 ? 50 : (i / (n - 1)) * 100;
-                  const x2Pct = ((i + 1) / (n - 1)) * 100;
+                  const x1Pct = ((i + 0.5) / n) * 100;
+                  const x2Pct = ((i + 1.5) / n) * 100;
                   const y1Pct = 100 - (val1 / maxVal) * 100;
                   const y2Pct = 100 - (val2 / maxVal) * 100;
                   return (
