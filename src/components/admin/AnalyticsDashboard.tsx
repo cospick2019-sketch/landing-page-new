@@ -104,8 +104,8 @@ const PRESETS: { key: PresetKey; label: string }[] = [
 export default function AnalyticsDashboard() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activePreset, setActivePreset] = useState<PresetKey>("30d");
-  const [dateRange, setDateRange] = useState(getPresetRange("30d"));
+  const [activePreset, setActivePreset] = useState<PresetKey>("7d");
+  const [dateRange, setDateRange] = useState(getPresetRange("7d"));
   const [customFrom, setCustomFrom] = useState(dateRange.from);
   const [customTo, setCustomTo] = useState(dateRange.to);
   const [chartMode, setChartMode] = useState<"views" | "visitors">("views");
@@ -443,7 +443,8 @@ export default function AnalyticsDashboard() {
                     .join(" ")}
                   fill="none"
                   stroke={lineColor}
-                  strokeWidth="2"
+                  strokeWidth="1.5"
+                  strokeDasharray="4 3"
                   strokeLinejoin="round"
                   strokeLinecap="round"
                   vectorEffect="non-scaling-stroke"
