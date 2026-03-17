@@ -21,8 +21,26 @@ interface PageviewDoc {
   utm_campaign?: string;
 }
 
-function toDateStr(d: Date): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const KST_OFFSET = 9 * 60 * 60 * 1000; // UTC+9
+
+/** Convert a UTC Date to KST date string (YYYY-MM-DD) */
+function toKSTDateStr(d: Date): string {
+  const kst = new Date(d.getTime() + KST_OFFSET);
+  return `${kst.getUTCFullYear()}-${String(kst.getUTCMonth() + 1).padStart(2, "0")}-${String(kst.getUTCDate()).padStart(2, "0")}`;
+}
+
+/** Get KST hour (0-23) from a UTC Date */
+function toKSTHour(d: Date): number {
+  const kst = new Date(d.getTime() + KST_OFFSET);
+  return kst.getUTCHours();
+}
+
+/** Get "today 00:00:00 KST" as a UTC Date */
+function getKSTTodayStart(): Date {
+  const now = new Date();
+  const kst = new Date(now.getTime() + KST_OFFSET);
+  const kstMidnight = new Date(Date.UTC(kst.getUTCFullYear(), kst.getUTCMonth(), kst.getUTCDate()));
+  return new Date(kstMidnight.getTime() - KST_OFFSET);
 }
 
 export async function GET(req: NextRequest) {
@@ -34,7 +52,7 @@ export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const now = new Date();
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const todayStart = getKSTTodayStart();
 
     // Parse date range from query params
     const fromParam = url.searchParams.get("from");
@@ -99,7 +117,7 @@ export async function GET(req: NextRequest) {
       const ts = doc.ts;
       if (!ts) continue;
 
-      const dateStr = toDateStr(ts);
+      const dateStr = toKSTDateStr(ts);
 
       // Daily
       if (!dailyCounts[dateStr]) {
@@ -148,7 +166,7 @@ export async function GET(req: NextRequest) {
     for (let i = 0; i < totalDays; i++) {
       const d = new Date(rangeStart);
       d.setDate(d.getDate() + i);
-      const dateStr = toDateStr(d);
+      const dateStr = toKSTDateStr(d);
       const dayData = dailyCounts[dateStr];
       daily.push({
         date: dateStr,
@@ -165,7 +183,7 @@ export async function GET(req: NextRequest) {
     for (const doc of docs) {
       const ts = doc.ts;
       if (!ts || ts < todayStart) continue;
-      const hour = ts.getHours();
+      const hour = toKSTHour(ts);
       hourlyCounts[hour].views++;
       if (doc.vid) hourlyCounts[hour].visitors.add(doc.vid);
     }
