@@ -407,7 +407,23 @@ export default function ConsultationForm() {
     return true;
   };
 
+  const isRequiredFilled = (): boolean => {
+    return (
+      data.siteType !== null &&
+      data.designConcept !== null &&
+      data.industry.trim() !== "" &&
+      data.company.trim() !== "" &&
+      data.name.trim() !== "" &&
+      data.phone.trim() !== ""
+    );
+  };
+
   const handleSubmit = async () => {
+    if (!isRequiredFilled()) {
+      alert("필수 항목을 모두 입력해주세요.");
+      setStep(3);
+      return;
+    }
     setSubmitting(true);
     try {
       const res = await fetch("/api/consultation", {
