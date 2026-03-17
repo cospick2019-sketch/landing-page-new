@@ -410,9 +410,10 @@ export default function AnalyticsDashboard() {
                 </div>
               ))}
 
-              {/* SVG line + area + dots overlay */}
+              {/* SVG line + area overlay */}
               <svg
-                className="absolute left-8 md:left-10 right-0 top-0 bottom-0 overflow-visible"
+                className="absolute left-8 md:left-10 right-0 top-0 bottom-0"
+                viewBox="0 0 1000 500"
                 preserveAspectRatio="none"
                 style={{ width: "calc(100% - 2rem)", height: "100%" }}
               >
@@ -422,33 +423,44 @@ export default function AnalyticsDashboard() {
                     data.daily
                       .map((d, i) => {
                         const val = chartMode === "views" ? d.views : d.visitors;
-                        const x = data.daily.length === 1 ? 50 : (i / (data.daily.length - 1)) * 100;
-                        const y = 100 - (val / maxDaily) * 100;
-                        return `${x}%,${y}%`;
+                        const x = data.daily.length === 1 ? 500 : (i / (data.daily.length - 1)) * 1000;
+                        const y = 500 - (val / maxDaily) * 500;
+                        return `${x},${y}`;
                       })
                       .join(" ") +
-                    ` 100%,100% 0%,100%`
+                    " 1000,500 0,500"
                   }
                   fill={areaColor}
                 />
-                {/* Line */}
-                <polyline
-                  points={data.daily
-                    .map((d, i) => {
-                      const val = chartMode === "views" ? d.views : d.visitors;
-                      const x = data.daily.length === 1 ? 50 : (i / (data.daily.length - 1)) * 100;
-                      const y = 100 - (val / maxDaily) * 100;
-                      return `${x}%,${y}%`;
-                    })
-                    .join(" ")}
-                  fill="none"
-                  stroke={lineColor}
-                  strokeWidth="1.5"
-                  strokeDasharray="4 3"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  vectorEffect="non-scaling-stroke"
-                />
+              </svg>
+
+              {/* Dashed line via absolutely positioned HTML (avoids SVG scaling issues) */}
+              <svg
+                className="absolute left-8 md:left-10 right-0 top-0 bottom-0 pointer-events-none overflow-visible"
+                style={{ width: "calc(100% - 2rem)", height: "100%" }}
+              >
+                {data.daily.map((d, i) => {
+                  if (i === data.daily.length - 1) return null;
+                  const val1 = chartMode === "views" ? d.views : d.visitors;
+                  const val2 = chartMode === "views" ? data.daily[i + 1].views : data.daily[i + 1].visitors;
+                  const x1Pct = data.daily.length === 1 ? 50 : (i / (data.daily.length - 1)) * 100;
+                  const x2Pct = ((i + 1) / (data.daily.length - 1)) * 100;
+                  const y1Pct = 100 - (val1 / maxDaily) * 100;
+                  const y2Pct = 100 - (val2 / maxDaily) * 100;
+                  return (
+                    <line
+                      key={d.date}
+                      x1={`${x1Pct}%`}
+                      y1={`${y1Pct}%`}
+                      x2={`${x2Pct}%`}
+                      y2={`${y2Pct}%`}
+                      stroke={lineColor}
+                      strokeWidth="1.5"
+                      strokeDasharray="6 4"
+                      strokeLinecap="round"
+                    />
+                  );
+                })}
               </svg>
 
               {/* Bars + Dots + Tooltips (HTML for hover) */}
