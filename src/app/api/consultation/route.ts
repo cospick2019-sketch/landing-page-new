@@ -116,8 +116,8 @@ export async function POST(request: NextRequest) {
       createdAt: serverTimestamp(),
     });
 
-    // Send email notification (non-blocking)
-    sendAdminNotification(saveData);
+    // Send email notification (must await in serverless)
+    await sendAdminNotification(saveData);
 
     return NextResponse.json({ id: docRef.id }, { status: 201 });
   } catch (error) {
