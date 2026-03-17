@@ -387,28 +387,72 @@ export default function AnalyticsDashboard() {
             <Activity className="w-6 h-6 mb-2 opacity-50" />
             <p className="text-sm font-medium">데이터 없음</p>
           </div>
-        ) : (
+        ) : (() => {
+          const barColor = chartMode === "views" ? "#818cf8" : "#6ee7b7";
+          const lineColor = chartMode === "views" ? "#4f46e5" : "#059669";
+          const dotColor = chartMode === "views" ? "#4f46e5" : "#059669";
+          const areaColor = chartMode === "views" ? "rgba(79,70,229,0.08)" : "rgba(5,150,105,0.08)";
+
+          return (
           <div>
             {/* Chart */}
-            <div className="relative h-48 md:h-64">
+            <div className="relative h-56 md:h-[280px]">
               {/* Y-axis grid lines */}
               {[0, 25, 50, 75, 100].map((pct) => (
                 <div
                   key={pct}
-                  className="absolute left-0 right-0 border-t border-dashed border-gray-100"
+                  className="absolute left-8 md:left-10 right-0 border-t border-gray-100"
                   style={{ bottom: `${pct}%` }}
                 >
-                  {pct > 0 && (
-                    <span className="absolute -top-2.5 -left-1 text-[9px] font-medium text-gray-300 tabular-nums">
-                      {Math.round((maxDaily * pct) / 100).toLocaleString()}
-                    </span>
-                  )}
+                  <span className="absolute -top-2.5 right-full mr-1.5 text-[9px] font-medium text-gray-300 tabular-nums whitespace-nowrap">
+                    {Math.round((maxDaily * pct) / 100).toLocaleString()}
+                  </span>
                 </div>
               ))}
 
-              {/* Bars */}
-              <div className="absolute inset-0 flex items-end gap-[3px] sm:gap-1 pl-6 md:pl-8">
-                {data.daily.map((d) => {
+              {/* SVG line + area + dots overlay */}
+              <svg
+                className="absolute left-8 md:left-10 right-0 top-0 bottom-0 overflow-visible"
+                preserveAspectRatio="none"
+                style={{ width: "calc(100% - 2rem)", height: "100%" }}
+              >
+                {/* Area fill under line */}
+                <polygon
+                  points={
+                    data.daily
+                      .map((d, i) => {
+                        const val = chartMode === "views" ? d.views : d.visitors;
+                        const x = data.daily.length === 1 ? 50 : (i / (data.daily.length - 1)) * 100;
+                        const y = 100 - (val / maxDaily) * 100;
+                        return `${x}%,${y}%`;
+                      })
+                      .join(" ") +
+                    ` 100%,100% 0%,100%`
+                  }
+                  fill={areaColor}
+                />
+                {/* Line */}
+                <polyline
+                  points={data.daily
+                    .map((d, i) => {
+                      const val = chartMode === "views" ? d.views : d.visitors;
+                      const x = data.daily.length === 1 ? 50 : (i / (data.daily.length - 1)) * 100;
+                      const y = 100 - (val / maxDaily) * 100;
+                      return `${x}%,${y}%`;
+                    })
+                    .join(" ")}
+                  fill="none"
+                  stroke={lineColor}
+                  strokeWidth="2"
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+
+              {/* Bars + Dots + Tooltips (HTML for hover) */}
+              <div className="absolute left-8 md:left-10 right-0 top-0 bottom-0 flex items-end">
+                {data.daily.map((d, i) => {
                   const val = chartMode === "views" ? d.views : d.visitors;
                   const heightPercent = (val / maxDaily) * 100;
 
@@ -418,7 +462,10 @@ export default function AnalyticsDashboard() {
                       className="flex-1 h-full flex flex-col items-center justify-end min-w-0 group relative"
                     >
                       {/* Tooltip */}
-                      <div className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-10 scale-90 group-hover:scale-100">
+                      <div
+                        className="absolute z-20 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none"
+                        style={{ bottom: `${Math.max(heightPercent, 4) + 4}%` }}
+                      >
                         <div className="bg-gray-900 text-white text-[10px] md:text-xs font-bold px-2.5 py-1.5 rounded-lg shadow-xl whitespace-nowrap text-center">
                           {val.toLocaleString()}
                           <span className="block text-[9px] font-medium text-gray-400 mt-0.5">
@@ -428,19 +475,23 @@ export default function AnalyticsDashboard() {
                         <div className="w-2 h-2 bg-gray-900 rotate-45 mx-auto -mt-1" />
                       </div>
 
+                      {/* Dot at top */}
+                      <div
+                        className="absolute w-2 h-2 md:w-2.5 md:h-2.5 rounded-full z-10 transition-transform duration-200 group-hover:scale-150 border-2 border-white"
+                        style={{
+                          bottom: `${(val / maxDaily) * 100}%`,
+                          backgroundColor: dotColor,
+                          transform: "translateY(50%)",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.12)",
+                        }}
+                      />
+
                       {/* Bar */}
                       <div
-                        className={cn(
-                          "w-full rounded-t-sm sm:rounded-t transition-all duration-500 ease-out cursor-pointer",
-                          "group-hover:brightness-110 group-hover:shadow-sm",
-                          val > 0
-                            ? chartMode === "views"
-                              ? "bg-gradient-to-t from-indigo-600 to-indigo-400"
-                              : "bg-gradient-to-t from-emerald-600 to-emerald-400"
-                            : "bg-gray-100"
-                        )}
+                        className="w-[40%] max-w-[12px] rounded-t-sm transition-all duration-300 group-hover:opacity-80"
                         style={{
-                          height: `${Math.max(heightPercent, val > 0 ? 4 : 1)}%`,
+                          height: `${Math.max(heightPercent, val > 0 ? 3 : 0)}%`,
+                          backgroundColor: val > 0 ? barColor : "transparent",
                         }}
                       />
                     </div>
@@ -450,7 +501,7 @@ export default function AnalyticsDashboard() {
             </div>
 
             {/* X-axis labels */}
-            <div className="flex pl-6 md:pl-8 mt-2 border-t border-gray-100 pt-2">
+            <div className="flex pl-8 md:pl-10 mt-2 border-t border-gray-100 pt-2">
               {data.daily.map((d, i) => (
                 <div key={d.date} className="flex-1 min-w-0 text-center">
                   {(i % showEveryN === 0 || i === data.daily.length - 1) && (
@@ -462,7 +513,8 @@ export default function AnalyticsDashboard() {
               ))}
             </div>
           </div>
-        )}
+          );
+        })()}
       </div>
 
       {/* Lists Row 1 */}
