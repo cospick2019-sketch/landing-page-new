@@ -1,9 +1,15 @@
 // deps: content.ts → SITE_META
 
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import Script from "next/script";
 import { SITE_META } from "@/constants/content";
+import { Analytics } from "@vercel/analytics/next";
 import KakaoFloatingButton from "@/components/KakaoFloatingButton";
+import PageViewTracker from "@/components/PageViewTracker";
 import "./globals.css";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://landing-pick.vercel.app"),
@@ -70,10 +76,32 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
+        <Script
+          src="https://karrot-pixel.business.daangn.com/karrot-pixel.js"
+          strategy="afterInteractive"
+        />
+        <Script id="karrot-pixel-init" strategy="afterInteractive">
+          {`window.karrotPixel.init('1773645400906053001');window.karrotPixel.track('ViewPage');`}
+        </Script>
       </head>
       <body className="antialiased font-[family-name:'Pretendard_Variable',system-ui,sans-serif]">
         {children}
         <KakaoFloatingButton />
+        <Suspense fallback={null}>
+          <PageViewTracker />
+        </Suspense>
+        <Analytics />
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="gtag-init" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );
