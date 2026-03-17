@@ -295,38 +295,27 @@ export default function AdminPage() {
                   key={item.id}
                   className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col"
                 >
-                  {/* Header: 이름/업체/연락처 + 상태/날짜 */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <p className="text-base font-bold text-gray-900">{item.name}</p>
-                      {item.company && (
-                        <p className="text-sm text-gray-600 mt-0.5">{item.company}</p>
-                      )}
+                  {/* Header: 상태 + 날짜 */}
+                  <div className="flex items-center justify-between mb-4">
+                    <StatusBadge status={item.status} />
+                    <span className="text-xs text-gray-400">{formatDate(item.createdAt)}</span>
+                  </div>
+
+                  {/* 전체 정보 */}
+                  <div className="bg-gray-50 rounded-lg p-3.5 mb-4 space-y-2.5">
+                    <InfoRow label="이름" value={item.name} />
+                    <InfoRow label="업체명" value={item.company} />
+                    <div className="flex gap-2">
+                      <span className="text-xs font-semibold text-gray-500 shrink-0 w-16">연락처</span>
                       <a
                         href={`tel:${item.phone}`}
-                        className="text-sm text-indigo-600 font-medium mt-0.5 block hover:underline"
+                        className="text-sm text-indigo-600 font-medium hover:underline"
                       >
                         {item.phone}
                       </a>
                     </div>
-                    <div className="flex flex-col items-end gap-1.5 shrink-0">
-                      <StatusBadge status={item.status} />
-                      <span className="text-xs text-gray-400">{formatDate(item.createdAt)}</span>
-                    </div>
-                  </div>
-
-                  {/* 필수 정보 */}
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-semibold">
-                      {SITE_TYPE_MAP[item.siteType] || item.siteType}
-                    </span>
-                    <span className="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium">
-                      {item.industry}
-                    </span>
-                  </div>
-
-                  {/* 선택 정보 */}
-                  <div className="bg-gray-50 rounded-lg p-3.5 mb-4 space-y-2.5">
+                    <InfoRow label="유형" value={SITE_TYPE_MAP[item.siteType] || item.siteType} />
+                    <InfoRow label="업종" value={item.industry} />
                     <InfoRow label="목적" value={item.purpose} />
                     <InfoRow label="희망일정" value={item.timeline} />
                     <div className="flex gap-2">
