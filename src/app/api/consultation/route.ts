@@ -8,6 +8,7 @@ import {
   query,
   serverTimestamp,
 } from "firebase/firestore";
+import nodemailer from "nodemailer";
 
 const COLLECTION = "consultations";
 
@@ -26,9 +27,13 @@ const CONCEPT_LABEL: Record<string, string> = {
 };
 
 async function sendAdminNotification(data: Record<string, unknown>) {
-  const apiKey = process.env.RESEND_API_KEY;
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD;
   const adminEmail = process.env.ADMIN_EMAIL;
-  if (!apiKey || !adminEmail) return;
+  if (!gmailUser || !gmailPass || !adminEmail) {
+    console.error("Email env vars missing:", { gmailUser: !!gmailUser, gmailPass: !!gmailPass, adminEmail: !!adminEmail });
+    return;
+  }
 
   const now = new Date();
   const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
@@ -63,25 +68,18 @@ async function sendAdminNotification(data: Record<string, unknown>) {
   `;
 
   try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: "Landing Pick <onboarding@resend.dev>",
-        to: adminEmail.split(",").map((e: string) => e.trim()),
-        subject: `[랜딩픽] 새 상담 신청 — ${data.company} (${data.name})`,
-        html,
-      }),
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: { user: gmailUser, pass: gmailPass },
     });
-    const result = await res.json();
-    if (!res.ok) {
-      console.error("Resend API error:", res.status, result);
-    } else {
-      console.log("Admin notification sent:", result.id);
-    }
+
+    const info = await transporter.sendMail({
+      from: `"랜딩픽 알림" <${gmailUser}>`,
+      to: adminEmail,
+      subject: `[랜딩픽] 새 상담 신청 — ${data.company} (${data.name})`,
+      html,
+    });
+    console.log("Admin notification sent:", info.messageId);
   } catch (err) {
     console.error("Failed to send admin notification email:", err);
   }
