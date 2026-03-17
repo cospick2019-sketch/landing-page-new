@@ -157,6 +157,25 @@ export async function GET(req: NextRequest) {
       });
     }
 
+    // Build hourly array for today
+    const hourlyCounts: Record<number, { views: number; visitors: Set<string> }> = {};
+    for (let h = 0; h < 24; h++) {
+      hourlyCounts[h] = { views: 0, visitors: new Set() };
+    }
+    for (const doc of docs) {
+      const ts = doc.ts;
+      if (!ts || ts < todayStart) continue;
+      const hour = ts.getHours();
+      hourlyCounts[hour].views++;
+      if (doc.vid) hourlyCounts[hour].visitors.add(doc.vid);
+    }
+    const hourly = Array.from({ length: 24 }, (_, h) => ({
+      hour: h,
+      label: `${String(h).padStart(2, "0")}시`,
+      views: hourlyCounts[h].views,
+      visitors: hourlyCounts[h].visitors.size,
+    }));
+
     const topPages = Object.entries(pageCounts)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
@@ -184,6 +203,7 @@ export async function GET(req: NextRequest) {
       uniqueVisitors: uniqueVisitors.size,
       uniqueSessions: uniqueSessions.size,
       daily,
+      hourly,
       topPages,
       topReferrers,
       topUtmSources,

@@ -13,6 +13,13 @@ interface DailyData {
   visitors: number;
 }
 
+interface HourlyData {
+  hour: number;
+  label: string;
+  views: number;
+  visitors: number;
+}
+
 interface AnalyticsData {
   today: number;
   week: number;
@@ -20,6 +27,7 @@ interface AnalyticsData {
   uniqueVisitors: number;
   uniqueSessions: number;
   daily: DailyData[];
+  hourly: HourlyData[];
   topPages: { path: string; views: number }[];
   topReferrers: { source: string; views: number }[];
   topUtmSources: { source: string; views: number }[];
@@ -192,20 +200,39 @@ export default function AnalyticsDashboard() {
     );
   }
 
-  const maxDaily = Math.max(
-    ...data.daily.map((d) =>
+  const isToday = activePreset === "today";
+  const chartData = isToday
+    ? (data.hourly || []).map((h) => ({
+        key: h.label,
+        label: h.label,
+        views: h.views,
+        visitors: h.visitors,
+      }))
+    : data.daily.map((d) => ({
+        key: d.date,
+        label: d.date.slice(5).replace("-", "/"),
+        views: d.views,
+        visitors: d.visitors,
+      }));
+
+  const maxVal = Math.max(
+    ...chartData.map((d) =>
       chartMode === "views" ? d.views : d.visitors
     ),
     1
   );
+
+  // Dynamic bar width based on data point count
+  const barMaxWidth = chartData.length <= 7 ? "24px" : chartData.length <= 14 ? "16px" : chartData.length <= 31 ? "12px" : "8px";
   const totalDevices = data.devices.mobile + data.devices.desktop;
   const mobilePercent =
     totalDevices > 0
       ? Math.round((data.devices.mobile / totalDevices) * 100)
       : 0;
 
-  const showEveryN =
-    data.daily.length > 31 ? 7 : data.daily.length > 14 ? 3 : 1;
+  const showEveryN = isToday
+    ? 3 // 24시간: 00, 03, 06, ...
+    : chartData.length > 31 ? 7 : chartData.length > 14 ? 3 : 1;
 
   const statCards = [
     {
@@ -353,8 +380,12 @@ export default function AnalyticsDashboard() {
       <div className="bg-white rounded-2xl border border-gray-100 p-4 md:p-6 shadow-sm overflow-hidden">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-sm md:text-base font-bold text-gray-900">방문자 추이</h3>
-            <p className="text-xs md:text-sm text-gray-500 mt-0.5">일별 {chartMode === "views" ? "조회수" : "순 방문자"} 현황</p>
+            <h3 className="text-sm md:text-base font-bold text-gray-900">
+              {isToday ? "오늘 시간대별" : "방문자 추이"}
+            </h3>
+            <p className="text-xs md:text-sm text-gray-500 mt-0.5">
+              {isToday ? "시간대별" : "일별"} {chartMode === "views" ? "조회수" : "순 방문자"} 현황
+            </p>
           </div>
           <div className="flex p-1 bg-gray-50 rounded-lg border border-gray-100">
             <button
@@ -382,7 +413,7 @@ export default function AnalyticsDashboard() {
           </div>
         </div>
 
-        {data.daily.length === 0 ? (
+        {chartData.length === 0 ? (
           <div className="h-48 flex flex-col items-center justify-center text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
             <Activity className="w-6 h-6 mb-2 opacity-50" />
             <p className="text-sm font-medium">데이터 없음</p>
@@ -392,6 +423,7 @@ export default function AnalyticsDashboard() {
           const lineColor = chartMode === "views" ? "#4f46e5" : "#059669";
           const dotColor = chartMode === "views" ? "#4f46e5" : "#059669";
           const areaColor = chartMode === "views" ? "rgba(79,70,229,0.08)" : "rgba(5,150,105,0.08)";
+          const n = chartData.length;
 
           return (
           <div>
@@ -405,26 +437,25 @@ export default function AnalyticsDashboard() {
                   style={{ bottom: `${pct}%` }}
                 >
                   <span className="absolute -top-2.5 right-full mr-1.5 text-[9px] font-medium text-gray-300 tabular-nums whitespace-nowrap">
-                    {Math.round((maxDaily * pct) / 100).toLocaleString()}
+                    {Math.round((maxVal * pct) / 100).toLocaleString()}
                   </span>
                 </div>
               ))}
 
-              {/* SVG line + area overlay */}
+              {/* SVG area fill */}
               <svg
                 className="absolute left-8 md:left-10 right-0 top-0 bottom-0"
                 viewBox="0 0 1000 500"
                 preserveAspectRatio="none"
                 style={{ width: "calc(100% - 2rem)", height: "100%" }}
               >
-                {/* Area fill under line */}
                 <polygon
                   points={
-                    data.daily
+                    chartData
                       .map((d, i) => {
                         const val = chartMode === "views" ? d.views : d.visitors;
-                        const x = data.daily.length === 1 ? 500 : (i / (data.daily.length - 1)) * 1000;
-                        const y = 500 - (val / maxDaily) * 500;
+                        const x = n === 1 ? 500 : (i / (n - 1)) * 1000;
+                        const y = 500 - (val / maxVal) * 500;
                         return `${x},${y}`;
                       })
                       .join(" ") +
@@ -434,22 +465,22 @@ export default function AnalyticsDashboard() {
                 />
               </svg>
 
-              {/* Dashed line via absolutely positioned HTML (avoids SVG scaling issues) */}
+              {/* Dashed line segments */}
               <svg
                 className="absolute left-8 md:left-10 right-0 top-0 bottom-0 pointer-events-none overflow-visible"
                 style={{ width: "calc(100% - 2rem)", height: "100%" }}
               >
-                {data.daily.map((d, i) => {
-                  if (i === data.daily.length - 1) return null;
+                {chartData.map((d, i) => {
+                  if (i === n - 1) return null;
                   const val1 = chartMode === "views" ? d.views : d.visitors;
-                  const val2 = chartMode === "views" ? data.daily[i + 1].views : data.daily[i + 1].visitors;
-                  const x1Pct = data.daily.length === 1 ? 50 : (i / (data.daily.length - 1)) * 100;
-                  const x2Pct = ((i + 1) / (data.daily.length - 1)) * 100;
-                  const y1Pct = 100 - (val1 / maxDaily) * 100;
-                  const y2Pct = 100 - (val2 / maxDaily) * 100;
+                  const val2 = chartMode === "views" ? chartData[i + 1].views : chartData[i + 1].visitors;
+                  const x1Pct = n === 1 ? 50 : (i / (n - 1)) * 100;
+                  const x2Pct = ((i + 1) / (n - 1)) * 100;
+                  const y1Pct = 100 - (val1 / maxVal) * 100;
+                  const y2Pct = 100 - (val2 / maxVal) * 100;
                   return (
                     <line
-                      key={d.date}
+                      key={d.key}
                       x1={`${x1Pct}%`}
                       y1={`${y1Pct}%`}
                       x2={`${x2Pct}%`}
@@ -463,15 +494,15 @@ export default function AnalyticsDashboard() {
                 })}
               </svg>
 
-              {/* Bars + Dots + Tooltips (HTML for hover) */}
+              {/* Bars + Dots + Tooltips */}
               <div className="absolute left-8 md:left-10 right-0 top-0 bottom-0 flex items-end">
-                {data.daily.map((d, i) => {
+                {chartData.map((d) => {
                   const val = chartMode === "views" ? d.views : d.visitors;
-                  const heightPercent = (val / maxDaily) * 100;
+                  const heightPercent = (val / maxVal) * 100;
 
                   return (
                     <div
-                      key={d.date}
+                      key={d.key}
                       className="flex-1 h-full flex flex-col items-center justify-end min-w-0 group relative"
                     >
                       {/* Tooltip */}
@@ -482,7 +513,7 @@ export default function AnalyticsDashboard() {
                         <div className="bg-gray-900 text-white text-[10px] md:text-xs font-bold px-2.5 py-1.5 rounded-lg shadow-xl whitespace-nowrap text-center">
                           {val.toLocaleString()}
                           <span className="block text-[9px] font-medium text-gray-400 mt-0.5">
-                            {d.date.slice(5).replace("-", "/")}
+                            {d.label}
                           </span>
                         </div>
                         <div className="w-2 h-2 bg-gray-900 rotate-45 mx-auto -mt-1" />
@@ -492,7 +523,7 @@ export default function AnalyticsDashboard() {
                       <div
                         className="absolute w-2 h-2 md:w-2.5 md:h-2.5 rounded-full z-10 transition-transform duration-200 group-hover:scale-150 border-2 border-white"
                         style={{
-                          bottom: `${(val / maxDaily) * 100}%`,
+                          bottom: `${(val / maxVal) * 100}%`,
                           backgroundColor: dotColor,
                           transform: "translateY(50%)",
                           boxShadow: "0 1px 3px rgba(0,0,0,0.12)",
@@ -501,8 +532,10 @@ export default function AnalyticsDashboard() {
 
                       {/* Bar */}
                       <div
-                        className="w-[40%] max-w-[12px] rounded-t-sm transition-all duration-300 group-hover:opacity-80"
+                        className="rounded-t-sm transition-all duration-300 group-hover:opacity-80"
                         style={{
+                          width: "60%",
+                          maxWidth: barMaxWidth,
                           height: `${Math.max(heightPercent, val > 0 ? 3 : 0)}%`,
                           backgroundColor: val > 0 ? barColor : "transparent",
                         }}
@@ -515,11 +548,11 @@ export default function AnalyticsDashboard() {
 
             {/* X-axis labels */}
             <div className="flex pl-8 md:pl-10 mt-2 border-t border-gray-100 pt-2">
-              {data.daily.map((d, i) => (
-                <div key={d.date} className="flex-1 min-w-0 text-center">
-                  {(i % showEveryN === 0 || i === data.daily.length - 1) && (
+              {chartData.map((d, i) => (
+                <div key={d.key} className="flex-1 min-w-0 text-center">
+                  {(i % showEveryN === 0 || i === n - 1) && (
                     <span className="text-[8px] sm:text-[10px] font-medium text-gray-400">
-                      {d.date.slice(5).replace("-", "/")}
+                      {d.label}
                     </span>
                   )}
                 </div>
