@@ -398,7 +398,7 @@ export default function AnalyticsDashboard() {
                 return (
                   <div
                     key={d.date}
-                    className="flex-1 flex flex-col items-center justify-end min-w-0 group relative"
+                    className="flex-1 h-full flex flex-col items-center justify-end min-w-0 group relative"
                   >
                     {/* Tooltip */}
                     <div className="absolute bottom-full mb-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none flex flex-col items-center">
