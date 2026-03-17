@@ -63,7 +63,7 @@ async function sendAdminNotification(data: Record<string, unknown>) {
   `;
 
   try {
-    await fetch("https://api.resend.com/emails", {
+    const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,6 +76,12 @@ async function sendAdminNotification(data: Record<string, unknown>) {
         html,
       }),
     });
+    const result = await res.json();
+    if (!res.ok) {
+      console.error("Resend API error:", res.status, result);
+    } else {
+      console.log("Admin notification sent:", result.id);
+    }
   } catch (err) {
     console.error("Failed to send admin notification email:", err);
   }
