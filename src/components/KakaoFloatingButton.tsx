@@ -78,23 +78,61 @@ export default function KakaoFloatingButton() {
         </div>
       )}
 
-      <button
-        type="button"
-        onClick={() => setExpanded((v) => !v)}
-        aria-label="카카오톡 메뉴"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: 56,
-          height: 56,
-          borderRadius: "50%",
-          backgroundColor: "#FEE500",
-          border: "none",
-          cursor: "pointer",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-        }}
-      >
+      <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+        {!expanded && (
+          <div
+            style={{
+              position: "absolute",
+              right: 70,
+              padding: "12px 20px",
+              borderRadius: 16,
+              backgroundColor: "#FEE500",
+              color: "#3C1E1E",
+              fontSize: 15,
+              fontWeight: 800,
+              whiteSpace: "nowrap",
+              boxShadow: "0 6px 20px rgba(254,229,0,0.4), 0 2px 8px rgba(0,0,0,0.15)",
+              animation: "kakao-bubble 1.5s ease-in-out infinite",
+              letterSpacing: "-0.3px",
+            }}
+          >
+            💬 견적문의 클릭!
+            <div
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: -7,
+                transform: "translateY(-50%) rotate(45deg)",
+                width: 14,
+                height: 14,
+                backgroundColor: "#FEE500",
+              }}
+            />
+            <style>{`
+              @keyframes kakao-bubble {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-6px); }
+              }
+            `}</style>
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          aria-label="카카오톡 메뉴"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 56,
+            height: 56,
+            borderRadius: "50%",
+            backgroundColor: "#FEE500",
+            border: "none",
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          }}
+        >
         <svg
           width="28"
           height="28"
@@ -114,7 +152,8 @@ export default function KakaoFloatingButton() {
             />
           )}
         </svg>
-      </button>
+        </button>
+      </div>
     </div>
   );
 }
