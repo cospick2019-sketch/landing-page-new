@@ -319,9 +319,29 @@ function Step4({ data, update }: { data: FormData; update: (d: Partial<FormData>
 
 /* ─── Success Screen ─── */
 function SuccessScreen({ onClose }: { onClose: () => void }) {
+  const [copied, setCopied] = useState(false);
+  const MESSAGE = "상담신청";
+
   const handleKakaoChat = () => {
     onClose();
     window.open("http://pf.kakao.com/_DLuZX/chat", "_blank");
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(MESSAGE);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = MESSAGE;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -333,17 +353,28 @@ function SuccessScreen({ onClose }: { onClose: () => void }) {
       </div>
       <h3 className="text-xl font-bold text-gray-900">신청이 완료되었습니다!</h3>
 
-      {/* 할인 안내 강조 박스 */}
-      <div className="mt-5 w-full bg-red-50 border-2 border-red-200 rounded-xl p-4">
-        <p className="text-xs font-bold text-red-500 tracking-wide">필수 안내</p>
+      {/* 카카오톡 메시지 안내 */}
+      <div className="mt-5 w-full bg-indigo-50 border-2 border-indigo-200 rounded-xl p-4">
+        <p className="text-xs font-bold text-indigo-600 tracking-wide">마지막 한 단계!</p>
         <p className="mt-2 text-[15px] font-extrabold text-gray-900 leading-snug">
-          카카오톡 채널 추가 후<br />
-          <span className="text-indigo-600 text-lg">업체명</span>을 톡으로 남겨주셔야<br />
-          <span className="text-red-600 text-lg underline underline-offset-4 decoration-2">할인가 적용이 가능</span>합니다.
+          카카오톡이 열리면<br />
+          아래 문구를 보내주세요!
         </p>
+
+        {/* 복사 가능한 메시지 박스 */}
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="mt-3 w-full flex items-center justify-between bg-white border-2 border-indigo-300 rounded-lg px-4 py-3 cursor-pointer hover:border-indigo-400 transition-colors"
+        >
+          <span className="text-lg font-bold text-indigo-600">{MESSAGE}</span>
+          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${copied ? "bg-green-100 text-green-600" : "bg-indigo-100 text-indigo-600"}`}>
+            {copied ? "복사됨!" : "복사"}
+          </span>
+        </button>
+
         <p className="mt-2.5 text-sm text-gray-500 leading-relaxed">
-          * 카카오톡으로 업체명을 남겨주셔야 신청 확인 및<br />
-          원활한 상담 진행이 가능합니다
+          * 메시지를 보내셔야 상담이 시작됩니다
         </p>
       </div>
 
@@ -359,8 +390,12 @@ function SuccessScreen({ onClose }: { onClose: () => void }) {
             fill="#3C1E1E"
           />
         </svg>
-        <span style={{ color: "#3C1E1E" }}>카카오톡 채널 추가하고 할인받기</span>
+        <span style={{ color: "#3C1E1E" }}>카카오톡으로 상담 시작하기</span>
       </button>
+
+      <p className="mt-2 text-xs text-red-500 font-semibold">
+        메시지를 보내지 않으면 할인가 적용이 불가합니다
+      </p>
     </div>
   );
 }
@@ -432,6 +467,9 @@ export default function ConsultationForm() {
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error("API error");
+      if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        window.fbq("track", "Lead");
+      }
       setSubmitted(true);
     } catch (error) {
       console.error("Submission failed:", error);
