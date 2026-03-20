@@ -53,7 +53,7 @@ interface Intake {
   createdAt: string | null;
 }
 
-const STATUS_MAP = {
+const STATUS_MAP: Record<string, { label: string; bg: string }> = {
   "new": { label: "신규", bg: "bg-blue-100 text-blue-700" },
   "intake-sent": { label: "확인서 발송", bg: "bg-violet-100 text-violet-700" },
   "quote-sent": { label: "견적 발송", bg: "bg-amber-100 text-amber-700" },
@@ -62,7 +62,10 @@ const STATUS_MAP = {
   "done": { label: "제작완료", bg: "bg-green-100 text-green-700" },
   "cancelled": { label: "취소", bg: "bg-red-100 text-red-600" },
   "on-hold": { label: "보류", bg: "bg-gray-100 text-gray-600" },
-} as const;
+  // 이전 상태 호환
+  "contacted": { label: "연락완료(이전)", bg: "bg-amber-100 text-amber-700" },
+  "completed": { label: "완료(이전)", bg: "bg-green-100 text-green-700" },
+};
 
 const INTAKE_STATUS_MAP = {
   new: { label: "신규", bg: "bg-emerald-100 text-emerald-700" },
@@ -89,8 +92,8 @@ function formatDate(iso: string | null) {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 }
 
-function StatusBadge({ status }: { status: keyof typeof STATUS_MAP }) {
-  const s = STATUS_MAP[status];
+function StatusBadge({ status }: { status: string }) {
+  const s = STATUS_MAP[status] || { label: status, bg: "bg-gray-100 text-gray-600" };
   return (
     <span className={cn("px-2.5 py-1 rounded-full text-xs font-semibold", s.bg)}>
       {s.label}
