@@ -4,6 +4,16 @@ import { useState, useEffect, useCallback } from "react";
 
 import { cn } from "@/lib/utils";
 import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard";
+import {
+  DESIRED_ACTIONS_MAP,
+  PAGE_COUNTS_MAP,
+  SECTIONS_MAP,
+  REQUIRED_FEATURES_MAP,
+  ADDITIONAL_FEATURES_MAP,
+  LOGO_OPTIONS_MAP,
+  COPYWRITING_OPTIONS_MAP,
+  ASSETS_OPTIONS_MAP,
+} from "@/constants/intake";
 
 interface Consultation {
   id: string;
@@ -21,10 +31,37 @@ interface Consultation {
   createdAt: string | null;
 }
 
+interface Intake {
+  id: string;
+  name: string;
+  phone: string;
+  consultationId: string | null;
+  productDetail: string;
+  targetCustomer: string;
+  refSites: string[];
+  desiredActions: string[];
+  existingWebsite: string;
+  pageCount: string;
+  sections: string[];
+  requiredFeatures: string[];
+  additionalFeatures: string[];
+  brandColor: string;
+  hasLogo: string;
+  copywriting: string;
+  hasAssets: string;
+  status: "new" | "reviewed";
+  createdAt: string | null;
+}
+
 const STATUS_MAP = {
   new: { label: "신규", bg: "bg-blue-100 text-blue-700" },
   contacted: { label: "연락완료", bg: "bg-amber-100 text-amber-700" },
   completed: { label: "완료", bg: "bg-green-100 text-green-700" },
+} as const;
+
+const INTAKE_STATUS_MAP = {
+  new: { label: "신규", bg: "bg-emerald-100 text-emerald-700" },
+  reviewed: { label: "확인완료", bg: "bg-gray-100 text-gray-600" },
 } as const;
 
 const SITE_TYPE_MAP = {
@@ -56,6 +93,15 @@ function StatusBadge({ status }: { status: keyof typeof STATUS_MAP }) {
   );
 }
 
+function IntakeStatusBadge({ status }: { status: keyof typeof INTAKE_STATUS_MAP }) {
+  const s = INTAKE_STATUS_MAP[status];
+  return (
+    <span className={cn("px-2.5 py-1 rounded-full text-xs font-semibold", s.bg)}>
+      {s.label}
+    </span>
+  );
+}
+
 function InfoRow({ label, value }: { label: string; value: string | undefined | null }) {
   return (
     <div className="flex gap-2">
@@ -63,6 +109,25 @@ function InfoRow({ label, value }: { label: string; value: string | undefined | 
       <span className={cn("text-sm", value?.trim() ? "text-gray-800" : "text-gray-300")}>
         {value?.trim() || "-"}
       </span>
+    </div>
+  );
+}
+
+function TagList({ label, values, labelMap }: { label: string; values: string[]; labelMap: Record<string, string> }) {
+  return (
+    <div className="flex gap-2">
+      <span className="text-xs font-semibold text-gray-500 shrink-0 w-16">{label}</span>
+      {values.length > 0 ? (
+        <div className="flex flex-wrap gap-1">
+          {values.map((v) => (
+            <span key={v} className="px-2 py-0.5 bg-indigo-50 text-indigo-700 text-xs rounded-md font-medium">
+              {labelMap[v] || v}
+            </span>
+          ))}
+        </div>
+      ) : (
+        <span className="text-sm text-gray-300">-</span>
+      )}
     </div>
   );
 }
@@ -125,11 +190,77 @@ function LoginGate({ onAuth }: { onAuth: () => void }) {
   );
 }
 
+/* ─── Intake Detail (expandable) ─── */
+function IntakeDetail({ item }: { item: Intake }) {
+  const [open, setOpen] = useState(false);
+  const refSites = item.refSites?.filter((s) => s.trim()) || [];
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="text-xs font-semibold text-indigo-600 hover:text-indigo-500 flex items-center gap-1 cursor-pointer"
+      >
+        {open ? "접기" : "확인서 내용 보기"}
+        <svg
+          className={cn("w-3 h-3 transition-transform", open && "rotate-180")}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="mt-3 bg-gray-50 rounded-lg p-3.5 space-y-2.5">
+          <InfoRow label="핵심상품" value={item.productDetail} />
+          <InfoRow label="타겟고객" value={item.targetCustomer} />
+          <div className="flex gap-2">
+            <span className="text-xs font-semibold text-gray-500 shrink-0 w-16">참고사이트</span>
+            {refSites.length > 0 ? (
+              <div className="space-y-1">
+                {refSites.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-indigo-600 hover:underline break-all block"
+                  >
+                    {link}
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <span className="text-sm text-gray-300">-</span>
+            )}
+          </div>
+          <TagList label="원하는행동" values={item.desiredActions} labelMap={DESIRED_ACTIONS_MAP} />
+          <InfoRow label="기존사이트" value={item.existingWebsite} />
+          <InfoRow label="페이지수" value={PAGE_COUNTS_MAP[item.pageCount] || item.pageCount} />
+          <TagList label="섹션" values={item.sections} labelMap={SECTIONS_MAP} />
+          <TagList label="필수기능" values={item.requiredFeatures} labelMap={REQUIRED_FEATURES_MAP} />
+          <TagList label="추가기능" values={item.additionalFeatures} labelMap={ADDITIONAL_FEATURES_MAP} />
+          <InfoRow label="브랜드색상" value={item.brandColor} />
+          <InfoRow label="로고" value={LOGO_OPTIONS_MAP[item.hasLogo] || item.hasLogo} />
+          <InfoRow label="카피" value={COPYWRITING_OPTIONS_MAP[item.copywriting] || item.copywriting} />
+          <InfoRow label="보유소재" value={ASSETS_OPTIONS_MAP[item.hasAssets] || item.hasAssets} />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
-  const [activeTab, setActiveTab] = useState<"consultations" | "analytics">("consultations");
+  const [activeTab, setActiveTab] = useState<"consultations" | "intakes" | "analytics">("consultations");
   const [data, setData] = useState<Consultation[]>([]);
+  const [intakes, setIntakes] = useState<Intake[]>([]);
   const [loading, setLoading] = useState(true);
+  const [intakeLoading, setIntakeLoading] = useState(false);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -149,6 +280,24 @@ export default function AdminPage() {
     }
   }, []);
 
+  const fetchIntakes = useCallback(async () => {
+    setIntakeLoading(true);
+    try {
+      const res = await fetch("/api/intake");
+      if (res.status === 401) {
+        setAuthed(false);
+        return;
+      }
+      if (!res.ok) throw new Error("Fetch failed");
+      const json = await res.json();
+      setIntakes(json);
+    } catch (error) {
+      console.error("Failed to fetch intakes:", error);
+    } finally {
+      setIntakeLoading(false);
+    }
+  }, []);
+
   // Check existing session on mount
   useEffect(() => {
     fetch("/api/consultation")
@@ -165,6 +314,13 @@ export default function AdminPage() {
       })
       .catch(() => setLoading(false));
   }, []);
+
+  // Fetch intakes when tab is selected
+  useEffect(() => {
+    if (authed && activeTab === "intakes" && intakes.length === 0) {
+      fetchIntakes();
+    }
+  }, [authed, activeTab, intakes.length, fetchIntakes]);
 
   const updateStatus = async (id: string, status: string) => {
     try {
@@ -197,11 +353,48 @@ export default function AdminPage() {
     }
   };
 
+  const updateIntakeStatus = async (id: string, status: string) => {
+    try {
+      const res = await fetch(`/api/intake/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) throw new Error("Update failed");
+      setIntakes((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, status: status as Intake["status"] } : item
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update intake:", error);
+      alert("상태 변경에 실패했습니다.");
+    }
+  };
+
+  const deleteIntake = async (id: string) => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+    try {
+      const res = await fetch(`/api/intake/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Delete failed");
+      setIntakes((prev) => prev.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Failed to delete intake:", error);
+      alert("삭제에 실패했습니다.");
+    }
+  };
+
   const counts = {
     total: data.length,
     new: data.filter((d) => d.status === "new").length,
     contacted: data.filter((d) => d.status === "contacted").length,
     completed: data.filter((d) => d.status === "completed").length,
+  };
+
+  const intakeCounts = {
+    total: intakes.length,
+    new: intakes.filter((d) => d.status === "new").length,
+    reviewed: intakes.filter((d) => d.status === "reviewed").length,
   };
 
   if (!authed) {
@@ -215,56 +408,60 @@ export default function AdminPage() {
     );
   }
 
+  const RefreshButton = ({ onClick, isLoading }: { onClick: () => void; isLoading: boolean }) => (
+    <button
+      onClick={onClick}
+      disabled={isLoading}
+      className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+    >
+      <svg
+        className={cn("w-4 h-4", isLoading && "animate-spin")}
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+        />
+      </svg>
+      새로고침
+    </button>
+  );
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
         <div className="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <button
-              onClick={() => setActiveTab("consultations")}
-              className={cn(
-                "px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors",
-                activeTab === "consultations"
-                  ? "bg-gray-900 text-white"
-                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-              )}
-            >
-              상담 신청
-            </button>
-            <button
-              onClick={() => setActiveTab("analytics")}
-              className={cn(
-                "px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors",
-                activeTab === "analytics"
-                  ? "bg-gray-900 text-white"
-                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-              )}
-            >
-              통계
-            </button>
+            {(["consultations", "intakes", "analytics"] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={cn(
+                  "px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors",
+                  activeTab === tab
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                )}
+              >
+                {tab === "consultations" ? "상담 신청" : tab === "intakes" ? "사전 확인서" : "통계"}
+                {tab === "intakes" && intakeCounts.new > 0 && (
+                  <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-bold bg-emerald-500 text-white rounded-full">
+                    {intakeCounts.new}
+                  </span>
+                )}
+              </button>
+            ))}
           </div>
           {activeTab === "consultations" && (
-            <button
-              onClick={fetchData}
-              disabled={loading}
-              className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
-            >
-              <svg
-                className={cn("w-4 h-4", loading && "animate-spin")}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                />
-              </svg>
-              새로고침
-            </button>
+            <RefreshButton onClick={fetchData} isLoading={loading} />
+          )}
+          {activeTab === "intakes" && (
+            <RefreshButton onClick={fetchIntakes} isLoading={intakeLoading} />
           )}
         </div>
       </header>
@@ -272,6 +469,7 @@ export default function AdminPage() {
       <main className="max-w-6xl mx-auto px-4 md:px-6 py-6 isolate">
         {activeTab === "analytics" && <AnalyticsDashboard />}
 
+        {/* ─── 상담 신청 탭 ─── */}
         {activeTab === "consultations" && (
         <>
         {/* Stats */}
@@ -380,6 +578,92 @@ export default function AdminPage() {
                 </div>
               );
             })}
+          </div>
+        )}
+        </>
+        )}
+
+        {/* ─── 세부조사 탭 ─── */}
+        {activeTab === "intakes" && (
+        <>
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          {[
+            { label: "전체", value: intakeCounts.total },
+            { label: "신규", value: intakeCounts.new },
+            { label: "확인완료", value: intakeCounts.reviewed },
+          ].map((stat) => (
+            <div key={stat.label} className="bg-white rounded-xl border border-gray-200 p-4">
+              <p className="text-xs text-gray-500 mb-1">{stat.label}</p>
+              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+            </div>
+          ))}
+        </div>
+
+        {intakeLoading && intakes.length === 0 ? (
+          <div className="text-center py-20 text-gray-400">불러오는 중...</div>
+        ) : intakes.length === 0 ? (
+          <div className="text-center py-20 text-gray-400">
+            아직 사전 확인서 내역이 없습니다.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {intakes.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col"
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <IntakeStatusBadge status={item.status} />
+                    {item.consultationId && (
+                      <span className="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold rounded-full">
+                        상담 매칭됨
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs text-gray-400">{formatDate(item.createdAt)}</span>
+                </div>
+
+                {/* 기본 정보 */}
+                <div className="bg-gray-50 rounded-lg p-3.5 mb-3 space-y-2.5">
+                  <InfoRow label="이름" value={item.name} />
+                  <div className="flex gap-2">
+                    <span className="text-xs font-semibold text-gray-500 shrink-0 w-16">연락처</span>
+                    <a
+                      href={`tel:${item.phone}`}
+                      className="text-sm text-indigo-600 font-medium hover:underline"
+                    >
+                      {item.phone}
+                    </a>
+                  </div>
+                </div>
+
+                {/* 세부조사 내용 (펼침/접힘) */}
+                <div className="mb-4">
+                  <IntakeDetail item={item} />
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2 mt-auto pt-2">
+                  <select
+                    value={item.status}
+                    onChange={(e) => updateIntakeStatus(item.id, e.target.value)}
+                    className="flex-1 h-9 text-sm border border-gray-300 rounded-lg px-2 bg-white"
+                  >
+                    <option value="new">신규</option>
+                    <option value="reviewed">확인완료</option>
+                  </select>
+                  <button
+                    onClick={() => deleteIntake(item.id)}
+                    className="h-9 px-3 text-sm text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
+                  >
+                    삭제
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
         </>
