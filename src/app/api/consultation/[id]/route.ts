@@ -21,7 +21,7 @@ export async function PATCH(
     const body = await request.json();
     const { status } = body;
 
-    const validStatuses = ["new", "contacted", "completed"];
+    const validStatuses = ["new", "intake-sent", "quote-sent", "contracted", "in-progress", "done", "cancelled", "on-hold"];
     if (!status || !validStatuses.includes(status)) {
       return NextResponse.json(
         { error: "유효하지 않은 상태입니다." },

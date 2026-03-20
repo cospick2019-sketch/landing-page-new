@@ -27,7 +27,7 @@ interface Consultation {
   purpose: string;
   timeline: string;
   extra: string;
-  status: "new" | "contacted" | "completed";
+  status: "new" | "intake-sent" | "quote-sent" | "contracted" | "in-progress" | "done" | "cancelled" | "on-hold";
   createdAt: string | null;
 }
 
@@ -54,9 +54,14 @@ interface Intake {
 }
 
 const STATUS_MAP = {
-  new: { label: "신규", bg: "bg-blue-100 text-blue-700" },
-  contacted: { label: "연락완료", bg: "bg-amber-100 text-amber-700" },
-  completed: { label: "완료", bg: "bg-green-100 text-green-700" },
+  "new": { label: "신규", bg: "bg-blue-100 text-blue-700" },
+  "intake-sent": { label: "확인서 발송", bg: "bg-violet-100 text-violet-700" },
+  "quote-sent": { label: "견적 발송", bg: "bg-amber-100 text-amber-700" },
+  "contracted": { label: "계약완료", bg: "bg-emerald-100 text-emerald-700" },
+  "in-progress": { label: "진행중", bg: "bg-indigo-100 text-indigo-700" },
+  "done": { label: "제작완료", bg: "bg-green-100 text-green-700" },
+  "cancelled": { label: "취소", bg: "bg-red-100 text-red-600" },
+  "on-hold": { label: "보류", bg: "bg-gray-100 text-gray-600" },
 } as const;
 
 const INTAKE_STATUS_MAP = {
@@ -387,8 +392,13 @@ export default function AdminPage() {
   const counts = {
     total: data.length,
     new: data.filter((d) => d.status === "new").length,
-    contacted: data.filter((d) => d.status === "contacted").length,
-    completed: data.filter((d) => d.status === "completed").length,
+    "intake-sent": data.filter((d) => d.status === "intake-sent").length,
+    "quote-sent": data.filter((d) => d.status === "quote-sent").length,
+    contracted: data.filter((d) => d.status === "contracted").length,
+    "in-progress": data.filter((d) => d.status === "in-progress").length,
+    done: data.filter((d) => d.status === "done").length,
+    cancelled: data.filter((d) => d.status === "cancelled").length,
+    "on-hold": data.filter((d) => d.status === "on-hold").length,
   };
 
   const intakeCounts = {
@@ -473,16 +483,20 @@ export default function AdminPage() {
         {activeTab === "consultations" && (
         <>
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-4 md:grid-cols-8 gap-2 mb-6">
           {[
-            { label: "전체", value: counts.total, color: "bg-gray-900 text-white" },
-            { label: "신규", value: counts.new, color: "bg-blue-100 text-blue-700" },
-            { label: "연락완료", value: counts.contacted, color: "bg-amber-100 text-amber-700" },
-            { label: "완료", value: counts.completed, color: "bg-green-100 text-green-700" },
+            { label: "전체", value: counts.total },
+            { label: "신규", value: counts.new },
+            { label: "확인서", value: counts["intake-sent"] },
+            { label: "견적", value: counts["quote-sent"] },
+            { label: "계약", value: counts.contracted },
+            { label: "진행중", value: counts["in-progress"] },
+            { label: "완료", value: counts.done },
+            { label: "보류/취소", value: counts["on-hold"] + counts.cancelled },
           ].map((stat) => (
-            <div key={stat.label} className="bg-white rounded-xl border border-gray-200 p-4">
-              <p className="text-xs text-gray-500 mb-1">{stat.label}</p>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+            <div key={stat.label} className="bg-white rounded-xl border border-gray-200 p-3 text-center">
+              <p className="text-[10px] text-gray-500 mb-0.5">{stat.label}</p>
+              <p className="text-xl font-bold text-gray-900">{stat.value}</p>
             </div>
           ))}
         </div>
@@ -565,8 +579,13 @@ export default function AdminPage() {
                       className="flex-1 h-9 text-sm border border-gray-300 rounded-lg px-2 bg-white"
                     >
                       <option value="new">신규</option>
-                      <option value="contacted">연락완료</option>
-                      <option value="completed">완료</option>
+                      <option value="intake-sent">확인서 발송</option>
+                      <option value="quote-sent">견적 발송</option>
+                      <option value="contracted">계약완료</option>
+                      <option value="in-progress">진행중</option>
+                      <option value="done">제작완료</option>
+                      <option value="cancelled">취소</option>
+                      <option value="on-hold">보류</option>
                     </select>
                     <button
                       onClick={() => deleteSubmission(item.id)}
