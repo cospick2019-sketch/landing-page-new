@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useConsultation } from "@/components/consultation/ConsultationContext";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
 
 export default function Footer() {
-  const { open } = useConsultation();
   return (
     <footer className="relative py-12 md:py-16 bg-[#050711] border-t border-white/5">
       <div className="max-w-7xl mx-auto px-5 md:px-6">
@@ -23,7 +22,7 @@ export default function Footer() {
           <div className="flex flex-wrap gap-4 md:gap-6">
             <Link href="/terms" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">이용약관</Link>
             <Link href="/privacy" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">개인정보처리방침</Link>
-            <button type="button" onClick={open} className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors cursor-pointer">문의하기</button>
+            <button type="button" onClick={() => window.open(KAKAO_CHAT_URL, "_blank")} className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors cursor-pointer">문의하기</button>
             <a href="http://pf.kakao.com/_DLuZX/chat" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">카카오톡 상담</a>
           </div>
         </div>

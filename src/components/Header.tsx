@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useConsultation } from "@/components/consultation/ConsultationContext";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
 
 const NAV_ITEMS = [
   { label: "서비스 소개", href: "/#solution" },
@@ -16,7 +16,6 @@ const NAV_ITEMS = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { open } = useConsultation();
   const pathname = usePathname();
   const isHome = pathname === "/";
   const showDark = scrolled || !isHome;
@@ -151,7 +150,7 @@ export default function Header() {
 
         {/* 우측: CTA 버튼 */}
         <button
-          onClick={open}
+          onClick={() => window.open(KAKAO_CHAT_URL, "_blank")}
           className={cn(
             "hidden md:inline-flex ml-auto items-center text-sm font-bold h-10 px-5 rounded-full transition-colors duration-150 shadow-sm",
             showDark
@@ -215,7 +214,7 @@ export default function Header() {
             <button
               onClick={() => {
                 setMobileOpen(false);
-                open();
+                window.open(KAKAO_CHAT_URL, "_blank");
               }}
               className="mt-2 inline-flex items-center justify-center text-sm font-bold h-10 px-4 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition-colors shadow-sm"
             >

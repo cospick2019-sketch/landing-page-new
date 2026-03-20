@@ -5,6 +5,9 @@ import { useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard";
 import {
+  SITE_TYPES_MAP,
+  DESIGN_CONCEPTS_MAP,
+  TIMELINES_MAP,
   DESIRED_ACTIONS_MAP,
   PAGE_COUNTS_MAP,
   SECTIONS_MAP,
@@ -36,6 +39,10 @@ interface Intake {
   name: string;
   phone: string;
   consultationId: string | null;
+  industry: string;
+  company: string;
+  siteType: string;
+  designConcept: string;
   productDetail: string;
   targetCustomer: string;
   refSites: string[];
@@ -49,13 +56,15 @@ interface Intake {
   hasLogo: string;
   copywriting: string;
   hasAssets: string;
+  timeline: string;
+  extra: string;
   status: "new" | "reviewed";
   createdAt: string | null;
 }
 
 const STATUS_MAP: Record<string, { label: string; bg: string }> = {
   "new": { label: "신규", bg: "bg-blue-100 text-blue-700" },
-  "intake-sent": { label: "확인서 발송", bg: "bg-violet-100 text-violet-700" },
+  "intake-sent": { label: "폼 발송", bg: "bg-violet-100 text-violet-700" },
   "quote-sent": { label: "견적 발송", bg: "bg-amber-100 text-amber-700" },
   "contracted": { label: "계약완료", bg: "bg-emerald-100 text-emerald-700" },
   "in-progress": { label: "진행중", bg: "bg-indigo-100 text-indigo-700" },
@@ -224,6 +233,10 @@ function IntakeDetail({ item }: { item: Intake }) {
 
       {open && (
         <div className="mt-3 bg-gray-50 rounded-lg p-3.5 space-y-2.5">
+          <InfoRow label="업종" value={item.industry} />
+          <InfoRow label="업체명" value={item.company} />
+          <InfoRow label="사이트유형" value={SITE_TYPES_MAP[item.siteType] || item.siteType} />
+          <InfoRow label="디자인컨셉" value={DESIGN_CONCEPTS_MAP[item.designConcept] || item.designConcept} />
           <InfoRow label="핵심상품" value={item.productDetail} />
           <InfoRow label="타겟고객" value={item.targetCustomer} />
           <div className="flex gap-2">
@@ -256,6 +269,15 @@ function IntakeDetail({ item }: { item: Intake }) {
           <InfoRow label="로고" value={LOGO_OPTIONS_MAP[item.hasLogo] || item.hasLogo} />
           <InfoRow label="카피" value={COPYWRITING_OPTIONS_MAP[item.copywriting] || item.copywriting} />
           <InfoRow label="보유소재" value={ASSETS_OPTIONS_MAP[item.hasAssets] || item.hasAssets} />
+          <InfoRow label="희망기간" value={TIMELINES_MAP[item.timeline] || item.timeline} />
+          <div className="flex gap-2">
+            <span className="text-xs font-semibold text-gray-500 shrink-0 w-16">추가요청</span>
+            {item.extra?.trim() ? (
+              <p className="text-sm text-gray-800 whitespace-pre-wrap">{item.extra}</p>
+            ) : (
+              <span className="text-sm text-gray-300">-</span>
+            )}
+          </div>
         </div>
       )}
     </div>
@@ -461,7 +483,7 @@ export default function AdminPage() {
                     : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
                 )}
               >
-                {tab === "consultations" ? "상담 신청" : tab === "intakes" ? "사전 확인서" : "통계"}
+                {tab === "consultations" ? "상담 신청" : tab === "intakes" ? "견적 신청" : "통계"}
                 {tab === "intakes" && intakeCounts.new > 0 && (
                   <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-bold bg-emerald-500 text-white rounded-full">
                     {intakeCounts.new}
@@ -490,7 +512,7 @@ export default function AdminPage() {
           {[
             { label: "전체", value: counts.total },
             { label: "신규", value: counts.new },
-            { label: "확인서", value: counts["intake-sent"] },
+            { label: "폼발송", value: counts["intake-sent"] },
             { label: "견적", value: counts["quote-sent"] },
             { label: "계약", value: counts.contracted },
             { label: "진행중", value: counts["in-progress"] },
@@ -582,7 +604,7 @@ export default function AdminPage() {
                       className="flex-1 h-9 text-sm border border-gray-300 rounded-lg px-2 bg-white"
                     >
                       <option value="new">신규</option>
-                      <option value="intake-sent">확인서 발송</option>
+                      <option value="intake-sent">폼 발송</option>
                       <option value="quote-sent">견적 발송</option>
                       <option value="contracted">계약완료</option>
                       <option value="in-progress">진행중</option>
@@ -605,7 +627,7 @@ export default function AdminPage() {
         </>
         )}
 
-        {/* ─── 세부조사 탭 ─── */}
+        {/* ─── 견적 신청 탭 ─── */}
         {activeTab === "intakes" && (
         <>
         {/* Stats */}
@@ -626,7 +648,7 @@ export default function AdminPage() {
           <div className="text-center py-20 text-gray-400">불러오는 중...</div>
         ) : intakes.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
-            아직 사전 확인서 내역이 없습니다.
+            아직 견적 신청 내역이 없습니다.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -660,9 +682,11 @@ export default function AdminPage() {
                       {item.phone}
                     </a>
                   </div>
+                  <InfoRow label="업체명" value={item.company} />
+                  <InfoRow label="업종" value={item.industry} />
                 </div>
 
-                {/* 세부조사 내용 (펼침/접힘) */}
+                {/* 신청 내용 (펼침/접힘) */}
                 <div className="mb-4">
                   <IntakeDetail item={item} />
                 </div>

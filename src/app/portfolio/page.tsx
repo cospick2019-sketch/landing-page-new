@@ -2,8 +2,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FinalCtaSection from "@/components/sections/FinalCtaSection";
 import PortfolioShowcase from "@/components/portfolio/PortfolioShowcase";
-import { ConsultationProvider } from "@/components/consultation/ConsultationContext";
-import ConsultationForm from "@/components/consultation/ConsultationForm";
 
 export const metadata = {
   title: "포트폴리오",
@@ -18,14 +16,13 @@ export const metadata = {
 
 export default function PortfolioPage() {
   return (
-    <ConsultationProvider>
+    <>
       <Header />
       <main className="bg-[#030513]">
         <PortfolioShowcase />
         <FinalCtaSection />
       </main>
       <Footer />
-      <ConsultationForm />
-    </ConsultationProvider>
+    </>
   );
 }

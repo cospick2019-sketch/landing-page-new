@@ -6,7 +6,7 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
-import { useConsultation } from "@/components/consultation/ConsultationContext";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
 
 function CheckIcon({ className }: { className?: string }) {
   return (
@@ -165,7 +165,6 @@ function PricingCard({
 }
 
 export default function PricingSection() {
-  const { open } = useConsultation();
   return (
     <section
       id="pricing"
@@ -211,7 +210,7 @@ export default function PricingSection() {
               key={plan.name}
               plan={plan}
               index={i}
-              onCtaClick={open}
+              onCtaClick={() => window.open(KAKAO_CHAT_URL, "_blank")}
             />
           ))}
         </div>

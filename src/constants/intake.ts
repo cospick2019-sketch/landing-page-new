@@ -1,3 +1,25 @@
+export const SITE_TYPES = [
+  { value: "landing", label: "랜딩형 홈페이지", desc: "한 페이지에 모든 정보를 담는 일자 형태" },
+  { value: "brand", label: "브랜드형 홈페이지", desc: "다양한 페이지로 구성된 브랜드 중심 유형" },
+] as const;
+
+export const DESIGN_CONCEPTS = [
+  { value: "minimal", label: "심플/미니멀", desc: "깔끔하고 군더더기 없는" },
+  { value: "modern", label: "모던/트렌디", desc: "세련되고 감각적인" },
+  { value: "premium", label: "고급/프리미엄", desc: "럭셔리하고 격조 있는" },
+  { value: "friendly", label: "친근/캐주얼", desc: "따뜻하고 편안한" },
+  { value: "bold", label: "강렬/임팩트", desc: "눈에 확 띄는 파워풀한" },
+  { value: "natural", label: "자연/감성", desc: "내추럴하고 감성적인" },
+] as const;
+
+export const TIMELINES = [
+  { value: "1주 이내", label: "1주 이내" },
+  { value: "2주 이내", label: "2주 이내" },
+  { value: "1개월 이내", label: "1개월 이내" },
+  { value: "1개월 이상", label: "1개월 이상" },
+  { value: "미정", label: "미정" },
+] as const;
+
 export const DESIRED_ACTIONS = [
   { value: "call", label: "전화 문의" },
   { value: "kakao", label: "카톡 상담" },
@@ -60,6 +82,9 @@ export const ASSETS_OPTIONS = [
 ] as const;
 
 /* Label lookup maps for admin display */
+export const SITE_TYPES_MAP = Object.fromEntries(SITE_TYPES.map((o) => [o.value, o.label]));
+export const DESIGN_CONCEPTS_MAP = Object.fromEntries(DESIGN_CONCEPTS.map((o) => [o.value, o.label]));
+export const TIMELINES_MAP = Object.fromEntries(TIMELINES.map((o) => [o.value, o.label]));
 export const DESIRED_ACTIONS_MAP = Object.fromEntries(DESIRED_ACTIONS.map((o) => [o.value, o.label]));
 export const PAGE_COUNTS_MAP = Object.fromEntries(PAGE_COUNTS.map((o) => [o.value, o.label]));
 export const SECTIONS_MAP = Object.fromEntries(SECTIONS.map((o) => [o.value, o.label]));

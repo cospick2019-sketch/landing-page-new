@@ -9,10 +9,9 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { useConsultation } from "@/components/consultation/ConsultationContext";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
 
 export default function HeroSection() {
-  const { open } = useConsultation();
   return (
     <section
       id="hero"
@@ -120,7 +119,7 @@ export default function HeroSection() {
                 background={H.cta.hex}
                 borderRadius={ANIM.shimmer.borderRadius}
                 className="h-12 md:h-16 px-8 md:px-10 text-base md:text-lg font-semibold rounded-full mx-auto text-white"
-                onClick={open}
+                onClick={() => window.open(KAKAO_CHAT_URL, "_blank")}
               >
                 {HERO.cta}
               </ShimmerButton>

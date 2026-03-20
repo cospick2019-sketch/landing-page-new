@@ -27,16 +27,20 @@ async function sendAdminNotification(data: Record<string, unknown>) {
   const html = `
     <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:520px;margin:0 auto;padding:24px">
       <div style="background:#059669;color:#fff;padding:16px 20px;border-radius:12px 12px 0 0">
-        <h2 style="margin:0;font-size:18px">📋 새 사전 확인서가 접수되었습니다</h2>
+        <h2 style="margin:0;font-size:18px">📋 새 견적 신청이 접수되었습니다</h2>
         <p style="margin:4px 0 0;font-size:13px;opacity:0.85">${timeStr} (KST)</p>
       </div>
       <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">
         <table style="width:100%;border-collapse:collapse;font-size:14px">
           <tr><td style="padding:8px 0;color:#6b7280;width:80px;vertical-align:top">이름</td><td style="padding:8px 0;color:#111827;font-weight:600">${data.name}</td></tr>
           <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">연락처</td><td style="padding:8px 0;color:#059669;font-weight:600">${data.phone}</td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">업종</td><td style="padding:8px 0;color:#111827">${data.industry || "-"}</td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">업체명</td><td style="padding:8px 0;color:#111827">${data.company || "-"}</td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">사이트 유형</td><td style="padding:8px 0;color:#111827">${data.siteType || "-"}</td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">디자인 컨셉</td><td style="padding:8px 0;color:#111827">${data.designConcept || "-"}</td></tr>
           <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">핵심 상품</td><td style="padding:8px 0;color:#111827">${data.productDetail || "-"}</td></tr>
-          <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">타겟 고객</td><td style="padding:8px 0;color:#111827">${data.targetCustomer || "-"}</td></tr>
           <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">페이지 수</td><td style="padding:8px 0;color:#111827">${data.pageCount || "-"}</td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">희망 기간</td><td style="padding:8px 0;color:#111827">${data.timeline || "-"}</td></tr>
         </table>
         <div style="margin-top:16px;text-align:center">
           <a href="https://landing-pick.vercel.app/admin" style="display:inline-block;background:#059669;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600">관리자 페이지에서 확인하기</a>
@@ -54,7 +58,7 @@ async function sendAdminNotification(data: Record<string, unknown>) {
     await transporter.sendMail({
       from: `"랜딩픽 알림" <${gmailUser}>`,
       to: adminEmail,
-      subject: `[랜딩픽] 새 사전 확인서 — ${data.name} (${data.phone})`,
+      subject: `[랜딩픽] 새 견적 신청 — ${data.name} (${data.phone})`,
       html,
     });
   } catch (err) {
@@ -96,6 +100,10 @@ export async function POST(request: NextRequest) {
       name: body.name,
       phone: body.phone.replace(/[^0-9]/g, ""),
       consultationId,
+      industry: body.industry || "",
+      company: body.company || "",
+      siteType: body.siteType || "",
+      designConcept: body.designConcept || "",
       productDetail: body.productDetail || "",
       targetCustomer: body.targetCustomer || "",
       refSites: (body.refSites || []).filter((s: string) => s.trim()),
@@ -109,6 +117,8 @@ export async function POST(request: NextRequest) {
       hasLogo: body.hasLogo || "",
       copywriting: body.copywriting || "",
       hasAssets: body.hasAssets || "",
+      timeline: body.timeline || "",
+      extra: body.extra || "",
       status: "new",
     };
 

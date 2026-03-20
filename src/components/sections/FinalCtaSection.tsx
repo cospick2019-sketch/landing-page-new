@@ -5,10 +5,9 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Particles } from "@/components/ui/particles";
 import { ShieldCheck, ArrowRight } from "lucide-react";
-import { useConsultation } from "@/components/consultation/ConsultationContext";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
 
 export default function FinalCtaSection() {
-  const { open } = useConsultation();
   return (
     <section id="cta" className="relative py-16 md:py-48 lg:py-56 bg-[#030513] overflow-hidden flex flex-col items-center justify-center min-h-[60vh] md:min-h-[85vh]">
 
@@ -68,7 +67,7 @@ export default function FinalCtaSection() {
 
           <button
             type="button"
-            onClick={open}
+            onClick={() => window.open(KAKAO_CHAT_URL, "_blank")}
             className="group relative inline-flex justify-center items-center py-4 px-8 md:py-5 md:px-14 border border-transparent text-lg md:text-2xl font-bold rounded-2xl text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-[#030513] transition-all duration-300 overflow-hidden shadow-[0_0_30px_rgba(99,102,241,0.3)] hover:shadow-[0_0_50px_rgba(99,102,241,0.5)] hover:-translate-y-1"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0" />

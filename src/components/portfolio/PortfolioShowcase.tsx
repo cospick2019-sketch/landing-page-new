@@ -1,8 +1,9 @@
 "use client";
 
 import { BlurFade } from "@/components/ui/blur-fade";
-import { useConsultation } from "@/components/consultation/ConsultationContext";
 import { ArrowRight, ExternalLink } from "lucide-react";
+
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
 
 const PORTFOLIO_ITEMS = [
     { name: "샴푸", url: "https://smartstore.naver.com/mirr-n/products/4240937675", image: "/portfolio/mirrn-shampoo.JPEG" },
@@ -24,7 +25,6 @@ const PORTFOLIO_ITEMS = [
 ];
 
 export default function PortfolioShowcase() {
-    const { open } = useConsultation();
 
     return (
         <div className="relative w-full bg-[#030513] pt-32 pb-20 md:pb-32">
@@ -103,7 +103,7 @@ export default function PortfolioShowcase() {
                             <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded border border-indigo-400/50 opacity-40 group-hover/btn:opacity-100 transition duration-500 blur-md" />
                             <button
                                 type="button"
-                                onClick={open}
+                                onClick={() => window.open(KAKAO_CHAT_URL, "_blank")}
                                 className="relative inline-flex items-center justify-center h-16 px-10 text-lg font-bold bg-indigo-600 text-white hover:bg-indigo-500 transition-all rounded shadow-xl hover:shadow-indigo-500/50 cursor-pointer"
                             >
                                 상담 신청하기

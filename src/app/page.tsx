@@ -6,9 +6,6 @@ import HeroSection from "@/components/hero/HeroSection";
 import ProblemSection from "@/components/sections/ProblemSection";
 import SolutionSection from "@/components/sections/SolutionSection";
 import ServiceMarquee from "@/components/visual-breaks/ServiceMarquee";
-import { ConsultationProvider } from "@/components/consultation/ConsultationContext";
-import ConsultationForm from "@/components/consultation/ConsultationForm";
-
 const MarketingSection = dynamic(() => import("@/components/sections/MarketingSection"), { ssr: false });
 const ProofSection = dynamic(() => import("@/components/sections/ProofSection"), { ssr: false });
 const GuaranteeSection = dynamic(() => import("@/components/sections/GuaranteeSection"), { ssr: false });
@@ -18,7 +15,7 @@ const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
 
 export default function Home() {
   return (
-    <ConsultationProvider>
+    <>
       <Header />
       <main>
         <HeroSection />
@@ -32,7 +29,6 @@ export default function Home() {
         <FinalCtaSection />
       </main>
       <Footer />
-      <ConsultationForm />
-    </ConsultationProvider>
+    </>
   );
 }

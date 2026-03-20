@@ -2,12 +2,10 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ConsultationProvider } from "@/components/consultation/ConsultationContext";
-import ConsultationForm from "@/components/consultation/ConsultationForm";
 
 export default function PrivacyPage() {
   return (
-    <ConsultationProvider>
+    <>
       <Header />
       <main className="pt-14 md:pt-16 bg-white min-h-screen">
         <article className="max-w-3xl mx-auto px-4 md:px-6 py-12 md:py-20">
@@ -246,7 +244,6 @@ export default function PrivacyPage() {
         </article>
       </main>
       <Footer />
-      <ConsultationForm />
-    </ConsultationProvider>
+    </>
   );
 }

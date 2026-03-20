@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import {
+  SITE_TYPES,
+  DESIGN_CONCEPTS,
   DESIRED_ACTIONS,
   PAGE_COUNTS,
   SECTIONS,
@@ -12,11 +14,16 @@ import {
   LOGO_OPTIONS,
   COPYWRITING_OPTIONS,
   ASSETS_OPTIONS,
+  TIMELINES,
 } from "@/constants/intake";
 
 interface IntakeData {
   name: string;
   phone: string;
+  industry: string;
+  company: string;
+  siteType: string;
+  designConcept: string;
   productDetail: string;
   targetCustomer: string;
   refSites: [string, string, string];
@@ -30,11 +37,17 @@ interface IntakeData {
   hasLogo: string;
   copywriting: string;
   hasAssets: string;
+  timeline: string;
+  extra: string;
 }
 
 const INITIAL: IntakeData = {
   name: "",
   phone: "",
+  industry: "",
+  company: "",
+  siteType: "",
+  designConcept: "",
   productDetail: "",
   targetCustomer: "",
   refSites: ["", "", ""],
@@ -48,6 +61,8 @@ const INITIAL: IntakeData = {
   hasLogo: "",
   copywriting: "",
   hasAssets: "",
+  timeline: "",
+  extra: "",
 };
 
 /* ─── Reusable field components ─── */
@@ -237,7 +252,7 @@ export default function IntakeForm() {
       {/* Header */}
       <div>
         <p className="text-sm font-bold text-indigo-600 mb-1">LANDING PICK</p>
-        <h1 className="text-2xl font-bold text-gray-900">맞춤 견적을 위한 사전 확인서</h1>
+        <h1 className="text-2xl font-bold text-gray-900">맞춤 견적 신청</h1>
         <p className="mt-2 text-sm text-gray-500 leading-relaxed">
           아래 내용을 작성해주시면 더 정확한 견적 안내가 가능합니다.<br />
           모든 항목이 필수는 아니지만, 자세히 작성할수록 좋습니다.
@@ -246,8 +261,7 @@ export default function IntakeForm() {
 
       {/* 기본 정보 */}
       <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-5">
-        <p className="text-sm font-bold text-indigo-700 mb-1">확인용 정보</p>
-        <p className="text-xs text-indigo-500 mb-4">상담 신청 시 입력하신 정보를 한 번 더 입력해주세요.</p>
+        <p className="text-sm font-bold text-indigo-700 mb-4">기본 정보</p>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="text-xs font-semibold text-gray-600 mb-1 block">성함 *</label>
@@ -273,13 +287,89 @@ export default function IntakeForm() {
               className="w-full h-10 px-3 rounded-lg border border-indigo-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none text-sm bg-white"
             />
           </div>
+          <div>
+            <label className="text-xs font-semibold text-gray-600 mb-1 block">업종</label>
+            <input
+              type="text"
+              placeholder="예: 음식점, 쇼핑몰, 병원"
+              value={data.industry}
+              onChange={(e) => update({ industry: e.target.value })}
+              className="w-full h-10 px-3 rounded-lg border border-indigo-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none text-sm bg-white"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-gray-600 mb-1 block">업체명</label>
+            <input
+              type="text"
+              placeholder="업체명"
+              value={data.company}
+              onChange={(e) => update({ company: e.target.value })}
+              className="w-full h-10 px-3 rounded-lg border border-indigo-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none text-sm bg-white"
+            />
+          </div>
         </div>
         {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
       </div>
 
-      {/* 1. 핵심 상품/서비스 */}
+      {/* 1. 사이트 유형 */}
       <div>
-        <SectionTitle number={1} title="소개할 핵심 상품이나 서비스는 무엇인가요?" />
+        <SectionTitle number={1} title="어떤 유형의 홈페이지를 만들고 싶으세요?" />
+        <div className="grid grid-cols-2 gap-3">
+          {SITE_TYPES.map((type) => {
+            const selected = data.siteType === type.value;
+            return (
+              <button
+                key={type.value}
+                type="button"
+                onClick={() => update({ siteType: type.value })}
+                className={cn(
+                  "p-4 rounded-xl border-2 text-left transition-all duration-200 cursor-pointer",
+                  selected
+                    ? "border-indigo-600 bg-indigo-50/50 shadow-sm"
+                    : "border-gray-200 hover:border-gray-300 bg-white"
+                )}
+              >
+                <p className={cn("text-sm font-bold", selected ? "text-indigo-600" : "text-gray-900")}>
+                  {type.label}
+                </p>
+                <p className="mt-1 text-xs text-gray-500 leading-relaxed">{type.desc}</p>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 2. 디자인 컨셉 */}
+      <div>
+        <SectionTitle number={2} title="원하시는 디자인 느낌을 선택해주세요" />
+        <div className="grid grid-cols-2 gap-3">
+          {DESIGN_CONCEPTS.map((concept) => {
+            const selected = data.designConcept === concept.value;
+            return (
+              <button
+                key={concept.value}
+                type="button"
+                onClick={() => update({ designConcept: concept.value })}
+                className={cn(
+                  "p-4 rounded-xl border-2 text-center transition-all duration-200 cursor-pointer",
+                  selected
+                    ? "border-indigo-600 bg-indigo-50/50 shadow-sm"
+                    : "border-gray-200 hover:border-gray-300 bg-white"
+                )}
+              >
+                <p className={cn("text-sm font-bold", selected ? "text-indigo-600" : "text-gray-900")}>
+                  {concept.label}
+                </p>
+                <p className="mt-1 text-xs text-gray-500">{concept.desc}</p>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 3. 핵심 상품/서비스 */}
+      <div>
+        <SectionTitle number={3} title="소개할 핵심 상품이나 서비스는 무엇인가요?" />
         <textarea
           placeholder="랜딩페이지에서 소개할 핵심 상품이나 서비스를 자세히 알려주세요."
           value={data.productDetail}
@@ -289,9 +379,9 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 2. 타겟 고객 */}
+      {/* 4. 타겟 고객 */}
       <div>
-        <SectionTitle number={2} title="주 고객층은 누구인가요?" />
+        <SectionTitle number={4} title="주 고객층은 누구인가요?" />
         <textarea
           placeholder="연령대, 성별, 직업 등 타겟 고객에 대해 알려주세요."
           value={data.targetCustomer}
@@ -301,9 +391,9 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 3. 참고 사이트 */}
+      {/* 5. 참고 사이트 */}
       <div>
-        <SectionTitle number={3} title="참고하고 싶은 사이트가 있나요?" />
+        <SectionTitle number={5} title="참고하고 싶은 사이트가 있나요?" />
         <div className="space-y-2">
           {[0, 1, 2].map((i) => (
             <input
@@ -318,9 +408,9 @@ export default function IntakeForm() {
         </div>
       </div>
 
-      {/* 4. 원하는 고객 행동 */}
+      {/* 6. 원하는 고객 행동 */}
       <div>
-        <SectionTitle number={4} title="홈페이지 방문자가 무엇을 하길 원하세요?" />
+        <SectionTitle number={6} title="홈페이지 방문자가 무엇을 하길 원하세요?" />
         <p className="text-xs text-gray-400 mb-3 -mt-2">복수 선택 가능</p>
         <CheckboxGroup
           options={DESIRED_ACTIONS}
@@ -329,9 +419,9 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 5. 기존 사이트 */}
+      {/* 7. 기존 사이트 */}
       <div>
-        <SectionTitle number={5} title="이미 운영 중인 사이트가 있나요?" />
+        <SectionTitle number={7} title="이미 운영 중인 사이트가 있나요?" />
         <input
           type="url"
           placeholder="https://기존사이트.com (없으면 비워두세요)"
@@ -341,9 +431,9 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 6. 페이지 수 */}
+      {/* 8. 페이지 수 */}
       <div>
-        <SectionTitle number={6} title="페이지는 몇 페이지 정도 생각하세요?" />
+        <SectionTitle number={8} title="페이지는 몇 페이지 정도 생각하세요?" />
         <RadioGroup
           options={PAGE_COUNTS}
           selected={data.pageCount}
@@ -351,9 +441,9 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 7. 필요 섹션 */}
+      {/* 9. 필요 섹션 */}
       <div>
-        <SectionTitle number={7} title="필요한 섹션을 선택해주세요" />
+        <SectionTitle number={9} title="필요한 섹션을 선택해주세요" />
         <p className="text-xs text-gray-400 mb-3 -mt-2">복수 선택 가능</p>
         <CheckboxGroup
           options={SECTIONS}
@@ -362,9 +452,9 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 8. 필수 기능 */}
+      {/* 10. 필수 기능 */}
       <div>
-        <SectionTitle number={8} title="필요한 기능을 선택해주세요" />
+        <SectionTitle number={10} title="필요한 기능을 선택해주세요" />
         <p className="text-xs text-gray-400 mb-3 -mt-2">복수 선택 가능</p>
         <CheckboxGroup
           options={REQUIRED_FEATURES}
@@ -373,9 +463,9 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 9. 추가 기능 */}
+      {/* 11. 추가 기능 */}
       <div>
-        <SectionTitle number={9} title="추가 기능이 필요하신가요?" />
+        <SectionTitle number={11} title="추가 기능이 필요하신가요?" />
         <p className="text-xs text-gray-400 mb-3 -mt-2">해당하는 항목을 모두 선택해주세요</p>
         <CheckboxGroup
           options={ADDITIONAL_FEATURES}
@@ -384,9 +474,9 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 10. 브랜드 색상 */}
+      {/* 12. 브랜드 색상 */}
       <div>
-        <SectionTitle number={10} title="브랜드 색상이 있나요?" />
+        <SectionTitle number={12} title="브랜드 색상이 있나요?" />
         <input
           type="text"
           placeholder="예: 파란색, 빨간색 계열 (없으면 선호 색상)"
@@ -396,9 +486,9 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 11. 로고 */}
+      {/* 13. 로고 */}
       <div>
-        <SectionTitle number={11} title="로고 파일을 갖고 계신가요?" />
+        <SectionTitle number={13} title="로고 파일을 갖고 계신가요?" />
         <RadioGroup
           options={LOGO_OPTIONS}
           selected={data.hasLogo}
@@ -406,9 +496,9 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 12. 카피 */}
+      {/* 14. 카피 */}
       <div>
-        <SectionTitle number={12} title="소개 문구는 직접 준비하시나요?" />
+        <SectionTitle number={14} title="소개 문구는 직접 준비하시나요?" />
         <RadioGroup
           options={COPYWRITING_OPTIONS}
           selected={data.copywriting}
@@ -416,13 +506,35 @@ export default function IntakeForm() {
         />
       </div>
 
-      {/* 13. 소재 */}
+      {/* 15. 소재 */}
       <div>
-        <SectionTitle number={13} title="상품 사진, 매장 사진 등 보유 소재가 있나요?" />
+        <SectionTitle number={15} title="상품 사진, 매장 사진 등 보유 소재가 있나요?" />
         <RadioGroup
           options={ASSETS_OPTIONS}
           selected={data.hasAssets}
           onChange={(v) => update({ hasAssets: v })}
+        />
+      </div>
+
+      {/* 16. 제작 희망기간 */}
+      <div>
+        <SectionTitle number={16} title="제작 희망 기간이 있으신가요?" />
+        <RadioGroup
+          options={TIMELINES}
+          selected={data.timeline}
+          onChange={(v) => update({ timeline: v })}
+        />
+      </div>
+
+      {/* 17. 추가 요청 */}
+      <div>
+        <SectionTitle number={17} title="그 외 요청사항이 있으신가요?" />
+        <textarea
+          placeholder="추가로 원하시는 기능이나 요청사항을 자유롭게 적어주세요."
+          value={data.extra}
+          onChange={(e) => update({ extra: e.target.value })}
+          rows={3}
+          className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none text-sm bg-white resize-none"
         />
       </div>
 
