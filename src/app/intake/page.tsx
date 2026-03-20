@@ -11,6 +11,14 @@ export const metadata: Metadata = {
     siteName: "Landing Pick",
     locale: "ko_KR",
     type: "website",
+    images: [
+      {
+        url: "/intake-og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Landing Pick — 견적 안내를 위한 사전 확인서",
+      },
+    ],
   },
 };
 
