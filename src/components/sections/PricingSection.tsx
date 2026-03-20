@@ -6,7 +6,7 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
 
 function CheckIcon({ className }: { className?: string }) {
   return (

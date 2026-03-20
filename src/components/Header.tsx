@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
 
 const NAV_ITEMS = [
   { label: "서비스 소개", href: "/#solution" },

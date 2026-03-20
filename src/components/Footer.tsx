@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
 
 export default function Footer() {
   return (
@@ -23,7 +23,7 @@ export default function Footer() {
             <Link href="/terms" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">이용약관</Link>
             <Link href="/privacy" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">개인정보처리방침</Link>
             <button type="button" onClick={() => window.open(KAKAO_CHAT_URL, "_blank")} className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors cursor-pointer">문의하기</button>
-            <a href="http://pf.kakao.com/_DLuZX/chat" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">카카오톡 상담</a>
+            <a href="http://pf.kakao.com/_DLuZX/chat?text=견적문의" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm font-medium text-gray-400 hover:text-white transition-colors">카카오톡 상담</a>
           </div>
         </div>
 

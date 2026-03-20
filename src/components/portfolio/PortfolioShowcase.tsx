@@ -3,7 +3,7 @@
 import { BlurFade } from "@/components/ui/blur-fade";
 import { ArrowRight, ExternalLink } from "lucide-react";
 
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
 
 const PORTFOLIO_ITEMS = [
     { name: "샴푸", url: "https://smartstore.naver.com/mirr-n/products/4240937675", image: "/portfolio/mirrn-shampoo.JPEG" },

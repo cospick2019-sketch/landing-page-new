@@ -9,7 +9,7 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { BlurFade } from "@/components/ui/blur-fade";
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
 
 export default function HeroSection() {
   return (

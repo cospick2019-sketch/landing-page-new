@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat";
+const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
 const KAKAO_CHANNEL_URL = "http://pf.kakao.com/_DLuZX";
 
 export default function KakaoFloatingButton() {

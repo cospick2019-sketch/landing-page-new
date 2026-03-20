@@ -324,7 +324,7 @@ function SuccessScreen({ onClose }: { onClose: () => void }) {
 
   const handleKakaoChat = () => {
     onClose();
-    window.open("http://pf.kakao.com/_DLuZX/chat", "_blank");
+    window.open("http://pf.kakao.com/_DLuZX/chat?text=견적문의", "_blank");
   };
 
   const handleCopy = async () => {
