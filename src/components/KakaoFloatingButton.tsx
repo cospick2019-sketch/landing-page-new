@@ -1,12 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
-const KAKAO_CHANNEL_URL = "http://pf.kakao.com/_DLuZX";
+const KAKAO_CHANNEL_ID = "_DLuZX";
+const KAKAO_CHAT_URL = `http://pf.kakao.com/${KAKAO_CHANNEL_ID}/chat`;
+const KAKAO_CHANNEL_URL = `http://pf.kakao.com/${KAKAO_CHANNEL_ID}`;
+
+declare global {
+  interface Window {
+    Kakao?: {
+      isInitialized: () => boolean;
+      Channel: {
+        chat: (options: { channelPublicId: string }) => void;
+      };
+    };
+  }
+}
+
+function isMobile() {
+  if (typeof window === "undefined") return false;
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
 
 export default function KakaoFloatingButton() {
   const [expanded, setExpanded] = useState(false);
+
+  const openChat = useCallback(() => {
+    if (isMobile()) {
+      window.open(KAKAO_CHAT_URL, "_blank");
+      return;
+    }
+    if (window.Kakao?.isInitialized()) {
+      window.Kakao.Channel.chat({ channelPublicId: KAKAO_CHANNEL_ID });
+    } else {
+      window.open(KAKAO_CHAT_URL, "_blank");
+    }
+  }, []);
 
   return (
     <div
@@ -23,10 +52,9 @@ export default function KakaoFloatingButton() {
     >
       {expanded && (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <a
-            href={KAKAO_CHAT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={openChat}
             style={{
               display: "flex",
               alignItems: "center",
@@ -37,9 +65,11 @@ export default function KakaoFloatingButton() {
               color: "#3C1E1E",
               fontSize: 14,
               fontWeight: 600,
-              textDecoration: "none",
               whiteSpace: "nowrap",
               boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+              border: "none",
+              cursor: "pointer",
+              fontFamily: "inherit",
             }}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -49,7 +79,7 @@ export default function KakaoFloatingButton() {
               />
             </svg>
             상담하기
-          </a>
+          </button>
           <a
             href={KAKAO_CHANNEL_URL}
             target="_blank"
