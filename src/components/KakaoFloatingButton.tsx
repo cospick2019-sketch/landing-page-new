@@ -30,9 +30,13 @@ export default function KakaoFloatingButton() {
       window.open(KAKAO_CHAT_URL, "_blank");
       return;
     }
-    if (window.Kakao?.isInitialized()) {
-      window.Kakao.Channel.chat({ channelPublicId: KAKAO_CHANNEL_ID });
-    } else {
+    try {
+      if (window.Kakao?.isInitialized() && window.Kakao.Channel) {
+        window.Kakao.Channel.chat({ channelPublicId: KAKAO_CHANNEL_ID });
+      } else {
+        window.open(KAKAO_CHAT_URL, "_blank");
+      }
+    } catch {
       window.open(KAKAO_CHAT_URL, "_blank");
     }
   }, []);
