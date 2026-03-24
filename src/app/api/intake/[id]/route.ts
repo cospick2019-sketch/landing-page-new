@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/firebase";
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
-
-const COLLECTION = "intakes";
+import { supabase } from "@/lib/supabase";
 
 function isAuthenticated(request: NextRequest) {
   return request.cookies.get("admin_session")?.value === "authenticated";
@@ -29,7 +26,13 @@ export async function PATCH(
       );
     }
 
-    await updateDoc(doc(db, COLLECTION, id), { status });
+    const { error } = await supabase
+      .from("intakes")
+      .update({ status })
+      .eq("id", id);
+
+    if (error) throw error;
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to update intake:", error);
@@ -50,7 +53,14 @@ export async function DELETE(
 
   try {
     const { id } = await params;
-    await deleteDoc(doc(db, COLLECTION, id));
+
+    const { error } = await supabase
+      .from("intakes")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to delete intake:", error);

@@ -1,19 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/firebase";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  Timestamp,
-  orderBy,
-} from "firebase/firestore";
+import { supabase } from "@/lib/supabase";
 
 interface PageviewDoc {
   path: string;
   ref: string;
   device: string;
-  ts: Date | undefined;
+  ts: string | null;
   vid?: string;
   sid?: string;
   utm_source?: string;
@@ -23,19 +15,16 @@ interface PageviewDoc {
 
 const KST_OFFSET = 9 * 60 * 60 * 1000; // UTC+9
 
-/** Convert a UTC Date to KST date string (YYYY-MM-DD) */
 function toKSTDateStr(d: Date): string {
   const kst = new Date(d.getTime() + KST_OFFSET);
   return `${kst.getUTCFullYear()}-${String(kst.getUTCMonth() + 1).padStart(2, "0")}-${String(kst.getUTCDate()).padStart(2, "0")}`;
 }
 
-/** Get KST hour (0-23) from a UTC Date */
 function toKSTHour(d: Date): number {
   const kst = new Date(d.getTime() + KST_OFFSET);
   return kst.getUTCHours();
 }
 
-/** Get "today 00:00:00 KST" as a UTC Date */
 function getKSTTodayStart(): Date {
   const now = new Date();
   const kst = new Date(now.getTime() + KST_OFFSET);
@@ -54,7 +43,6 @@ export async function GET(req: NextRequest) {
     const now = new Date();
     const todayStart = getKSTTodayStart();
 
-    // Parse date range from query params
     const fromParam = url.searchParams.get("from");
     const toParam = url.searchParams.get("to");
 
@@ -76,28 +64,26 @@ export async function GET(req: NextRequest) {
       toDate = new Date(now);
     }
 
-    const q = query(
-      collection(db, "pageviews"),
-      where("ts", ">=", Timestamp.fromDate(fromDate)),
-      where("ts", "<=", Timestamp.fromDate(toDate)),
-      orderBy("ts", "desc")
-    );
+    const { data: rows, error } = await supabase
+      .from("pageviews")
+      .select("*")
+      .gte("ts", fromDate.toISOString())
+      .lte("ts", toDate.toISOString())
+      .order("ts", { ascending: false });
 
-    const snap = await getDocs(q);
-    const docs: PageviewDoc[] = snap.docs.map((d) => {
-      const data = d.data();
-      return {
-        path: data.path as string,
-        ref: data.ref as string,
-        device: data.device as string,
-        ts: data.ts?.toDate?.() as Date | undefined,
-        vid: data.vid as string | undefined,
-        sid: data.sid as string | undefined,
-        utm_source: data.utm_source as string | undefined,
-        utm_medium: data.utm_medium as string | undefined,
-        utm_campaign: data.utm_campaign as string | undefined,
-      };
-    });
+    if (error) throw error;
+
+    const docs: PageviewDoc[] = (rows || []).map((row) => ({
+      path: row.path,
+      ref: row.ref,
+      device: row.device,
+      ts: row.ts,
+      vid: row.vid,
+      sid: row.sid,
+      utm_source: row.utm_source,
+      utm_medium: row.utm_medium,
+      utm_campaign: row.utm_campaign,
+    }));
 
     const weekStart = new Date(todayStart);
     weekStart.setDate(weekStart.getDate() - 7);
@@ -114,38 +100,30 @@ export async function GET(req: NextRequest) {
     const utmCampaigns: Record<string, number> = {};
 
     for (const doc of docs) {
-      const ts = doc.ts;
-      if (!ts) continue;
+      if (!doc.ts) continue;
+      const ts = new Date(doc.ts);
 
       const dateStr = toKSTDateStr(ts);
 
-      // Daily
       if (!dailyCounts[dateStr]) {
         dailyCounts[dateStr] = { views: 0, visitors: new Set() };
       }
       dailyCounts[dateStr].views++;
       if (doc.vid) dailyCounts[dateStr].visitors.add(doc.vid);
 
-      // Today / Week
       if (ts >= todayStart) todayViews++;
       if (ts >= weekStart) weekViews++;
 
-      // Unique
       if (doc.vid) uniqueVisitors.add(doc.vid);
       if (doc.sid) uniqueSessions.add(doc.sid);
 
-      // Pages
       pageCounts[doc.path] = (pageCounts[doc.path] || 0) + 1;
-
-      // Referrers
       refCounts[doc.ref] = (refCounts[doc.ref] || 0) + 1;
 
-      // Devices
       if (doc.device === "mobile" || doc.device === "desktop") {
         deviceCounts[doc.device]++;
       }
 
-      // UTM
       if (doc.utm_source) {
         utmSources[doc.utm_source] = (utmSources[doc.utm_source] || 0) + 1;
       }
@@ -154,7 +132,6 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // Build daily array for the full date range
     const daily = [];
     const dayMs = 86400000;
     const rangeStart = new Date(fromDate);
@@ -175,14 +152,14 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // Build hourly array for today
     const hourlyCounts: Record<number, { views: number; visitors: Set<string> }> = {};
     for (let h = 0; h < 24; h++) {
       hourlyCounts[h] = { views: 0, visitors: new Set() };
     }
     for (const doc of docs) {
-      const ts = doc.ts;
-      if (!ts || ts < todayStart) continue;
+      if (!doc.ts) continue;
+      const ts = new Date(doc.ts);
+      if (ts < todayStart) continue;
       const hour = toKSTHour(ts);
       hourlyCounts[hour].views++;
       if (doc.vid) hourlyCounts[hour].visitors.add(doc.vid);

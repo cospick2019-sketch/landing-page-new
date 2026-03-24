@@ -1,18 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/firebase";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  query as firestoreQuery,
-  where,
-  orderBy,
-  limit,
-  serverTimestamp,
-} from "firebase/firestore";
+import { supabase } from "@/lib/supabase";
 import nodemailer from "nodemailer";
-
-const COLLECTION = "intakes";
 
 async function sendAdminNotification(data: Record<string, unknown>) {
   const gmailUser = process.env.GMAIL_USER;
@@ -82,15 +70,15 @@ export async function POST(request: NextRequest) {
     let consultationId: string | null = null;
     try {
       const normalizedPhone = phone.replace(/[^0-9]/g, "");
-      const q = firestoreQuery(
-        collection(db, "consultations"),
-        where("phone", "==", normalizedPhone),
-        orderBy("createdAt", "desc"),
-        limit(1)
-      );
-      const snapshot = await getDocs(q);
-      if (!snapshot.empty) {
-        consultationId = snapshot.docs[0].id;
+      const { data: matched } = await supabase
+        .from("consultations")
+        .select("id")
+        .eq("phone", normalizedPhone)
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (matched && matched.length > 0) {
+        consultationId = matched[0].id;
       }
     } catch {
       // Matching is optional, continue without it
@@ -99,37 +87,50 @@ export async function POST(request: NextRequest) {
     const saveData = {
       name: body.name,
       phone: body.phone.replace(/[^0-9]/g, ""),
-      consultationId,
+      consultation_id: consultationId,
       industry: body.industry || "",
       company: body.company || "",
-      siteType: body.siteType || "",
-      designConcept: body.designConcept || "",
-      productDetail: body.productDetail || "",
-      targetCustomer: body.targetCustomer || "",
-      refSites: (body.refSites || []).filter((s: string) => s.trim()),
-      desiredActions: body.desiredActions || [],
-      existingWebsite: body.existingWebsite || "",
-      pageCount: body.pageCount || "",
+      site_type: body.siteType || "",
+      design_concept: body.designConcept || "",
+      product_detail: body.productDetail || "",
+      target_customer: body.targetCustomer || "",
+      ref_sites: (body.refSites || []).filter((s: string) => s.trim()),
+      desired_actions: body.desiredActions || [],
+      existing_website: body.existingWebsite || "",
+      page_count: body.pageCount || "",
       sections: body.sections || [],
-      requiredFeatures: body.requiredFeatures || [],
-      additionalFeatures: body.additionalFeatures || [],
-      brandColor: body.brandColor || "",
-      hasLogo: body.hasLogo || "",
+      required_features: body.requiredFeatures || [],
+      additional_features: body.additionalFeatures || [],
+      brand_color: body.brandColor || "",
+      has_logo: body.hasLogo || "",
       copywriting: body.copywriting || "",
-      hasAssets: body.hasAssets || "",
+      has_assets: body.hasAssets || "",
       timeline: body.timeline || "",
       extra: body.extra || "",
       status: "new",
     };
 
-    const docRef = await addDoc(collection(db, COLLECTION), {
-      ...saveData,
-      createdAt: serverTimestamp(),
+    const { data, error } = await supabase
+      .from("intakes")
+      .insert(saveData)
+      .select("id")
+      .single();
+
+    if (error) throw error;
+
+    await sendAdminNotification({
+      name: body.name,
+      phone: body.phone,
+      industry: body.industry,
+      company: body.company,
+      siteType: body.siteType,
+      designConcept: body.designConcept,
+      productDetail: body.productDetail,
+      pageCount: body.pageCount,
+      timeline: body.timeline,
     });
 
-    await sendAdminNotification(saveData);
-
-    return NextResponse.json({ id: docRef.id }, { status: 201 });
+    return NextResponse.json({ id: data.id }, { status: 201 });
   } catch (error) {
     console.error("Failed to save intake:", error);
     return NextResponse.json(
@@ -146,18 +147,42 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const q = firestoreQuery(
-      collection(db, COLLECTION),
-      orderBy("createdAt", "desc")
-    );
-    const snapshot = await getDocs(q);
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate?.()?.toISOString() ?? null,
+    const { data, error } = await supabase
+      .from("intakes")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    const mapped = (data || []).map((row) => ({
+      id: row.id,
+      name: row.name,
+      phone: row.phone,
+      consultationId: row.consultation_id,
+      industry: row.industry,
+      company: row.company,
+      siteType: row.site_type,
+      designConcept: row.design_concept,
+      productDetail: row.product_detail,
+      targetCustomer: row.target_customer,
+      refSites: row.ref_sites,
+      desiredActions: row.desired_actions,
+      existingWebsite: row.existing_website,
+      pageCount: row.page_count,
+      sections: row.sections,
+      requiredFeatures: row.required_features,
+      additionalFeatures: row.additional_features,
+      brandColor: row.brand_color,
+      hasLogo: row.has_logo,
+      copywriting: row.copywriting,
+      hasAssets: row.has_assets,
+      timeline: row.timeline,
+      extra: row.extra,
+      status: row.status,
+      createdAt: row.created_at,
     }));
 
-    return NextResponse.json(data);
+    return NextResponse.json(mapped);
   } catch (error) {
     console.error("Failed to fetch intakes:", error);
     return NextResponse.json(

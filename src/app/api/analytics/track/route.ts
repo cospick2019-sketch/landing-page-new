@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { supabase } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,22 +30,22 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const doc: Record<string, unknown> = {
+    const row: Record<string, unknown> = {
       path,
       ref: refSource,
       device: isMobile ? "mobile" : "desktop",
-      ts: serverTimestamp(),
     };
 
-    if (vid) doc.vid = vid;
-    if (sid) doc.sid = sid;
-    if (utm_source) doc.utm_source = utm_source;
-    if (utm_medium) doc.utm_medium = utm_medium;
-    if (utm_campaign) doc.utm_campaign = utm_campaign;
-    if (utm_term) doc.utm_term = utm_term;
-    if (utm_content) doc.utm_content = utm_content;
+    if (vid) row.vid = vid;
+    if (sid) row.sid = sid;
+    if (utm_source) row.utm_source = utm_source;
+    if (utm_medium) row.utm_medium = utm_medium;
+    if (utm_campaign) row.utm_campaign = utm_campaign;
+    if (utm_term) row.utm_term = utm_term;
+    if (utm_content) row.utm_content = utm_content;
 
-    await addDoc(collection(db, "pageviews"), doc);
+    const { error } = await supabase.from("pageviews").insert(row);
+    if (error) throw error;
 
     return NextResponse.json({ ok: true });
   } catch (error) {

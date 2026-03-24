@@ -1,16 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/firebase";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  orderBy,
-  query,
-  serverTimestamp,
-} from "firebase/firestore";
+import { supabase } from "@/lib/supabase";
 import nodemailer from "nodemailer";
-
-const COLLECTION = "consultations";
 
 const SITE_TYPE_LABEL: Record<string, string> = {
   landing: "랜딩페이지",
@@ -97,29 +87,40 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const saveData = {
+    const { data, error } = await supabase
+      .from("consultations")
+      .insert({
+        site_type: body.siteType,
+        design_concept: body.designConcept,
+        industry: body.industry,
+        company: body.company,
+        name: body.name,
+        phone: body.phone,
+        ref_links: (body.refLinks || []).filter((l: string) => l.trim()),
+        purpose: body.purpose || "",
+        timeline: body.timeline || "",
+        extra: body.extra || "",
+        status: "new",
+      })
+      .select("id")
+      .single();
+
+    if (error) throw error;
+
+    await sendAdminNotification({
       siteType: body.siteType,
       designConcept: body.designConcept,
       industry: body.industry,
       company: body.company,
       name: body.name,
       phone: body.phone,
-      refLinks: body.refLinks || ["", "", ""],
+      refLinks: body.refLinks || [],
       purpose: body.purpose || "",
       timeline: body.timeline || "",
       extra: body.extra || "",
-      status: "new",
-    };
-
-    const docRef = await addDoc(collection(db, COLLECTION), {
-      ...saveData,
-      createdAt: serverTimestamp(),
     });
 
-    // Send email notification (must await in serverless)
-    await sendAdminNotification(saveData);
-
-    return NextResponse.json({ id: docRef.id }, { status: 201 });
+    return NextResponse.json({ id: data.id }, { status: 201 });
   } catch (error) {
     console.error("Failed to save consultation:", error);
     return NextResponse.json(
@@ -136,18 +137,30 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const q = query(
-      collection(db, COLLECTION),
-      orderBy("createdAt", "desc")
-    );
-    const snapshot = await getDocs(q);
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate?.()?.toISOString() ?? null,
+    const { data, error } = await supabase
+      .from("consultations")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    const mapped = (data || []).map((row) => ({
+      id: row.id,
+      siteType: row.site_type,
+      designConcept: row.design_concept,
+      industry: row.industry,
+      company: row.company,
+      name: row.name,
+      phone: row.phone,
+      refLinks: row.ref_links,
+      purpose: row.purpose,
+      timeline: row.timeline,
+      extra: row.extra,
+      status: row.status,
+      createdAt: row.created_at,
     }));
 
-    return NextResponse.json(data);
+    return NextResponse.json(mapped);
   } catch (error) {
     console.error("Failed to fetch consultations:", error);
     return NextResponse.json(
