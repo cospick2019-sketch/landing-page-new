@@ -311,6 +311,18 @@ export default function ProblemSection() {
                 만 했기 때문입니다.
               </p>
             </motion.div>
+
+            <BlurFade delay={0.4}>
+              <a
+                href="https://blog.naver.com/salesupto"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-6 text-base md:text-lg text-gray-400 hover:text-indigo-600 transition-colors"
+              >
+                <span>랜딩페이지, 왜 중요할까?</span>
+                <span className="font-semibold underline underline-offset-4 decoration-indigo-300">블로그에서 자세히 보기 →</span>
+              </a>
+            </BlurFade>
           </div>
         </div>
       </div>

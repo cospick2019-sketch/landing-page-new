@@ -144,6 +144,20 @@ export default function FaqSection() {
             />
           ))}
         </div>
+
+        <BlurFade delay={0.3}>
+          <div className="mt-10 md:mt-14 text-center">
+            <a
+              href="https://blog.naver.com/salesupto"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm md:text-base text-gray-400 hover:text-indigo-400 transition-colors"
+            >
+              <span>더 많은 정보가 궁금하다면</span>
+              <span className="font-semibold underline underline-offset-4 decoration-indigo-500/40">블로그 보러가기 →</span>
+            </a>
+          </div>
+        </BlurFade>
       </div>
     </section>
   );
