@@ -11,7 +11,7 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { Particles } from "@/components/ui/particles";
 import { BorderBeam } from "@/components/ui/border-beam";
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
+import { useConsultation } from "@/components/consultation/ConsultationContext";
 
 function Tooltip({ text }: { text: string }) {
   const [open, setOpen] = useState(false);
@@ -56,6 +56,7 @@ function Tooltip({ text }: { text: string }) {
 }
 
 export default function ProofSection() {
+  const { open: openConsultation } = useConsultation();
   return (
     <section id="proof" className="relative py-16 md:py-32 lg:py-48 bg-[#030513] overflow-hidden" style={{ contain: "paint" }}>
       {/* Absolute Dark Ambient Glows */}
@@ -184,7 +185,7 @@ export default function ProofSection() {
                   <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded border border-indigo-400/50 opacity-0 group-hover/btn:opacity-100 transition duration-300 blur-sm" />
                   <button
                     type="button"
-                    onClick={() => window.open(KAKAO_CHAT_URL, "_blank")}
+                    onClick={openConsultation}
                     className="relative inline-flex items-center justify-center h-14 px-8 text-base font-bold bg-indigo-600 text-white hover:bg-indigo-500 transition-all rounded cursor-pointer"
                   >
                     {SECTION_PROOF.closingCta}

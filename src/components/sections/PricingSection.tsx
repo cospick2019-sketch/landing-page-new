@@ -6,7 +6,7 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
+import { useConsultation } from "@/components/consultation/ConsultationContext";
 
 function CheckIcon({ className }: { className?: string }) {
   return (
@@ -165,6 +165,7 @@ function PricingCard({
 }
 
 export default function PricingSection() {
+  const { open: openConsultation } = useConsultation();
   return (
     <section
       id="pricing"
@@ -210,7 +211,7 @@ export default function PricingSection() {
               key={plan.name}
               plan={plan}
               index={i}
-              onCtaClick={() => window.open(KAKAO_CHAT_URL, "_blank")}
+              onCtaClick={openConsultation}
             />
           ))}
         </div>
@@ -218,9 +219,9 @@ export default function PricingSection() {
         {/* Notice */}
         <BlurFade delay={0.4}>
           <p className="mt-14 text-sm text-gray-400 leading-relaxed">
-            * VAT 미포함
+            * 관리자 페이지는 문의 폼, 로그인, 결제 기능 포함 시 제공됩니다.
             <br />
-            모든 작업은 고객사의 작업량과 의견에 따라 추가비용 발생 및 소요 기간이 연장될 수 있습니다.
+            * VAT 미포함 · 작업량과 요청에 따라 추가비용이 발생할 수 있습니다.
           </p>
         </BlurFade>
       </div>

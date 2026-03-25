@@ -9,9 +9,10 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { BlurFade } from "@/components/ui/blur-fade";
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
+import { useConsultation } from "@/components/consultation/ConsultationContext";
 
 export default function HeroSection() {
+  const { open: openConsultation } = useConsultation();
   return (
     <section
       id="hero"
@@ -23,6 +24,7 @@ export default function HeroSection() {
         loop
         muted
         playsInline
+        poster="/og-image.jpg"
         className="absolute inset-0 w-full h-full object-cover"
       >
         <source src="/hero-bg.mp4" type="video/mp4" />
@@ -119,7 +121,7 @@ export default function HeroSection() {
                 background={H.cta.hex}
                 borderRadius={ANIM.shimmer.borderRadius}
                 className="h-12 md:h-16 px-8 md:px-10 text-base md:text-lg font-semibold rounded-full mx-auto text-white"
-                onClick={() => window.open(KAKAO_CHAT_URL, "_blank")}
+                onClick={openConsultation}
               >
                 {HERO.cta}
               </ShimmerButton>

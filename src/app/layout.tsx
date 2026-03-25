@@ -6,6 +6,9 @@ import Script from "next/script";
 import { SITE_META } from "@/constants/content";
 import { Analytics } from "@vercel/analytics/next";
 import KakaoFloatingButton from "@/components/KakaoFloatingButton";
+import { ConsultationProvider } from "@/components/consultation/ConsultationContext";
+import ConsultationForm from "@/components/consultation/ConsultationForm";
+import FloatingConsultationBanner from "@/components/FloatingConsultationBanner";
 import PageViewTracker from "@/components/PageViewTracker";
 import "./globals.css";
 
@@ -96,7 +99,11 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className="antialiased font-[family-name:'Pretendard_Variable',system-ui,sans-serif]">
-        {children}
+        <ConsultationProvider>
+          {children}
+          <ConsultationForm />
+          <FloatingConsultationBanner />
+        </ConsultationProvider>
         <KakaoFloatingButton />
         <Suspense fallback={null}>
           <PageViewTracker />

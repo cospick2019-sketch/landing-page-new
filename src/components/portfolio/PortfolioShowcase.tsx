@@ -1,30 +1,31 @@
 "use client";
 
+import Image from "next/image";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { ArrowRight, ExternalLink } from "lucide-react";
-
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
+import { useConsultation } from "@/components/consultation/ConsultationContext";
 
 const PORTFOLIO_ITEMS = [
-    { name: "샴푸", url: "https://smartstore.naver.com/mirr-n/products/4240937675", image: "/portfolio/mirrn-shampoo.JPEG" },
-    { name: "바디로션", url: "https://smartstore.naver.com/mirr-n/products/4666979547", image: "/portfolio/mirrn-bodylotion.JPEG" },
-    { name: "솝", url: "https://smartstore.naver.com/mirr-n/products/4666976563", image: "/portfolio/mirrn-soap.JPEG" },
-    { name: "탈모샴푸", url: "https://smartstore.naver.com/mirr-n/products/7872684016", image: "/portfolio/mirrn-hairloss.JPEG" },
-    { name: "트리트먼트", url: "https://smartstore.naver.com/mirr-n/products/9648504106", image: "/portfolio/mirrn-treatment.JPEG" },
-    { name: "크림", url: "https://smartstore.naver.com/red-skini/products/5614214866", image: "/portfolio/votre-cream.JPEG" },
-    { name: "토너", url: "https://smartstore.naver.com/red-skini/products/7452545362", image: "/portfolio/votre-toner.JPEG" },
-    { name: "마스크팩", url: "https://smartstore.naver.com/red-skini/products/7452599362", image: "/portfolio/votre-maskpack.JPEG" },
-    { name: "거치대", url: "https://smartstore.naver.com/barmm/products/5591628244", image: "/portfolio/barm-holder.JPEG" },
-    { name: "바른자세밴드", url: "https://smartstore.naver.com/1gong/products/6736470457", image: "/portfolio/posture-band.JPEG" },
-    { name: "무릎보호대", url: "https://smartstore.naver.com/1gong/products/6736437953", image: "/portfolio/anapers-knee.JPEG" },
-    { name: "견인기", url: "https://smartstore.naver.com/1gong/products/6736411664", image: "/portfolio/anapers-traction.JPEG" },
-    { name: "술렐루야", url: "https://smartstore.naver.com/1gong/products/5148292922", image: "/portfolio/sulleluya.JPEG" },
-    { name: "코뽕", url: "https://smartstore.naver.com/1gong/products/6735536604", image: "/portfolio/coppong.JPEG" },
-    { name: "수호밤", url: "https://smartstore.naver.com/barmm/products/497265512", image: "/portfolio/suhobam.JPEG" },
-    { name: "손목보호대", url: "https://smartstore.naver.com/1gong/products/6736223780", image: "/portfolio/anapers-wrist.JPEG" },
+    { name: "샴푸", url: "https://smartstore.naver.com/mirr-n/products/4240937675", image: "/portfolio/mirrn-shampoo.webp" },
+    { name: "바디로션", url: "https://smartstore.naver.com/mirr-n/products/4666979547", image: "/portfolio/mirrn-bodylotion.webp" },
+    { name: "솝", url: "https://smartstore.naver.com/mirr-n/products/4666976563", image: "/portfolio/mirrn-soap.webp" },
+    { name: "탈모샴푸", url: "https://smartstore.naver.com/mirr-n/products/7872684016", image: "/portfolio/mirrn-hairloss.webp" },
+    { name: "트리트먼트", url: "https://smartstore.naver.com/mirr-n/products/9648504106", image: "/portfolio/mirrn-treatment.webp" },
+    { name: "크림", url: "https://smartstore.naver.com/red-skini/products/5614214866", image: "/portfolio/votre-cream.webp" },
+    { name: "토너", url: "https://smartstore.naver.com/red-skini/products/7452545362", image: "/portfolio/votre-toner.webp" },
+    { name: "마스크팩", url: "https://smartstore.naver.com/red-skini/products/7452599362", image: "/portfolio/votre-maskpack.webp" },
+    { name: "거치대", url: "https://smartstore.naver.com/barmm/products/5591628244", image: "/portfolio/barm-holder.webp" },
+    { name: "바른자세밴드", url: "https://smartstore.naver.com/1gong/products/6736470457", image: "/portfolio/posture-band.webp" },
+    { name: "무릎보호대", url: "https://smartstore.naver.com/1gong/products/6736437953", image: "/portfolio/anapers-knee.webp" },
+    { name: "견인기", url: "https://smartstore.naver.com/1gong/products/6736411664", image: "/portfolio/anapers-traction.webp" },
+    { name: "술렐루야", url: "https://smartstore.naver.com/1gong/products/5148292922", image: "/portfolio/sulleluya.webp" },
+    { name: "코뽕", url: "https://smartstore.naver.com/1gong/products/6735536604", image: "/portfolio/coppong.webp" },
+    { name: "수호밤", url: "https://smartstore.naver.com/barmm/products/497265512", image: "/portfolio/suhobam.webp" },
+    { name: "손목보호대", url: "https://smartstore.naver.com/1gong/products/6736223780", image: "/portfolio/anapers-wrist.webp" },
 ];
 
 export default function PortfolioShowcase() {
+    const { open: openConsultation } = useConsultation();
 
     return (
         <div className="relative w-full bg-[#030513] pt-32 pb-20 md:pb-32">
@@ -69,11 +70,12 @@ export default function PortfolioShowcase() {
                                 className="group relative block rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-indigo-500/20"
                             >
                                 <div className="relative overflow-hidden h-56 md:h-72 lg:h-[360px]">
-                                    <img
+                                    <Image
                                         src={item.image}
                                         alt={item.name}
-                                        loading="lazy"
-                                        className="w-full h-full object-cover object-top transition-all duration-[2000ms] ease-out group-hover:object-bottom group-hover:scale-105"
+                                        fill
+                                        sizes="(max-width: 768px) 50vw, 25vw"
+                                        className="object-cover object-top transition-all duration-[2000ms] ease-out group-hover:object-bottom group-hover:scale-105"
                                     />
                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
                                         <ExternalLink className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110 drop-shadow-md" />
@@ -103,7 +105,7 @@ export default function PortfolioShowcase() {
                             <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded border border-indigo-400/50 opacity-40 group-hover/btn:opacity-100 transition duration-500 blur-md" />
                             <button
                                 type="button"
-                                onClick={() => window.open(KAKAO_CHAT_URL, "_blank")}
+                                onClick={openConsultation}
                                 className="relative inline-flex items-center justify-center h-16 px-10 text-lg font-bold bg-indigo-600 text-white hover:bg-indigo-500 transition-all rounded shadow-xl hover:shadow-indigo-500/50 cursor-pointer"
                             >
                                 상담 신청하기

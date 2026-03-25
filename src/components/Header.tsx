@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
-const KAKAO_CHAT_URL = "http://pf.kakao.com/_DLuZX/chat?text=견적문의";
+import { useConsultation } from "./consultation/ConsultationContext";
 
 const NAV_ITEMS = [
   { label: "서비스 소개", href: "/#solution" },
@@ -17,6 +18,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const { open: openConsultation } = useConsultation();
   const isHome = pathname === "/";
   const showDark = scrolled || !isHome;
 
@@ -88,17 +90,23 @@ export default function Header() {
         {/* 좌측: 로고 */}
         <Link href="/" className="flex-shrink-0 flex items-end -gap-px" onClick={() => { if (pathname === "/") window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
           <div className="relative h-9 w-9 md:h-10 md:w-10 shrink-0">
-            <img
+            <Image
               src="/LandingPick-simple-white.png"
-              alt=""
+              alt="LandingPick"
+              width={40}
+              height={40}
+              priority
               className={cn(
                 "absolute inset-0 h-full w-full object-contain transition-opacity duration-300",
                 showDark ? "opacity-0" : "opacity-100"
               )}
             />
-            <img
+            <Image
               src="/LandingPick-simple-black.png"
-              alt=""
+              alt="LandingPick"
+              width={40}
+              height={40}
+              priority
               className={cn(
                 "absolute inset-0 h-full w-full object-contain transition-opacity duration-300",
                 showDark ? "opacity-100" : "opacity-0"
@@ -150,7 +158,7 @@ export default function Header() {
 
         {/* 우측: CTA 버튼 */}
         <button
-          onClick={() => window.open(KAKAO_CHAT_URL, "_blank")}
+          onClick={openConsultation}
           className={cn(
             "hidden md:inline-flex ml-auto items-center text-sm font-bold h-10 px-5 rounded-full transition-colors duration-150 shadow-sm",
             showDark
@@ -214,7 +222,7 @@ export default function Header() {
             <button
               onClick={() => {
                 setMobileOpen(false);
-                window.open(KAKAO_CHAT_URL, "_blank");
+                openConsultation();
               }}
               className="mt-2 inline-flex items-center justify-center text-sm font-bold h-10 px-4 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition-colors shadow-sm"
             >
