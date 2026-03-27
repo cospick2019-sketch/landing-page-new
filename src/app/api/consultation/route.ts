@@ -30,6 +30,9 @@ async function sendAdminNotification(data: Record<string, unknown>) {
   const timeStr = `${kst.getUTCFullYear()}.${String(kst.getUTCMonth() + 1).padStart(2, "0")}.${String(kst.getUTCDate()).padStart(2, "0")} ${String(kst.getUTCHours()).padStart(2, "0")}:${String(kst.getUTCMinutes()).padStart(2, "0")}`;
 
   const refLinks = (data.refLinks as string[] || []).filter((l: string) => l.trim());
+  const desiredFeatures = (data.desiredFeatures as string[] || []);
+  const desiredPages = (data.desiredPages as string[] || []);
+  const additionalFeatures = (data.additionalFeatures as string[] || []);
 
   const html = `
     <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:520px;margin:0 auto;padding:24px">
@@ -40,18 +43,20 @@ async function sendAdminNotification(data: Record<string, unknown>) {
       <div style="background:#f9fafb;padding:20px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">
         <table style="width:100%;border-collapse:collapse;font-size:14px">
           <tr><td style="padding:8px 0;color:#6b7280;width:80px;vertical-align:top">유형</td><td style="padding:8px 0;color:#111827;font-weight:600">${SITE_TYPE_LABEL[data.siteType as string] || data.siteType}</td></tr>
-          <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">디자인</td><td style="padding:8px 0;color:#111827;font-weight:600">${CONCEPT_LABEL[data.designConcept as string] || data.designConcept}</td></tr>
-          <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">업종</td><td style="padding:8px 0;color:#111827">${data.industry}</td></tr>
+          ${data.designConcept ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">디자인</td><td style="padding:8px 0;color:#111827;font-weight:600">${CONCEPT_LABEL[data.designConcept as string] || data.designConcept}</td></tr>` : ""}
+          ${data.industry ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">업종</td><td style="padding:8px 0;color:#111827">${data.industry}</td></tr>` : ""}
           <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">업체명</td><td style="padding:8px 0;color:#111827;font-weight:600">${data.company}</td></tr>
           <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">이름</td><td style="padding:8px 0;color:#111827">${data.name}</td></tr>
           <tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">연락처</td><td style="padding:8px 0;color:#4f46e5;font-weight:600">${data.phone}</td></tr>
-          ${data.purpose ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">목적</td><td style="padding:8px 0;color:#111827">${data.purpose}</td></tr>` : ""}
-          ${data.timeline ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">희망일정</td><td style="padding:8px 0;color:#111827">${data.timeline}</td></tr>` : ""}
+          ${desiredFeatures.length > 0 ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">원하는 기능</td><td style="padding:8px 0;color:#111827">${desiredFeatures.join(", ")}</td></tr>` : ""}
+          ${desiredPages.length > 0 ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">원하는 페이지</td><td style="padding:8px 0;color:#111827">${desiredPages.join(", ")}</td></tr>` : ""}
+          ${additionalFeatures.length > 0 ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">추가 기능</td><td style="padding:8px 0;color:#111827">${additionalFeatures.join(", ")}</td></tr>` : ""}
+          ${data.timeline ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">희망기간</td><td style="padding:8px 0;color:#111827">${data.timeline}</td></tr>` : ""}
           ${refLinks.length > 0 ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">참고링크</td><td style="padding:8px 0;color:#4f46e5">${refLinks.map((l: string) => `<a href="${l}" style="color:#4f46e5;display:block">${l}</a>`).join("")}</td></tr>` : ""}
           ${data.extra ? `<tr><td style="padding:8px 0;color:#6b7280;vertical-align:top">추가요청</td><td style="padding:8px 0;color:#111827;white-space:pre-wrap">${data.extra}</td></tr>` : ""}
         </table>
         <div style="margin-top:16px;text-align:center">
-          <a href="https://landingpick.co.kr/admin" style="display:inline-block;background:#4f46e5;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600">관리자 페이지에서 확인하기</a>
+          <a href="https://landing-pick.vercel.app/admin" style="display:inline-block;background:#4f46e5;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600">관리자 페이지에서 확인하기</a>
         </div>
       </div>
     </div>
@@ -78,30 +83,44 @@ async function sendAdminNotification(data: Record<string, unknown>) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { siteType, designConcept, industry, company, name, phone } = body;
+    const { siteType, company, name, phone } = body;
 
-    if (!siteType || !designConcept || !industry?.trim() || !company?.trim() || !name?.trim() || !phone?.trim()) {
+    if (!siteType || !company?.trim() || !name?.trim() || !phone?.trim()) {
       return NextResponse.json(
         { error: "필수 항목을 모두 입력해주세요." },
         { status: 400 }
       );
     }
 
+    // 기본 필드 (기존 테이블 컬럼)
+    const insertData: Record<string, unknown> = {
+      site_type: body.siteType,
+      design_concept: body.designConcept || "",
+      industry: body.industry || "",
+      company: body.company,
+      name: body.name,
+      phone: body.phone.replace(/[^0-9]/g, ""),
+      ref_links: (body.refLinks || []).filter((l: string) => l.trim()),
+      purpose: body.purpose || "",
+      timeline: body.timeline || "",
+      extra: body.extra || "",
+      status: "new",
+    };
+
+    // 새 필드 추가 (폼 리뉴얼로 추가된 필드, extra에 병합)
+    const featuresSummary = [
+      ...(body.desiredFeatures || []).map((f: string) => `[기능] ${f}`),
+      ...(body.desiredPages || []).map((p: string) => `[페이지] ${p}`),
+      ...(body.additionalFeatures || []).map((f: string) => `[추가] ${f}`),
+    ].join(", ");
+
+    if (featuresSummary) {
+      insertData.extra = featuresSummary + (body.extra ? `\n${body.extra}` : "");
+    }
+
     const { data, error } = await supabase
       .from("consultations")
-      .insert({
-        site_type: body.siteType,
-        design_concept: body.designConcept,
-        industry: body.industry,
-        company: body.company,
-        name: body.name,
-        phone: body.phone,
-        ref_links: (body.refLinks || []).filter((l: string) => l.trim()),
-        purpose: body.purpose || "",
-        timeline: body.timeline || "",
-        extra: body.extra || "",
-        status: "new",
-      })
+      .insert(insertData)
       .select("id")
       .single();
 
@@ -114,6 +133,9 @@ export async function POST(request: NextRequest) {
       company: body.company,
       name: body.name,
       phone: body.phone,
+      desiredFeatures: body.desiredFeatures || [],
+      desiredPages: body.desiredPages || [],
+      additionalFeatures: body.additionalFeatures || [],
       refLinks: body.refLinks || [],
       purpose: body.purpose || "",
       timeline: body.timeline || "",
