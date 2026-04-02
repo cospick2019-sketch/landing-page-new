@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     url: "https://landing-pick.vercel.app",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Landing Pick — 팔리는 랜딩페이지",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_META.title,
     description: SITE_META.description,
-    images: ["/og-image.jpg"],
+    images: ["https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/og-image.jpg"],
   },
   robots: {
     index: true,

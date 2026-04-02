@@ -24,10 +24,10 @@ export default function HeroSection() {
         loop
         muted
         playsInline
-        poster="/og-image.jpg"
+        poster="https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/og-image.jpg"
         className="absolute inset-0 w-full h-full object-cover"
       >
-        <source src="/hero-bg.mp4" type="video/mp4" />
+        <source src="https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/hero-bg.mp4" type="video/mp4" />
       </video>
 
       {/* Dark overlay */}

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/intake-og-image.jpg",
+        url: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/intake-og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Landing Pick — 맞춤 견적 신청",

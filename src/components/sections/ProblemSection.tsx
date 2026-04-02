@@ -157,7 +157,7 @@ export default function ProblemSection() {
                 {/* Page content */}
                 <div className="relative aspect-[3/4] bg-gray-50">
                   <Image
-                    src="/images/bad-landing-page.png"
+                    src="https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/images/bad-landing-page.png"
                     alt="매출이 나오지 않는 랜딩페이지 예시"
                     fill
                     sizes="(max-width: 768px) 100vw, 440px"

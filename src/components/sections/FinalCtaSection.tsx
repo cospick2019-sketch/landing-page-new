@@ -29,7 +29,7 @@ export default function FinalCtaSection() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-indigo-500/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen z-0" />
 
       {/* Subtle Grid overlay for texture */}
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] mix-blend-overlay pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[url('https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/grid.svg')] opacity-[0.02] mix-blend-overlay pointer-events-none z-0" />
 
       <div className="relative z-10 w-full max-w-4xl mx-auto px-5 md:px-6 text-center flex flex-col items-center">
 

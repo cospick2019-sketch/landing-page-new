@@ -91,7 +91,7 @@ export default function Header() {
         <Link href="/" className="flex-shrink-0 flex items-end -gap-px" onClick={() => { if (pathname === "/") window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
           <div className="relative h-9 w-9 md:h-10 md:w-10 shrink-0">
             <Image
-              src="/LandingPick-simple-white.png"
+              src="https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/LandingPick-simple-white.png"
               alt="LandingPick"
               width={40}
               height={40}
@@ -102,7 +102,7 @@ export default function Header() {
               )}
             />
             <Image
-              src="/LandingPick-simple-black.png"
+              src="https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/LandingPick-simple-black.png"
               alt="LandingPick"
               width={40}
               height={40}

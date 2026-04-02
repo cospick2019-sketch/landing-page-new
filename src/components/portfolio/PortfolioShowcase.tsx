@@ -6,22 +6,22 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import { useConsultation } from "@/components/consultation/ConsultationContext";
 
 const PORTFOLIO_ITEMS = [
-    { name: "샴푸", url: "https://smartstore.naver.com/mirr-n/products/4240937675", image: "/portfolio/mirrn-shampoo.webp" },
-    { name: "바디로션", url: "https://smartstore.naver.com/mirr-n/products/4666979547", image: "/portfolio/mirrn-bodylotion.webp" },
-    { name: "솝", url: "https://smartstore.naver.com/mirr-n/products/4666976563", image: "/portfolio/mirrn-soap.webp" },
-    { name: "탈모샴푸", url: "https://smartstore.naver.com/mirr-n/products/7872684016", image: "/portfolio/mirrn-hairloss.webp" },
-    { name: "트리트먼트", url: "https://smartstore.naver.com/mirr-n/products/9648504106", image: "/portfolio/mirrn-treatment.webp" },
-    { name: "크림", url: "https://smartstore.naver.com/red-skini/products/5614214866", image: "/portfolio/votre-cream.webp" },
-    { name: "토너", url: "https://smartstore.naver.com/red-skini/products/7452545362", image: "/portfolio/votre-toner.webp" },
-    { name: "마스크팩", url: "https://smartstore.naver.com/red-skini/products/7452599362", image: "/portfolio/votre-maskpack.webp" },
-    { name: "거치대", url: "https://smartstore.naver.com/barmm/products/5591628244", image: "/portfolio/barm-holder.webp" },
-    { name: "바른자세밴드", url: "https://smartstore.naver.com/1gong/products/6736470457", image: "/portfolio/posture-band.webp" },
-    { name: "무릎보호대", url: "https://smartstore.naver.com/1gong/products/6736437953", image: "/portfolio/anapers-knee.webp" },
-    { name: "견인기", url: "https://smartstore.naver.com/1gong/products/6736411664", image: "/portfolio/anapers-traction.webp" },
-    { name: "술렐루야", url: "https://smartstore.naver.com/1gong/products/5148292922", image: "/portfolio/sulleluya.webp" },
-    { name: "코뽕", url: "https://smartstore.naver.com/1gong/products/6735536604", image: "/portfolio/coppong.webp" },
-    { name: "수호밤", url: "https://smartstore.naver.com/barmm/products/497265512", image: "/portfolio/suhobam.webp" },
-    { name: "손목보호대", url: "https://smartstore.naver.com/1gong/products/6736223780", image: "/portfolio/anapers-wrist.webp" },
+    { name: "샴푸", url: "https://smartstore.naver.com/mirr-n/products/4240937675", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/mirrn-shampoo.webp" },
+    { name: "바디로션", url: "https://smartstore.naver.com/mirr-n/products/4666979547", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/mirrn-bodylotion.webp" },
+    { name: "솝", url: "https://smartstore.naver.com/mirr-n/products/4666976563", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/mirrn-soap.webp" },
+    { name: "탈모샴푸", url: "https://smartstore.naver.com/mirr-n/products/7872684016", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/mirrn-hairloss.webp" },
+    { name: "트리트먼트", url: "https://smartstore.naver.com/mirr-n/products/9648504106", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/mirrn-treatment.webp" },
+    { name: "크림", url: "https://smartstore.naver.com/red-skini/products/5614214866", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/votre-cream.webp" },
+    { name: "토너", url: "https://smartstore.naver.com/red-skini/products/7452545362", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/votre-toner.webp" },
+    { name: "마스크팩", url: "https://smartstore.naver.com/red-skini/products/7452599362", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/votre-maskpack.webp" },
+    { name: "거치대", url: "https://smartstore.naver.com/barmm/products/5591628244", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/barm-holder.webp" },
+    { name: "바른자세밴드", url: "https://smartstore.naver.com/1gong/products/6736470457", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/posture-band.webp" },
+    { name: "무릎보호대", url: "https://smartstore.naver.com/1gong/products/6736437953", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/anapers-knee.webp" },
+    { name: "견인기", url: "https://smartstore.naver.com/1gong/products/6736411664", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/anapers-traction.webp" },
+    { name: "술렐루야", url: "https://smartstore.naver.com/1gong/products/5148292922", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/sulleluya.webp" },
+    { name: "코뽕", url: "https://smartstore.naver.com/1gong/products/6735536604", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/coppong.webp" },
+    { name: "수호밤", url: "https://smartstore.naver.com/barmm/products/497265512", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/suhobam.webp" },
+    { name: "손목보호대", url: "https://smartstore.naver.com/1gong/products/6736223780", image: "https://pub-9ef3c67b5bcf4b69bbd9e92d779eaa12.r2.dev/landing-pick/portfolio/anapers-wrist.webp" },
 ];
 
 export default function PortfolioShowcase() {
