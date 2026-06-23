@@ -12,6 +12,9 @@ export const metadata = {
     description:
       "남의 포트폴리오가 아닌, 직접 팔아본 페이지만 보여드립니다. 대표님이 우리의 포트폴리오가 되어주세요.",
   },
+  alternates: {
+    canonical: "/portfolio",
+  },
 };
 
 export default function PortfolioPage() {

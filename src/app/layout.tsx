@@ -10,6 +10,7 @@ import { ConsultationProvider } from "@/components/consultation/ConsultationCont
 import ConsultationForm from "@/components/consultation/ConsultationForm";
 import FloatingConsultationBanner from "@/components/FloatingConsultationBanner";
 import PageViewTracker from "@/components/PageViewTracker";
+import { SiteJsonLd } from "@/components/seo/StructuredData";
 import "./globals.css";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
@@ -75,6 +76,7 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
+        <SiteJsonLd />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"

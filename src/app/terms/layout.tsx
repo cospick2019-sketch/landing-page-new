@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     title: "이용약관 | Landing Pick",
     description: "Landing Pick 서비스 이용약관입니다.",
   },
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 export default function TermsLayout({
